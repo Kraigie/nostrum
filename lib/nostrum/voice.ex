@@ -123,7 +123,7 @@ defmodule Nostrum.Voice do
   end
 
   defp fetch_voice_pid do
-    Bot.get_bot_pid()
+    Bot.fetch_bot_pid()
     |> Util.get_child_pid(Nostrum.Voice.Supervisor)
     |> Util.get_child_pid(Nostrum.Voice)
   end

@@ -9,28 +9,30 @@ defmodule Nostrum.Cache.UserCache.ETS do
 
   @behaviour Nostrum.Cache.UserCache
 
-  @table_name :nostrum_users
+  @base_table_name :nostrum_users
 
+  alias Nostrum.Bot
   alias Nostrum.Snowflake
   alias Nostrum.Struct.User
   use Supervisor
 
   @doc "Start the supervisor."
-  def start_link(init_arg) do
-    Supervisor.start_link(__MODULE__, init_arg, name: __MODULE__)
+  def start_link(opts) do
+    Supervisor.start_link(__MODULE__, opts)
   end
 
   @doc "Set up the ETS table."
   @impl Supervisor
-  def init(_init_arg) do
-    _tid = :ets.new(@table_name, [:set, :public, :named_table])
+  def init(opts) do
+    table_name = :"#{@base_table_name}_#{Keyword.fetch!(opts, :name)}"
+    _tid = :ets.new(table_name, [:set, :public, :named_table])
     Supervisor.init([], strategy: :one_for_one)
   end
 
   @doc "Retrieve the ETS table reference used for the cache."
   @doc since: "0.8.0"
   @spec table :: :ets.table()
-  def table, do: @table_name
+  def table, do: :"#{@base_table_name}_#{Bot.fetch_bot_name()}"
 
   @doc "Retrieve a user from the cache."
   @impl Nostrum.Cache.UserCache
@@ -41,7 +43,7 @@ defmodule Nostrum.Cache.UserCache.ETS do
   @impl Nostrum.Cache.UserCache
   @spec bulk_create(Enum.t()) :: :ok
   def bulk_create(users) do
-    Enum.each(users, &:ets.insert(@table_name, {&1.id, User.to_struct(&1)}))
+    Enum.each(users, &:ets.insert(table(), {&1.id, User.to_struct(&1)}))
   end
 
   @doc "Create a user from upstream data."
@@ -49,7 +51,7 @@ defmodule Nostrum.Cache.UserCache.ETS do
   @spec create(map()) :: User.t()
   def create(payload) do
     parsed = User.to_struct(payload)
-    :ets.insert(@table_name, {parsed.id, parsed})
+    :ets.insert(table(), {parsed.id, parsed})
     parsed
   end
 
@@ -65,7 +67,7 @@ defmodule Nostrum.Cache.UserCache.ETS do
     with {:ok, old_user} <- lookup(user_id),
          new_user = User.to_struct(info, old_user),
          false <- old_user == new_user do
-      :ets.insert(@table_name, {new_user.id, new_user})
+      :ets.insert(table(), {new_user.id, new_user})
       {old_user, new_user}
     else
       {:error, _} ->
@@ -75,7 +77,7 @@ defmodule Nostrum.Cache.UserCache.ETS do
         converted = User.to_struct(info)
 
         if Enum.all?([:username, :discriminator], &is_map_key(info, &1)),
-          do: :ets.insert(@table_name, {converted.id, converted})
+          do: :ets.insert(table(), {converted.id, converted})
 
         {nil, converted}
 
@@ -88,7 +90,7 @@ defmodule Nostrum.Cache.UserCache.ETS do
   @doc false
   @spec lookup(User.id()) :: {:error, :user_not_found} | {:ok, map}
   defp lookup(id) do
-    case :ets.lookup(@table_name, id) do
+    case :ets.lookup(table(), id) do
       [] ->
         {:error, :user_not_found}
 
@@ -102,7 +104,7 @@ defmodule Nostrum.Cache.UserCache.ETS do
   def delete(id) do
     case lookup(id) do
       {:ok, user} ->
-        :ets.delete(@table_name, id)
+        :ets.delete(table(), id)
         user
 
       _ ->

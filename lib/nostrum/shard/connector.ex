@@ -21,9 +21,9 @@ defmodule Nostrum.Shard.Connector do
   end
 
   def block_until_connect do
-    Bot.get_bot_pid()
+    Bot.fetch_bot_pid()
     |> Util.get_child_pid(Nostrum.Shard.Supervisor)
-    |> Util.get_child_pid(__MODULE__)
+    |> Util.get_child_pid(Nostrum.Shard.Connector)
     |> GenServer.call(:blocking_connect, :infinity)
   end
 

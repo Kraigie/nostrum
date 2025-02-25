@@ -117,7 +117,7 @@ defmodule Nostrum.Bot do
           required(:consumer) => module(),
           required(:intents) => :all | :nonprivileged | [atom()],
           required(:wrapped_token) => (-> String.t()),
-          optional(:name) => term(),
+          optional(:name) => name(),
           optional(:shards) =>
             :auto
             | :manual
@@ -134,6 +134,11 @@ defmodule Nostrum.Bot do
   or on our [Gateway Intents](gateway_intents.html) documentation.
   """
   @type intents :: :all | :nonprivileged | [atom()]
+
+  @typedoc """
+  Unique name for the bot.
+  """
+  @type name :: atom() | integer() | String.t()
 
   @typedoc """
   Options to pass to the bot's supervisor.
@@ -154,9 +159,14 @@ defmodule Nostrum.Bot do
         {%{consumer: _consumer, wrapped_token: wrapped_token} = bot_options, supervisor_options}
       ) do
     token = wrapped_token.()
-    bot_options = %{bot_options | wrapped_token: fn -> token end}
     bot_id = Token.decode_token!(token)
     name = bot_options[:name] || bot_id
+
+    bot_options =
+      bot_options
+      |> Map.put(:name, name)
+      |> Map.put(:wrapped_token, fn -> token end)
+
     Util.set_process_label({__MODULE__, name})
     name = {:via, Registry, {Nostrum.Bot.Registry, name, bot_options}}
 
@@ -165,7 +175,7 @@ defmodule Nostrum.Bot do
       Nostrum.ConsumerGroup,
       Nostrum.Api.RatelimiterGroup,
       {Nostrum.Api.Ratelimiter, bot_options},
-      Nostrum.Cache.CacheSupervisor,
+      {Nostrum.Cache.Supervisor, bot_options},
       {Nostrum.Shard.Supervisor, bot_options},
       {Nostrum.Voice.Supervisor, bot_options}
     ]
@@ -195,63 +205,102 @@ defmodule Nostrum.Bot do
     end
   end
 
+  @bot_fetch_failure_message """
+  Unable to find the bot process from the calling process's context. If you are calling
+  a bot function outside of a consumer responding to a gateway event or if you have
+  more than one bot running, consider invoking `use #{__MODULE__}, name: {name}` in
+  the module where it is being called from.
+  """
+
+  @spec fetch_all_bots() :: [%{name: name(), pid: pid(), bot_options: bot_options()}]
   def fetch_all_bots do
     Registry.select(Nostrum.Bot.Registry, [
       {{:"$1", :"$2", :"$3"}, [], [%{name: :"$1", pid: :"$2", bot_options: :"$3"}]}
     ])
   end
 
-  def get_bot_pid do
-    with nil <- get_bot_pid_from_process(),
-         nil <- get_bot_pid_from_options(),
-         nil <- get_bot_pid_from_all() do
-      raise """
-      Unable to find the bot PID from the calling process's context. If you are calling
-      a bot function outside of a consumer responding to a gateway event or if you have
-      more than one bot running, consider invoking `use #{__MODULE__}, name: {name}` in
-      the module where it is being called from.
-      """
-    else
-      pid -> pid
-    end
-  end
-
-  def get_bot_pid(name) do
+  @spec fetch_bot_pid(name()) :: pid() | nil
+  def fetch_bot_pid(name) do
     case Registry.lookup(Nostrum.Bot.Registry, name) do
       [{pid, _bot_options}] -> pid
       _ -> nil
     end
   end
 
-  def get_bot_options do
-    Process.get(:nostrum_bot_options)
+  @spec fetch_bot_pid() :: pid()
+  def fetch_bot_pid do
+    with nil <- get_bot_pid(),
+         nil <- fetch_bot_from_name(),
+         nil <- fetch_bot_from_options(),
+         nil <- fetch_bot_from_all() do
+      raise @bot_fetch_failure_message
+    else
+      pid when is_pid(pid) ->
+        pid
+
+      %{pid: pid} = bot ->
+        set_bot(bot)
+        pid
+    end
   end
 
-  defp get_bot_pid_from_process do
-    Process.get(:nostrum_bot_pid)
+  @spec fetch_bot_name() :: name()
+  def fetch_bot_name do
+    with nil <- get_bot_name(),
+         nil <- get_bot_options(),
+         nil <- fetch_bot_from_name(),
+         nil <- fetch_bot_from_options(),
+         nil <- fetch_bot_from_all() do
+      raise @bot_fetch_failure_message
+    else
+      %{name: name, consumer: _} = _bot_options ->
+        name
+
+      %{name: name, pid: _} = bot ->
+        set_bot(bot)
+        name
+
+      name ->
+        name
+    end
   end
 
-  defp get_bot_pid_from_options do
-    with %{name: name} <- get_bot_options(),
-         [{pid, _bot_options}] <- Registry.lookup(Nostrum.Bot.Registry, name) do
-      pid
+  defp fetch_bot_from_name do
+    with name when not is_nil(name) <- get_bot_name(),
+         [{pid, bot_options}] <- Registry.lookup(Nostrum.Bot.Registry, name) do
+      %{pid: pid, bot_options: bot_options, name: name}
     else
       _ -> nil
     end
   end
 
-  defp get_bot_pid_from_all do
-    case fetch_all_bots() do
-      [%{pid: pid, bot_options: bot_options}] ->
-        set_bot_options(bot_options)
-        pid
-
-      _zero_or_multiple_bots ->
-        nil
+  defp fetch_bot_from_options do
+    with %{name: name} <- get_bot_options(),
+         [{pid, bot_options}] <- Registry.lookup(Nostrum.Bot.Registry, name) do
+      %{pid: pid, bot_options: bot_options, name: name}
+    else
+      _ -> nil
     end
   end
 
-  def set_bot_options(options) do
-    Process.put(:nostrum_bot_options, options)
+  defp fetch_bot_from_all do
+    case fetch_all_bots() do
+      [%{pid: _, bot_options: _, name: _} = bot] -> bot
+      _zero_or_multiple_bots -> nil
+    end
+  end
+
+  def get_bot_options, do: Process.get(:nostrum_bot_options)
+  def get_bot_name, do: Process.get(:nostrum_bot_name)
+  def get_bot_pid, do: Process.get(:nostrum_bot_pid)
+
+  def set_bot_options(options), do: Process.put(:nostrum_bot_options, options)
+  def set_bot_name(name), do: Process.put(:nostrum_bot_name, name)
+  def set_bot_pid(pid), do: Process.put(:nostrum_bot_pid, pid)
+
+  defp set_bot(%{pid: pid, bot_options: bot_options, name: name}) do
+    set_bot_pid(pid)
+    set_bot_options(bot_options)
+    set_bot_name(name)
   end
 end

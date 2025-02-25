@@ -17,7 +17,7 @@ if Code.ensure_loaded?(:mnesia) do
     default: `10_000`
     - `eviction_count`: The number of messages to evict when the cache is full.
     default: `100`
-    - `table_name`: The name of the Mnesia table to use for the cache.
+    - `table_name`: The base name of the Mnesia table to use for the cache.
     default: `:nostrum_messages`
     - `compressed`: Whether to use compressed in memory storage for the table.
     default: `false`
@@ -40,7 +40,7 @@ if Code.ensure_loaded?(:mnesia) do
       }
     ```
 
-    You can also change the table name used by the cache by setting the
+    You can also change the base table name used by the cache by setting the
     `table_name` field in the configuration for the `messages` cache.
     """
     @moduledoc since: "0.10.0"
@@ -49,8 +49,7 @@ if Code.ensure_loaded?(:mnesia) do
 
     # allow us to override the table name for testing
     # without accidentally overwriting the production table
-    @table_name @config[:table_name] || :nostrum_messages
-    @record_name @table_name
+    @base_table_name @config[:table_name] || :nostrum_messages
 
     @maximum_size @config[:size_limit] || 10_000
     @eviction_count @config[:eviction_count] || 100
@@ -59,6 +58,7 @@ if Code.ensure_loaded?(:mnesia) do
 
     @behaviour Nostrum.Cache.MessageCache
 
+    alias Nostrum.Bot
     alias Nostrum.Cache.MessageCache
     alias Nostrum.Snowflake
     alias Nostrum.Struct.Channel
@@ -68,16 +68,17 @@ if Code.ensure_loaded?(:mnesia) do
     use Supervisor
 
     @doc "Start the supervisor."
-    def start_link(init_arg) do
-      Supervisor.start_link(__MODULE__, init_arg, name: __MODULE__)
+    def start_link(opts) do
+      Supervisor.start_link(__MODULE__, opts)
     end
 
     @impl Supervisor
     @doc "Set up the cache's Mnesia table."
-    def init(_init_arg) do
-      options = table_create_attributes()
+    def init(opts) do
+      table_name = :"#{@base_table_name}_#{Keyword.fetch!(opts, :name)}"
+      table_options = table_create_attributes(table_name)
 
-      case :mnesia.create_table(@table_name, options) do
+      case :mnesia.create_table(table_name, table_options) do
         {:atomic, :ok} -> :ok
         {:aborted, {:already_exists, _tab}} -> :ok
       end
@@ -87,16 +88,18 @@ if Code.ensure_loaded?(:mnesia) do
 
     @doc "Retrieve the Mnesia table name used for the cache."
     @spec table :: atom()
-    def table, do: @table_name
+    def table, do: :"#{@base_table_name}_#{Bot.fetch_bot_name()}"
+
+    defp record_name, do: table()
 
     @doc "Drop the table used for caching."
     @spec teardown() :: {:atomic, :ok} | {:aborted, term()}
-    def teardown, do: :mnesia.delete_table(@table_name)
+    def teardown, do: :mnesia.delete_table(table())
 
     @doc "Clear any objects in the cache."
     @spec clear() :: :ok
     def clear do
-      {:atomic, :ok} = :mnesia.clear_table(@table_name)
+      {:atomic, :ok} = :mnesia.clear_table(table())
       :ok
     end
 
@@ -107,7 +110,7 @@ if Code.ensure_loaded?(:mnesia) do
     @spec get(Message.id()) :: {:ok, Message.t()} | {:error, :not_found}
     def get(message_id) do
       :mnesia.activity(:sync_transaction, fn ->
-        case :mnesia.read(@table_name, message_id, :read) do
+        case :mnesia.read(table(), message_id, :read) do
           [{_tag, _message_id, _channel_id, _author_id, message}] ->
             {:ok, message}
 
@@ -124,7 +127,7 @@ if Code.ensure_loaded?(:mnesia) do
       message = Message.to_struct(payload)
 
       record =
-        {@record_name, message.id, message.channel_id, message.author.id, message}
+        {record_name(), message.id, message.channel_id, message.author.id, message}
 
       writer = fn ->
         maybe_evict_records()
@@ -147,7 +150,7 @@ if Code.ensure_loaded?(:mnesia) do
       id = Snowflake.cast!(id)
 
       :mnesia.activity(:sync_transaction, fn ->
-        case :mnesia.read(@table_name, id, :write) do
+        case :mnesia.read(table(), id, :write) do
           [] ->
             # we don't have the old message, so we shouldn't
             # save it in the cache as updates are not guaranteed
@@ -169,12 +172,12 @@ if Code.ensure_loaded?(:mnesia) do
     @spec delete(Channel.id(), Message.id()) :: Message.t() | nil
     def delete(channel_id, message_id) do
       :mnesia.activity(:sync_transaction, fn ->
-        case :mnesia.read(@table_name, message_id, :write) do
+        case :mnesia.read(table(), message_id, :write) do
           # as a safety measure, we check the channel_id
           # before deleting the message from the cache
           # to prevent deleting messages from the wrong channel
           [{_tag, _id, ^channel_id, _author_id, message}] ->
-            :mnesia.delete(@table_name, message_id, :write)
+            :mnesia.delete(table(), message_id, :write)
             message
 
           _ ->
@@ -211,7 +214,7 @@ if Code.ensure_loaded?(:mnesia) do
 
         :qlc.fold(
           fn message_id, _ ->
-            :mnesia.delete(@table_name, message_id, :write)
+            :mnesia.delete(table(), message_id, :write)
           end,
           nil,
           handle
@@ -326,11 +329,11 @@ if Code.ensure_loaded?(:mnesia) do
     @doc "Return a QLC query handle for the cache for read operations."
     @spec query_handle() :: :qlc.query_handle()
     def query_handle do
-      :mnesia.table(@table_name)
+      :mnesia.table(table())
     end
 
     @doc false
-    def table_create_attributes do
+    def table_create_attributes(table_name) do
       ets_props =
         if @compressed_table do
           [:compressed]
@@ -341,7 +344,7 @@ if Code.ensure_loaded?(:mnesia) do
       [
         attributes: [:message_id, :channel_id, :author_id, :data],
         index: [:channel_id, :author_id],
-        record_name: @record_name,
+        record_name: table_name,
         storage_properties: [ets: ets_props],
         type: @table_type
       ]
@@ -349,10 +352,10 @@ if Code.ensure_loaded?(:mnesia) do
 
     # assumes its called from within a transaction
     defp maybe_evict_records do
-      size = :mnesia.table_info(@table_name, :size)
+      size = :mnesia.table_info(table(), :size)
 
       if size >= @maximum_size do
-        case :mnesia.table_info(@table_name, :type) do
+        case :mnesia.table_info(table(), :type) do
           :set ->
             evict_set_records()
 
@@ -367,13 +370,13 @@ if Code.ensure_loaded?(:mnesia) do
         :mnesia.foldl(
           &evict_set_fold_func/2,
           {0, :gb_sets.new(), 0},
-          @table_name
+          table()
         )
 
       ids = :gb_sets.to_list(set)
 
       Enum.each(ids, fn message_id ->
-        :mnesia.delete(@table_name, message_id, :write)
+        :mnesia.delete(table(), message_id, :write)
       end)
     end
 
@@ -399,14 +402,14 @@ if Code.ensure_loaded?(:mnesia) do
     end
 
     defp evict_ordered_set_records do
-      first = :mnesia.first(@table_name)
+      first = :mnesia.first(table())
 
       Enum.reduce(1..(@eviction_count - 1), [first], fn _i, [key | _rest] = list ->
-        next_key = :mnesia.next(@table_name, key)
+        next_key = :mnesia.next(table(), key)
         [next_key | list]
       end)
       |> Enum.each(fn key ->
-        :mnesia.delete(@table_name, key, :write)
+        :mnesia.delete(table(), key, :write)
       end)
     end
   end

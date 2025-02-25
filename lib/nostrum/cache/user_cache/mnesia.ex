@@ -7,30 +7,32 @@ if Code.ensure_loaded?(:mnesia) do
     """
     @moduledoc since: "0.8.0"
 
-    @table_name :nostrum_users
-    @record_name @table_name
+    @base_table_name :nostrum_users
 
     @behaviour Nostrum.Cache.UserCache
 
+    alias Nostrum.Bot
     alias Nostrum.Cache.UserCache
     alias Nostrum.Snowflake
     alias Nostrum.Struct.User
     use Supervisor
 
     @doc "Start the supervisor."
-    def start_link(init_arg) do
-      Supervisor.start_link(__MODULE__, init_arg, name: __MODULE__)
+    def start_link(opts) do
+      Supervisor.start_link(__MODULE__, opts)
     end
 
     @impl Supervisor
     @doc "Set up the cache's Mnesia table."
-    def init(_init_arg) do
-      options = [
+    def init(opts) do
+      table_name = :"#{@base_table_name}_#{Keyword.fetch!(opts, :name)}"
+
+      table_options = [
         attributes: [:id, :data],
-        record_name: @record_name
+        record_name: table_name
       ]
 
-      case :mnesia.create_table(@table_name, options) do
+      case :mnesia.create_table(table_name, table_options) do
         {:atomic, :ok} -> :ok
         {:aborted, {:already_exists, _tab}} -> :ok
       end
@@ -40,16 +42,18 @@ if Code.ensure_loaded?(:mnesia) do
 
     @doc "Retrieve the Mnesia table name used for the cache."
     @spec table :: atom()
-    def table, do: @table_name
+    def table, do: :"#{@base_table_name}_#{Bot.fetch_bot_name()}"
+
+    defp record_name, do: table()
 
     @doc "Drop the table used for caching."
     @spec teardown() :: {:atomic, :ok} | {:aborted, term()}
-    def teardown, do: :mnesia.delete_table(@table_name)
+    def teardown, do: :mnesia.delete_table(table())
 
     @doc "Clear any objects in the cache."
     @spec clear() :: :ok
     def clear do
-      {:atomic, :ok} = :mnesia.clear_table(@table_name)
+      {:atomic, :ok} = :mnesia.clear_table(table())
       :ok
     end
 
@@ -58,7 +62,7 @@ if Code.ensure_loaded?(:mnesia) do
     @spec get(User.id()) :: {:ok, User.t()} | {:error, :user_not_found}
     def get(user_id) do
       :mnesia.activity(:sync_transaction, fn ->
-        case :mnesia.read(@table_name, user_id) do
+        case :mnesia.read(table(), user_id) do
           [{_tag, _id, user}] ->
             {:ok, user}
 
@@ -75,7 +79,7 @@ if Code.ensure_loaded?(:mnesia) do
     @spec create(map()) :: User.t()
     def create(payload) do
       user = User.to_struct(payload)
-      record = {@record_name, user.id, user}
+      record = {record_name(), user.id, user}
       writer = fn -> :mnesia.write(record) end
       :ok = :mnesia.activity(:sync_transaction, writer)
       user
@@ -87,9 +91,9 @@ if Code.ensure_loaded?(:mnesia) do
       :mnesia.activity(:sync_transaction, fn ->
         # https://erlang.org/pipermail/erlang-questions/2005-August/016382.html
         # Substantially reduces locking overhead for large amount of records.
-        :mnesia.write_lock_table(@table_name)
+        :mnesia.write_lock_table(table())
 
-        Enum.each(users, &:mnesia.write({@record_name, &1.id, User.to_struct(&1)}))
+        Enum.each(users, &:mnesia.write({record_name(), &1.id, User.to_struct(&1)}))
       end)
 
       :ok
@@ -105,7 +109,7 @@ if Code.ensure_loaded?(:mnesia) do
         |> Snowflake.cast!()
 
       :mnesia.activity(:sync_transaction, fn ->
-        case :mnesia.read(@table_name, user_id, :write) do
+        case :mnesia.read(table(), user_id, :write) do
           [{_tag, _id, old_user} = entry] ->
             new_user = User.to_struct(payload, old_user)
 
@@ -123,9 +127,9 @@ if Code.ensure_loaded?(:mnesia) do
     @spec delete(User.id()) :: User.t() | :noop
     def delete(user_id) do
       :mnesia.activity(:sync_transaction, fn ->
-        case :mnesia.read(@table_name, user_id, :write) do
+        case :mnesia.read(table(), user_id, :write) do
           [{_tag, _user_id, user}] ->
-            :mnesia.delete(@table_name, user_id, :write)
+            :mnesia.delete(table(), user_id, :write)
             user
 
           _ ->

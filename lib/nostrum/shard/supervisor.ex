@@ -130,7 +130,7 @@ defmodule Nostrum.Shard.Supervisor do
 
   @doc false
   def fetch_shard_sup_pid do
-    Util.get_child_pid(Bot.get_bot_pid(), __MODULE__)
+    Util.get_child_pid(Bot.fetch_bot_pid(), __MODULE__)
   end
 
   @doc false
