@@ -3,6 +3,7 @@ defmodule Nostrum.Shard.Connector do
 
   use GenServer
 
+  alias Nostrum.Bot
   alias Nostrum.Util
 
   require Logger
@@ -12,7 +13,7 @@ defmodule Nostrum.Shard.Connector do
   @wait_time 5500
 
   def start_link([]) do
-    GenServer.start_link(__MODULE__, %{last_connect: 0}, name: __MODULE__)
+    GenServer.start_link(__MODULE__, %{last_connect: 0})
   end
 
   def init(args) do
@@ -20,12 +21,15 @@ defmodule Nostrum.Shard.Connector do
   end
 
   def block_until_connect do
-    GenServer.call(__MODULE__, {:blocking_connect}, :infinity)
+    Bot.get_bot_pid()
+    |> Util.get_child_pid(Nostrum.Shard.Supervisor)
+    |> Util.get_child_pid(__MODULE__)
+    |> GenServer.call(:blocking_connect, :infinity)
   end
 
-  def handle_call({:blocking_connect}, _from, %{last_connect: 0} = state), do: wait(0, state)
+  def handle_call(:blocking_connect, _from, %{last_connect: 0} = state), do: wait(0, state)
 
-  def handle_call({:blocking_connect}, _from, state) do
+  def handle_call(:blocking_connect, _from, state) do
     time_to_wait = Util.now() - state.last_connect
     wait(time_to_wait, state)
   end

@@ -50,7 +50,7 @@ defmodule Nostrum.Shard.Session do
   # timer. When it expires, send out requests from the queue again. The same
   # logic is used in the ratelimiter already.
 
-  alias Nostrum.{Constants, Util}
+  alias Nostrum.{Bot, Constants, Util}
   alias Nostrum.Shard.{Connector, Event, Payload}
   alias Nostrum.Struct.WSState
 
@@ -156,6 +156,7 @@ defmodule Nostrum.Shard.Session do
         } = opts
       ) do
     Logger.metadata(shard: shard_num)
+    Bot.set_bot_options(bot_options)
 
     state = %WSState{
       conn_pid: self(),

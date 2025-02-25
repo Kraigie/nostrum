@@ -165,7 +165,6 @@ defmodule Nostrum.Bot do
       Nostrum.ConsumerGroup,
       Nostrum.Api.RatelimiterGroup,
       {Nostrum.Api.Ratelimiter, bot_options},
-      Nostrum.Shard.Connector,
       Nostrum.Cache.CacheSupervisor,
       {Nostrum.Shard.Supervisor, bot_options},
       {Nostrum.Voice.Supervisor, bot_options}

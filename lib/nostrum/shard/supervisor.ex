@@ -60,6 +60,7 @@ defmodule Nostrum.Shard.Supervisor do
   alias Nostrum.Bot
   alias Nostrum.Error.CacheError
   alias Nostrum.Shard
+  alias Nostrum.Shard.Connector
   alias Nostrum.Shard.Session
   alias Nostrum.Store.GuildShardMapping
   alias Nostrum.Util
@@ -123,7 +124,8 @@ defmodule Nostrum.Shard.Supervisor do
 
   @doc false
   def init(shard_children) do
-    Supervisor.init(shard_children, strategy: :one_for_one, max_restarts: 3, max_seconds: 60)
+    children = [Connector | shard_children]
+    Supervisor.init(children, strategy: :one_for_one, max_restarts: 3, max_seconds: 60)
   end
 
   @doc false
