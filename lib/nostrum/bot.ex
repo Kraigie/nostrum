@@ -206,8 +206,12 @@ defmodule Nostrum.Bot do
     with nil <- get_bot_pid_from_process(),
          nil <- get_bot_pid_from_options(),
          nil <- get_bot_pid_from_all() do
-      IO.puts("Could not find PID!!!")
-      nil
+      raise """
+      Unable to find the bot PID from the calling process's context. If you are calling
+      a bot function outside of a consumer responding to a gateway event or if you have
+      more than one bot running, consider invoking `use #{__MODULE__}, name: {name}` in
+      the module where it is being called from.
+      """
     else
       pid -> pid
     end

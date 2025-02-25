@@ -148,6 +148,7 @@ defmodule Nostrum.Voice do
     update_voice(fetch_voice_pid(), guild_id, args)
   end
 
+  @doc false
   def update_voice(pid, guild_id, args) do
     GenServer.call(pid, {:update, guild_id, args})
   end
@@ -161,6 +162,7 @@ defmodule Nostrum.Voice do
     get_voice(fetch_voice_pid(), guild_id)
   end
 
+  @doc false
   def get_voice(pid, guild_id) do
     GenServer.call(pid, {:get, guild_id})
   end
@@ -176,6 +178,7 @@ defmodule Nostrum.Voice do
     remove_voice(fetch_voice_pid(), guild_id, pre_cleanup_args)
   end
 
+  @doc false
   def remove_voice(pid, guild_id, pre_cleanup_args) do
     GenServer.cast(pid, {:remove, guild_id, pre_cleanup_args})
   end

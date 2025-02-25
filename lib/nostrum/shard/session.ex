@@ -140,77 +140,35 @@ defmodule Nostrum.Shard.Session do
   end
 
   # State machine API
-
-  def start_link({:connect, [_gateway, _shard_num, _total, _bot_options]} = opts, statem_opts) do
-    :gen_statem.start_link(__MODULE__, opts, statem_opts)
-  end
-
   def start_link(
-        {:reconnect,
-         %{
-           shard_num: _shard_num,
-           total_shards: _total_shards,
-           gateway: _gateway,
-           resume_gateway: _resume_gateway,
-           seq: _seq,
-           session: _session
-         }} =
-          opts,
+        %{shard_num: _, total_shards: _, gateway: _, bot_options: _} = shard_opts,
         statem_opts
       ) do
-    :gen_statem.start_link(__MODULE__, opts, statem_opts)
-  end
-
-  def start_link([_gateway, _shard_num, _total, _bot_options] = shard_opts, statem_opts) do
     :gen_statem.start_link(__MODULE__, shard_opts, statem_opts)
   end
 
-  def init({:connect, [gateway, shard_num, total, bot_options]}) do
-    Logger.metadata(shard: shard_num)
-
-    state = %WSState{
-      conn_pid: self(),
-      gateway: gateway,
-      shard_num: shard_num,
-      total_shards: total,
-      bot_options: bot_options
-    }
-
-    connect = {:next_event, :internal, :connect}
-    {:ok, :disconnected, state, connect}
-  end
-
   def init(
-        {:reconnect,
-         %{
-           gateway: gateway,
-           resume_gateway: resume_gateway,
-           seq: seq,
-           session: session,
-           shard_num: shard_num,
-           total_shards: total_shards,
-           bot_options: bot_options
-         }}
+        %{
+          shard_num: shard_num,
+          total_shards: total_shards,
+          gateway: gateway,
+          bot_options: bot_options
+        } = opts
       ) do
     Logger.metadata(shard: shard_num)
 
     state = %WSState{
       conn_pid: self(),
-      gateway: gateway,
-      resume_gateway: resume_gateway,
-      seq: seq,
-      session: session,
       shard_num: shard_num,
       total_shards: total_shards,
-      bot_options: bot_options
+      gateway: gateway,
+      bot_options: bot_options,
+      resume_gateway: opts[:resume_gateway],
+      session: opts[:session],
+      seq: opts[:seq]
     }
 
-    connect = {:next_event, :internal, :connect}
-    {:ok, :disconnected, state, connect}
-  end
-
-  def init([_gateway, _shard_num, _total, _bot_options] = args) do
-    init({:connect, args})
+    {:ok, :disconnected, state, {:next_event, :internal, :connect}}
   end
 
   def callback_mode, do: [:state_functions, :state_enter]

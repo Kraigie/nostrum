@@ -6,6 +6,8 @@ defmodule Nostrum.Util do
   @gateway_url_key :nostrum_gateway_url
 
   alias Nostrum.{Api, Constants, Snowflake}
+  alias Nostrum.Bot
+  alias Nostrum.Shard
   alias Nostrum.Shard.Session
   alias Nostrum.Struct.WSState
 
@@ -287,22 +289,30 @@ defmodule Nostrum.Util do
   """
   @spec get_all_shard_latencies :: %{WSState.shard_num() => non_neg_integer | nil}
   def get_all_shard_latencies do
-    Nostrum.Shard.Supervisor
-    |> Supervisor.which_children()
-    |> Enum.filter(fn {_id, _pid, _type, [modules]} -> modules == Nostrum.Shard end)
-    |> Enum.map(fn {_id, pid, _type, _modules} -> Supervisor.which_children(pid) end)
-    |> List.flatten()
-    |> Enum.map(fn {_id, pid, _type, _modules} -> Session.get_ws_state(pid) end)
+    Bot.get_bot_pid()
+    |> get_child_pid(Nostrum.Shard.Supervisor)
+    |> get_children_pids(Shard)
+    |> Enum.map(&get_child_pid(&1, Session))
+    |> Enum.map(&Session.get_ws_state/1)
     |> Enum.reduce(%{}, fn {_, s}, m -> Map.put(m, s.shard_num, get_shard_latency(s)) end)
   end
 
   @doc false
-  @spec get_child_pid(Supervisor.supervisor(), atom()) :: pid()
-  def get_child_pid(supervisor, child) do
+  @spec get_child_pid(Supervisor.supervisor(), term()) :: pid()
+  def get_child_pid(supervisor, child_id) do
     supervisor
     |> Supervisor.which_children()
-    |> Enum.find(fn {id, _pid, _type, mods} -> child in [id | mods] end)
+    |> Enum.find(fn {id, _pid, _type, mods} -> child_id in [id | mods] end)
     |> elem(1)
+  end
+
+  @doc false
+  @spec get_children_pids(Supervisor.supervisor(), term()) :: [pid()]
+  def get_children_pids(supervisor, child_module) do
+    supervisor
+    |> Supervisor.which_children()
+    |> Enum.filter(fn {id, _pid, _type, mods} -> child_module in [id | mods] end)
+    |> Enum.map(fn {_id, pid, _type, _mods} -> pid end)
   end
 
   @doc """
