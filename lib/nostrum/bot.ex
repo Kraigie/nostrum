@@ -171,10 +171,10 @@ defmodule Nostrum.Bot do
     name = {:via, Registry, {Nostrum.Bot.Registry, name, bot_options}}
 
     children = [
-      Nostrum.Store.Supervisor,
       Nostrum.ConsumerGroup,
       Nostrum.Api.RatelimiterGroup,
       {Nostrum.Api.Ratelimiter, bot_options},
+      {Nostrum.Store.Supervisor, bot_options},
       {Nostrum.Cache.Supervisor, bot_options},
       {Nostrum.Shard.Supervisor, bot_options},
       {Nostrum.Voice.Supervisor, bot_options}
