@@ -478,7 +478,7 @@ defmodule Nostrum.Struct.Embed do
   """
   def from(%module{} = struct) do
     # checks if the struct implements the behaviour
-    unless Enum.member?(module.module_info(:attributes), {:behaviour, [__MODULE__]}) do
+    if not Enum.member?(module.module_info(:attributes), {:behaviour, [__MODULE__]}) do
       raise "#{module} does not implement the behaviour #{__MODULE__}"
     end
 

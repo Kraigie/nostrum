@@ -89,7 +89,7 @@ defmodule Nostrum.Application do
   defp check_otp_version do
     _module_info = :pg.module_info()
 
-    unless function_exported?(:pg, :monitor, 2) do
+    if not function_exported?(:pg, :monitor, 2) do
       Logger.critical("""
       Your Erlang/OTP version needs to be 25.1 or newer to use Nostrum 0.9 and newer.
       Current major version: #{System.otp_release()}

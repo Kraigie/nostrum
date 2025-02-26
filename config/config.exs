@@ -1,6 +1,6 @@
 import Config
 
-config :logger, :console, metadata: [:shard, :guild, :channel]
+config :logger, :console, metadata: [:shard, :guild, :channel, :bot]
 
 if File.exists?("config/secret.exs"), do: import_config("secret.exs")
 

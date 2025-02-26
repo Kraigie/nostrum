@@ -155,8 +155,8 @@ defmodule Nostrum.Shard.Session do
           bot_options: bot_options
         } = opts
       ) do
-    Logger.metadata(shard: shard_num)
-    Bot.set_bot_options(bot_options)
+    Logger.metadata(shard: shard_num, bot: bot_options.name)
+    Bot.set_bot_name(bot_options.name)
 
     state = %WSState{
       conn_pid: self(),

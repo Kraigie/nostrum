@@ -59,14 +59,24 @@ defmodule Nostrum.Bot do
     def handle_event(_), do: :ok
   ```
 
-  ## Limitations
+  ## Multiple Bots
 
-  This module was introduced in version `0.11.0` to provide a first step
-  towards migrating away from nostrum starting as an application. However, at
-  present, you are not able to start multiple bots with this at the same time
-  due to global names used internally. However, as we migrate away from the
-  application-based deployment, further internal changes should not require any
-  update from you.
+  Nostrum allows you to start multiple bots under your supervision tree. If you are
+  calling a function that interacts with an API specific to a bot - Rest, Cache, Voice, etc. -
+  nostrum needs to determine which bot to call it for. It does this with a bot `Registry`
+  and process dictionaries so that you don't have to pass an additional argument to every
+  function.
+
+  Inside the `handle_event/1` callback in your consumer, the calling process already
+  has the context of the bot that generated the event for any API calls that follow.
+
+  If you have a single bot running and need to call an API asynchronously, i.e. *not* as a response
+  to a gateway event in your consumer, nostrum will be able to automatically determine the bot.
+
+  However, if you have multiple bots running *and* you need to make unprompted bot calls, you
+  will need to assist nostrum by setting the process's context:
+  - `use Nostrum.Bot, name: MyBot` at the top of the module where the API-calling functions are defined, or
+  - `Nostrum.Bot.set_bot_name(MyBot)` dynamically before each API call
   """
   # TODO: document dynamic starting and multiple shards
   # TODO(v0.12.0 and above): Remove migration guide
@@ -94,6 +104,8 @@ defmodule Nostrum.Bot do
 
   ## Optional fields
 
+  - `:name`: Unique name for your bot. Defaults to the integer bot id encoded into the token.
+
   - `:shards`: Shards that should be started with this bot. Possible values:
 
     - `:auto` uses the suggested amount of shards as provided by Discord. This
@@ -110,8 +122,6 @@ defmodule Nostrum.Bot do
     should contain the total amount of shards that your bot is expected to
     have. Useful for splitting a single bot across multiple nodes, see the
     [multi-node documentation](./multi_node.html) for further information.
-
-  - `:name`: Unique name for your bot. Defaults to the bot_id encoded into the token.
   """
   @type bot_options :: %{
           required(:consumer) => module(),
@@ -197,14 +207,6 @@ defmodule Nostrum.Bot do
     }
   end
 
-  defmacro __using__(opts) do
-    bot_name = opts[:name] || raise "Must define name when invoking `use #{__MODULE__}`"
-
-    quote do
-      defp name, do: unquote(bot_name)
-    end
-  end
-
   @bot_fetch_failure_message """
   Unable to find the bot process from the calling process's context. If you are calling
   a bot function outside of a consumer responding to a gateway event or if you have
@@ -212,6 +214,9 @@ defmodule Nostrum.Bot do
   the module where it is being called from.
   """
 
+  @doc """
+  Returns all running bots
+  """
   @spec fetch_all_bots() :: [%{name: name(), pid: pid(), bot_options: bot_options()}]
   def fetch_all_bots do
     Registry.select(Nostrum.Bot.Registry, [
@@ -219,6 +224,7 @@ defmodule Nostrum.Bot do
     ])
   end
 
+  @doc false
   @spec fetch_bot_pid(name()) :: pid() | nil
   def fetch_bot_pid(name) do
     case Registry.lookup(Nostrum.Bot.Registry, name) do
@@ -227,11 +233,11 @@ defmodule Nostrum.Bot do
     end
   end
 
+  @doc false
   @spec fetch_bot_pid() :: pid()
   def fetch_bot_pid do
     with nil <- get_bot_pid(),
          nil <- fetch_bot_from_name(),
-         nil <- fetch_bot_from_options(),
          nil <- fetch_bot_from_all() do
       raise RuntimeError, @bot_fetch_failure_message
     else
@@ -244,18 +250,14 @@ defmodule Nostrum.Bot do
     end
   end
 
+  @doc false
   @spec fetch_bot_name() :: name()
   def fetch_bot_name do
     with nil <- get_bot_name(),
-         nil <- get_bot_options(),
          nil <- fetch_bot_from_name(),
-         nil <- fetch_bot_from_options(),
          nil <- fetch_bot_from_all() do
       raise RuntimeError, @bot_fetch_failure_message
     else
-      %{name: name, consumer: _} = _bot_options ->
-        name
-
       %{name: name, pid: _} = bot ->
         set_bot(bot)
         name
@@ -274,15 +276,6 @@ defmodule Nostrum.Bot do
     end
   end
 
-  defp fetch_bot_from_options do
-    with %{name: name} <- get_bot_options(),
-         [{pid, bot_options}] <- Registry.lookup(Nostrum.Bot.Registry, name) do
-      %{pid: pid, bot_options: bot_options, name: name}
-    else
-      _ -> nil
-    end
-  end
-
   defp fetch_bot_from_all do
     case fetch_all_bots() do
       [%{pid: _, bot_options: _, name: _} = bot] -> bot
@@ -290,17 +283,44 @@ defmodule Nostrum.Bot do
     end
   end
 
-  def get_bot_options, do: Process.get(:nostrum_bot_options)
+  @doc false
   def get_bot_name, do: Process.get(:nostrum_bot_name)
+  @doc false
   def get_bot_pid, do: Process.get(:nostrum_bot_pid)
 
-  def set_bot_options(options), do: Process.put(:nostrum_bot_options, options)
+  @doc """
+  Manually set the bot name in the calling process's context
+  """
+  @spec set_bot_name(name()) :: name() | nil
   def set_bot_name(name), do: Process.put(:nostrum_bot_name, name)
+  @doc false
   def set_bot_pid(pid), do: Process.put(:nostrum_bot_pid, pid)
 
-  defp set_bot(%{pid: pid, bot_options: bot_options, name: name}) do
+  defp set_bot(%{pid: pid, bot_options: _bot_options, name: name}) do
     set_bot_pid(pid)
-    set_bot_options(bot_options)
     set_bot_name(name)
+  end
+
+  defmacro __using__(opts) do
+    bot_name = opts[:name] || raise "Must define name when invoking `use #{__MODULE__}`"
+
+    quote do
+      import Kernel, except: [def: 2]
+      import Nostrum.Bot.Macros
+      defp __name__, do: unquote(bot_name)
+    end
+  end
+
+  defmodule Macros do
+    import Kernel, except: [def: 2]
+
+    defmacro def(call, do: body) do
+      quote do
+        Kernel.def unquote(call) do
+          Nostrum.Bot.get_bot_name() || Nostrum.Bot.set_bot_name(__name__())
+          unquote(body)
+        end
+      end
+    end
   end
 end

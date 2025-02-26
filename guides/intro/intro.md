@@ -195,6 +195,7 @@ events. Normal messages include Discord-requested shard reconnections and the
 
 The following metadata fields through logger:
 
+ - `bot` - Name of the bot that received the event
  - `shard` - Id of the shard on which the event occurred
  - `guild` - Name of the guild on which the voice connection event occurred
  - `channel` - Name of the channel on which the voice connection event occurred
@@ -202,7 +203,7 @@ The following metadata fields through logger:
 To enable this metadata, logger can be configured as such:
 ```elixir
 config :logger, :console,
-  metadata: [:shard, :guild, :channel]
+  metadata: [:bot, :shard, :guild, :channel]
 ```  
 
 For more information on how this works, and how to change the logging

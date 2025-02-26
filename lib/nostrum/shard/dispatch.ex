@@ -99,7 +99,7 @@ defmodule Nostrum.Shard.Dispatch do
     {:ok, _pid} =
       Task.start(fn ->
         try do
-          Bot.set_bot_options(bot_options)
+          Bot.set_bot_name(bot_options.name)
           bot_options.consumer.handle_event(event)
         rescue
           e ->

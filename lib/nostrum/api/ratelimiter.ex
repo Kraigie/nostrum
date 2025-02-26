@@ -1074,12 +1074,11 @@ defmodule Nostrum.Api.Ratelimiter do
   defp parse_headers({:ok, {_status, headers, _body}}) do
     limit_scope = header_value(headers, "x-ratelimit-scope")
     remaining = header_value(headers, "x-ratelimit-remaining")
-    remaining = unless is_nil(remaining), do: String.to_integer(remaining)
+    remaining = if remaining, do: String.to_integer(remaining)
 
     reset_after = header_value(headers, "x-ratelimit-reset-after")
 
-    reset_after =
-      unless is_nil(reset_after), do: :erlang.trunc(String.to_float(reset_after) * 1000)
+    reset_after = if reset_after, do: :erlang.trunc(String.to_float(reset_after) * 1000)
 
     cond do
       is_nil(remaining) and is_nil(reset_after) ->

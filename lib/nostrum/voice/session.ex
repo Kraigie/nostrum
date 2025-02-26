@@ -37,10 +37,14 @@ defmodule Nostrum.Voice.Session do
       ) do
     case GuildCache.get(guild_id) do
       {:ok, %{name: guild_name, channels: %{^channel_id => %{name: channel_name}}}} ->
-        Logger.metadata(guild: ~s|"#{guild_name}"|, channel: ~s|"#{channel_name}"|)
+        Logger.metadata(
+          guild: ~s|"#{guild_name}"|,
+          channel: ~s|"#{channel_name}"|,
+          bot: bot_options.name
+        )
 
       _error ->
-        Logger.metadata(guild: guild_id, channel: channel_id)
+        Logger.metadata(guild: guild_id, channel: channel_id, bot: bot_options.name)
     end
 
     [host, port] = String.split(voice.gateway, ":")
