@@ -312,12 +312,14 @@ defmodule Nostrum.Bot do
   end
 
   defmodule Macros do
+    @moduledoc false
     import Kernel, except: [def: 2]
+    alias Nostrum.Bot
 
     defmacro def(call, do: body) do
       quote do
         Kernel.def unquote(call) do
-          Nostrum.Bot.get_bot_name() || Nostrum.Bot.set_bot_name(__name__())
+          Bot.get_bot_name() || Bot.set_bot_name(__name__())
           unquote(body)
         end
       end

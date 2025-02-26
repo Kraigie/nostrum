@@ -14,8 +14,7 @@ defmodule DummySupervisor do
   def init(_args) do
     bot_options = %{
       consumer: DummyConsumer,
-      name: DumBot,
-      intents: :nonprivileged,
+      intents: [:direct_messages, :guild_messages, :message_content],
       wrapped_token: fn -> System.fetch_env!("BOT_TOKEN") end
     }
 
