@@ -150,10 +150,7 @@ defmodule Nostrum.Voice.Session do
         <<_::16, seq::integer-16, time::integer-32, ssrc::integer-32>> = header
         opus = Opus.strip_rtp_ext(payload)
         incoming_packet = Payload.voice_incoming_packet({{seq, time, ssrc}, opus})
-
-        {incoming_packet, state}
-        |> Dispatch.handle()
-        |> ConsumerGroup.dispatch()
+        :ok = dispatch(incoming_packet, state)
     end
 
     {:noreply, state}
@@ -188,9 +185,7 @@ defmodule Nostrum.Voice.Session do
     voice = Voice.get_voice(state.voice_pid, state.guild_id)
     voice_ready = Payload.voice_ready_payload(voice)
 
-    {voice_ready, state}
-    |> Dispatch.handle()
-    |> ConsumerGroup.dispatch()
+    :ok = dispatch(voice_ready, state)
 
     {:noreply, state}
   end
@@ -200,9 +195,7 @@ defmodule Nostrum.Voice.Session do
     speaking_update = Payload.speaking_update_payload(voice, timed_out)
     payload = Payload.speaking_payload(voice)
 
-    {speaking_update, state}
-    |> Dispatch.handle()
-    |> ConsumerGroup.dispatch()
+    :ok = dispatch(speaking_update, state)
 
     :ok = :gun.ws_send(state.conn, state.stream, {:text, payload})
     {:noreply, state}
@@ -214,6 +207,12 @@ defmodule Nostrum.Voice.Session do
 
   def handle_call(:ws_state, _from, state) do
     {:reply, state, state}
+  end
+
+  defp dispatch(payload, %VoiceWSState{bot_options: %{name: bot_name}} = state) do
+    {payload, state}
+    |> Dispatch.handle()
+    |> ConsumerGroup.dispatch(bot_name)
   end
 
   def terminate({:shutdown, :restart}, state) do

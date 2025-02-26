@@ -19,7 +19,7 @@ defmodule Nostrum.Shard.Event do
 
     {payload, state}
     |> Dispatch.handle()
-    |> ConsumerGroup.dispatch()
+    |> ConsumerGroup.dispatch(state.bot_options.name)
 
     if payload.t == :READY do
       Logger.info("READY")
