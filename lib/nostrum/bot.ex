@@ -172,7 +172,7 @@ defmodule Nostrum.Bot do
 
     children = [
       Nostrum.ConsumerGroup,
-      Nostrum.Api.RatelimiterGroup,
+      {Nostrum.Api.RatelimiterGroup, bot_options},
       {Nostrum.Api.Ratelimiter, bot_options},
       {Nostrum.Store.Supervisor, bot_options},
       {Nostrum.Cache.Supervisor, bot_options},
@@ -233,7 +233,7 @@ defmodule Nostrum.Bot do
          nil <- fetch_bot_from_name(),
          nil <- fetch_bot_from_options(),
          nil <- fetch_bot_from_all() do
-      raise @bot_fetch_failure_message
+      raise RuntimeError, @bot_fetch_failure_message
     else
       pid when is_pid(pid) ->
         pid
@@ -251,7 +251,7 @@ defmodule Nostrum.Bot do
          nil <- fetch_bot_from_name(),
          nil <- fetch_bot_from_options(),
          nil <- fetch_bot_from_all() do
-      raise @bot_fetch_failure_message
+      raise RuntimeError, @bot_fetch_failure_message
     else
       %{name: name, consumer: _} = _bot_options ->
         name

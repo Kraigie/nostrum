@@ -7,6 +7,8 @@ defmodule Nostrum.Application do
 
   require Logger
 
+  # @mix_env Mix.env()
+
   # Used for starting nostrum when running as an included application.
   def child_spec(_opts) do
     %{
@@ -39,6 +41,9 @@ defmodule Nostrum.Application do
     children = [
       {Registry, keys: :unique, name: Nostrum.Bot.Registry}
     ]
+    # ++ cond do
+    #   @mix_env == :test
+    # end
 
     if Application.get_env(:nostrum, :dev),
       do: Supervisor.start_link(children ++ [DummySupervisor], strategy: :one_for_one),

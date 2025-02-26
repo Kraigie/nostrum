@@ -49,7 +49,7 @@ defmodule Nostrum.Shard.Supervisor do
           shard_num: shard_num(),
           total_shards: total_shards(),
           gateway: String.t(),
-          bot_options: Bot.bot_options(),
+          bot_options: Nostrum.Bot.bot_options(),
           resume_gateway: String.t() | nil,
           session: String.t(),
           seq: pos_integer()

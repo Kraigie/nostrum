@@ -49,12 +49,12 @@ defmodule Nostrum.Voice do
   alias Nostrum.Struct.Guild
   alias Nostrum.Struct.VoiceState
   alias Nostrum.Struct.VoiceWSState
+  alias Nostrum.Util
   alias Nostrum.Voice.Audio
   alias Nostrum.Voice.Opus
   alias Nostrum.Voice.Ports
   alias Nostrum.Voice.Session
   alias Nostrum.Voice.Supervisor, as: VoiceSupervisor
-  alias Nostrum.Util
 
   require Logger
 
