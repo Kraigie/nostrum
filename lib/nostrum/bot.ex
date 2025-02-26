@@ -71,12 +71,15 @@ defmodule Nostrum.Bot do
   has the context of the bot that generated the event for any API calls that follow.
 
   If you have a single bot running and need to call an API asynchronously, i.e. *not* as a response
-  to a gateway event in your consumer, nostrum will be able to automatically determine the bot.
+  to a gateway event in your consumer, nostrum will automatically determine the bot.
 
   However, if you have multiple bots running *and* you need to make unprompted bot calls, you
   will need to assist nostrum by setting the process's context:
   - `use Nostrum.Bot, name: MyBot` at the top of the module where the API-calling functions are defined, or
   - `Nostrum.Bot.set_bot_name(MyBot)` dynamically before each API call
+
+  You are free to call API functions from newly-spawned tasks as nostrum will search the process dictionaries
+  of a few generations of calling processes to find the bot context.
   """
   # TODO: document dynamic starting and multiple shards
   # TODO(v0.12.0 and above): Remove migration guide
@@ -238,7 +241,8 @@ defmodule Nostrum.Bot do
   def fetch_bot_pid do
     with nil <- get_bot_pid(),
          nil <- fetch_bot_from_name(),
-         nil <- fetch_bot_from_all() do
+         nil <- fetch_bot_from_all(),
+         nil <- fetch_bot_from_callers() do
       raise RuntimeError, @bot_fetch_failure_message
     else
       pid when is_pid(pid) ->
@@ -254,8 +258,8 @@ defmodule Nostrum.Bot do
   @spec fetch_bot_name() :: name()
   def fetch_bot_name do
     with nil <- get_bot_name(),
-         nil <- fetch_bot_from_name(),
-         nil <- fetch_bot_from_all() do
+         nil <- fetch_bot_from_all(),
+         nil <- fetch_bot_from_callers() do
       raise RuntimeError, @bot_fetch_failure_message
     else
       %{name: name, pid: _} = bot ->
@@ -280,6 +284,22 @@ defmodule Nostrum.Bot do
     case fetch_all_bots() do
       [%{pid: _, bot_options: _, name: _} = bot] -> bot
       _zero_or_multiple_bots -> nil
+    end
+  end
+
+  # Maximum search depth for calling process ancestry
+  @caller_generations 3
+
+  defp fetch_bot_from_callers do
+    with [_cal | _lers] = callers <- Process.get(:"$callers"),
+         name when not is_nil(name) <-
+           callers
+           |> Enum.take(@caller_generations)
+           |> Enum.find_value(&Process.info(&1)[:dictionary][:nostrum_bot_name]),
+         [{pid, bot_options}] <- Registry.lookup(Nostrum.Bot.Registry, name) do
+      %{pid: pid, bot_options: bot_options, name: name}
+    else
+      _ -> nil
     end
   end
 

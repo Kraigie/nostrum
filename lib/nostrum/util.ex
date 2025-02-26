@@ -289,7 +289,7 @@ defmodule Nostrum.Util do
   """
   @spec get_all_shard_latencies :: %{WSState.shard_num() => non_neg_integer | nil}
   def get_all_shard_latencies do
-    Bot.get_bot_pid()
+    Bot.fetch_bot_pid()
     |> get_child_pid(Nostrum.Shard.Supervisor)
     |> get_children_pids(Shard)
     |> Enum.map(&get_child_pid(&1, Session))

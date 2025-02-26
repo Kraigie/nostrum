@@ -86,8 +86,10 @@ defmodule Nostrum.Shard.Supervisor do
     range
   end
 
-  def start_link(bot_options) do
+  def start_link(%{name: bot_name} = bot_options) do
+    prev_value = Bot.set_bot_name(bot_name)
     {_url, gateway_shard_count} = Util.gateway()
+    _ = Bot.set_bot_name(prev_value)
 
     shard_children =
       case Map.get(bot_options, :shards, :auto) do

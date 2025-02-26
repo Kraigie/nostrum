@@ -118,7 +118,8 @@ defmodule Nostrum.Voice do
   end
 
   @doc false
-  def init(bot_options) do
+  def init(%{name: name} = bot_options) do
+    _ = Bot.set_bot_name(name)
     {:ok, %{:bot_options => bot_options}}
   end
 
