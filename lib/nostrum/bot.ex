@@ -74,8 +74,9 @@ defmodule Nostrum.Bot do
   to a gateway event in your consumer, nostrum will automatically determine the bot.
 
   However, if you have multiple bots running *and* you need to make unprompted bot calls, you
-  will need to assist nostrum by setting the process's context:
-  - `use Nostrum.Bot, name: MyBot` at the top of the module where the API-calling functions are defined, or
+  will need to assist nostrum by setting the process's context in one of three ways:
+  - `Nostrum.Bot.with_bot(MyBot, fn -> ... end)` to wrap the API function calls
+  - `use Nostrum.Bot, name: MyBot` at the top of the module where the API-calling functions are defined
   - `Nostrum.Bot.set_bot_name(MyBot)` dynamically before each API call
 
   You are free to call API functions from newly-spawned tasks as nostrum will search the process dictionaries
@@ -134,8 +135,7 @@ defmodule Nostrum.Bot do
           optional(:shards) =>
             :auto
             | :manual
-            | (num_shards ::
-                 pos_integer())
+            | (num_shards :: pos_integer())
             | {lowest :: pos_integer(), highest :: pos_integer(), total :: pos_integer()}
         }
 
@@ -316,9 +316,47 @@ defmodule Nostrum.Bot do
   @doc false
   def set_bot_pid(pid), do: Process.put(:nostrum_bot_pid, pid)
 
-  defp set_bot(%{pid: pid, bot_options: _bot_options, name: name}) do
-    set_bot_pid(pid)
-    set_bot_name(name)
+  defp set_bot(%{pid: pid, bot_options: _bot_options, name: name}), do: set_bot(pid, name)
+  defp set_bot(pid, name), do: {set_bot_pid(pid), set_bot_name(name)}
+
+  @doc """
+  Call a function with the context of the provided bot
+
+  ```elixir
+  Nostrum.Bot.with_bot(ReticentBot, fn ->
+    Nostrum.Api.Message.create(channel_id, "Hi...")
+  end)
+
+  Nostrum.Bot.with_bot(SillyGoofyBot, fn ->
+    Nostrum.Api.Message.create(channel_id, "Heyyy :)")
+  end, :keep)
+
+  # Context is still set to SillyGoofyBot
+  Nostrum.Api.Message.create(channel_id, "Me again :)")
+  ```
+
+  ## Parameters
+
+  - `name` - Name of the bot to run the function as
+  - `function` - Zero arity function to execute
+  - `next` - What to do with the process's bot context after the function
+    - `:reset` - Reset the values to what they were before (default)
+    - `:clear` - Set the values to `nil`
+    - `:keep` - Keep the provided bot's context in this process's dictionary
+  """
+  @spec with_bot(name(), (-> any()), :reset | :clear | :keep) :: any()
+  def with_bot(name, function, next \\ :reset) do
+    {prev_pid, prev_name} = set_bot(fetch_bot_pid(name), name)
+
+    result = function.()
+
+    case next do
+      :reset -> set_bot(prev_pid, prev_name)
+      :clear -> set_bot(nil, nil)
+      :keep -> :noop
+    end
+
+    result
   end
 
   defmacro __using__(opts) do

@@ -40,8 +40,10 @@ if Code.ensure_loaded?(:mnesia) do
       }
     ```
 
-    You can also change the base table name used by the cache by setting the
+    You can override the table name used by the cache by setting the
     `table_name` field in the configuration for the `messages` cache.
+    **Only do this if you are running a single bot as the table name
+    will be used globally.**
     """
     @moduledoc since: "0.10.0"
 
@@ -49,7 +51,8 @@ if Code.ensure_loaded?(:mnesia) do
 
     # allow us to override the table name for testing
     # without accidentally overwriting the production table
-    @base_table_name @config[:table_name] || :nostrum_messages
+    @override_table_name @config[:table_name]
+    @base_table_name :nostrum_messages
 
     @maximum_size @config[:size_limit] || 10_000
     @eviction_count @config[:eviction_count] || 100
@@ -75,7 +78,7 @@ if Code.ensure_loaded?(:mnesia) do
     @impl Supervisor
     @doc "Set up the cache's Mnesia table."
     def init(opts) do
-      table_name = :"#{@base_table_name}_#{Keyword.fetch!(opts, :name)}"
+      table_name = @override_table_name || :"#{@base_table_name}_#{Keyword.fetch!(opts, :name)}"
       table_options = table_create_attributes(table_name)
 
       case :mnesia.create_table(table_name, table_options) do
@@ -88,7 +91,7 @@ if Code.ensure_loaded?(:mnesia) do
 
     @doc "Retrieve the Mnesia table name used for the cache."
     @spec table :: atom()
-    def table, do: :"#{@base_table_name}_#{Bot.fetch_bot_name()}"
+    def table, do: @override_table_name || :"#{@base_table_name}_#{Bot.fetch_bot_name()}"
 
     defp record_name, do: table()
 
