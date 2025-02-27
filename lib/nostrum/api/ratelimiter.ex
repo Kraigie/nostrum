@@ -399,7 +399,7 @@ defmodule Nostrum.Api.Ratelimiter do
   end
 
   def connecting(:info, {:gun_up, conn_pid, _protocol}, %{conn: conn_pid} = data) do
-    TelemetryShim.execute(~w[nostrum ratelimiter connected]a, %{}, %{})
+    TelemetryShim.execute(~w[nostrum ratelimiter connected]a, %{}, %{bot: data.config.name})
     {:next_state, :connected, data}
   end
 
@@ -411,8 +411,8 @@ defmodule Nostrum.Api.Ratelimiter do
     {:keep_state_and_data, :postpone}
   end
 
-  def connecting(:state_timeout, :connect_timeout, _data) do
-    TelemetryShim.execute(~w[nostrum ratelimiter connect_timeout]a, %{})
+  def connecting(:state_timeout, :connect_timeout, data) do
+    TelemetryShim.execute(~w[nostrum ratelimiter connect_timeout]a, %{}, %{bot: data.config.name})
     {:stop, :connect_timeout}
   end
 
@@ -429,6 +429,8 @@ defmodule Nostrum.Api.Ratelimiter do
       ) do
     bucket = get_endpoint(payload.route, payload.method)
 
+    meta = %{bot: data.config.name, major_route: bucket, global: nil}
+
     # The outstanding maps contains pairs in the form `{remaining, queue}`,
     # where `remaining` is the amount of remaining calls we may make, and
     # `queue` is the waiting line of requests. If the ratelimit on the bucket
@@ -444,7 +446,7 @@ defmodule Nostrum.Api.Ratelimiter do
         TelemetryShim.execute(
           ~w[nostrum ratelimiter postponed]a,
           %{},
-          %{major_route: bucket, global: false}
+          %{meta | global: false}
         )
 
         data_with_this_queued =
@@ -485,7 +487,7 @@ defmodule Nostrum.Api.Ratelimiter do
         TelemetryShim.execute(
           ~w[nostrum ratelimiter postponed]a,
           %{},
-          %{major_route: bucket, global: true}
+          %{meta | global: true}
         )
 
         data_with_this_queued =
@@ -929,7 +931,8 @@ defmodule Nostrum.Api.Ratelimiter do
 
     TelemetryShim.execute(
       ~w[nostrum ratelimiter disconnected]a,
-      %{}
+      %{},
+      %{bot: config.name}
     )
 
     # Streams that we previously received `:gun_error` notifications for have

@@ -262,14 +262,14 @@ defmodule Nostrum.Shard.Session do
   def connecting_ws(
         :info,
         {:gun_upgrade, _conn, _stream, ["websocket"], _headers},
-        %{compress_ctx: nil, shard_num: shard_num} = data
+        %{compress_ctx: nil, shard_num: shard_num, bot_options: %{name: bot_name}} = data
       ) do
     context = @compression_module.create_context()
 
     TelemetryShim.execute(
       ~w[nostrum gateway shard connected]a,
       %{},
-      %{shard_number: shard_num}
+      %{shard_number: shard_num, bot: bot_name}
     )
 
     {:next_state, :connected,
@@ -284,14 +284,14 @@ defmodule Nostrum.Shard.Session do
   def connecting_ws(
         :info,
         {:gun_upgrade, _conn, _stream, ["websocket"], _headers},
-        %{compress_ctx: compress_ctx, shard_num: shard_num} = data
+        %{compress_ctx: compress_ctx, shard_num: shard_num, bot_options: %{name: bot_name}} = data
       ) do
     Logger.info("Re-established websocket connection")
 
     TelemetryShim.execute(
       ~w[nostrum gateway shard connected]a,
       %{},
-      %{shard_number: shard_num}
+      %{shard_number: shard_num, bot: bot_name}
     )
 
     compress_ctx = @compression_module.reset_context(compress_ctx)
@@ -341,7 +341,7 @@ defmodule Nostrum.Shard.Session do
         TelemetryShim.execute(
           ~w[nostrum gateway shard disconnected]a,
           %{},
-          %{shard_number: data.shard_num, reason: :reconnect}
+          %{shard_number: data.shard_num, bot: data.bot_options.name, reason: :reconnect}
         )
 
         Logger.info("Will reconnect in response to gateway event")
@@ -359,12 +359,13 @@ defmodule Nostrum.Shard.Session do
   def connected(:info, {:gun_ws, conn, stream, :close}, %{
         conn: conn,
         stream: stream,
-        shard_num: shard_num
+        shard_num: shard_num,
+        bot_options: %{name: bot_name}
       }) do
     TelemetryShim.execute(
       ~w[nostrum gateway shard disconnected]a,
-      %{reason: :unknown},
-      %{shard_number: shard_num}
+      %{},
+      %{shard_number: shard_num, bot: bot_name, reason: :unknown}
     )
 
     Logger.info("Shard websocket closed (unknown reason)")
@@ -436,7 +437,8 @@ defmodule Nostrum.Shard.Session do
           stream: stream,
           heartbeat_ack: heartbeat_ack,
           heartbeat_interval: heartbeat_interval,
-          shard_num: shard_num
+          shard_num: shard_num,
+          bot_options: %{name: bot_name}
         } = data
       ) do
     if heartbeat_ack do
@@ -447,7 +449,7 @@ defmodule Nostrum.Shard.Session do
       TelemetryShim.execute(
         ~w[nostrum gateway shard heartbeat]a,
         %{seq: seq},
-        %{shard_number: shard_num}
+        %{shard_number: shard_num, bot: bot_name}
       )
 
       {:keep_state, %{data | heartbeat_ack: false, last_heartbeat_send: DateTime.utc_now()},
@@ -456,8 +458,8 @@ defmodule Nostrum.Shard.Session do
       # Our last heartbeat was not acknowledged. Disconnect and try to resume.
       TelemetryShim.execute(
         ~w[nostrum gateway shard disconnected]a,
-        %{reason: :heartbeat_timeout},
-        %{shard_number: shard_num}
+        %{},
+        %{shard_number: shard_num, bot: bot_name, reason: :heartbeat_timeout}
       )
 
       Logger.warning("Heartbeat ack not received in time, reconnecting")

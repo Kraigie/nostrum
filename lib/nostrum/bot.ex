@@ -348,15 +348,15 @@ defmodule Nostrum.Bot do
   def with_bot(name, function, next \\ :reset) do
     {prev_pid, prev_name} = set_bot(fetch_bot_pid(name), name)
 
-    result = function.()
-
-    case next do
-      :reset -> set_bot(prev_pid, prev_name)
-      :clear -> set_bot(nil, nil)
-      :keep -> :noop
+    try do
+      function.()
+    after
+      case next do
+        :reset -> set_bot(prev_pid, prev_name)
+        :clear -> set_bot(nil, nil)
+        :keep -> :noop
+      end
     end
-
-    result
   end
 
   defmacro __using__(opts) do

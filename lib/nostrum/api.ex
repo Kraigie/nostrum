@@ -49,6 +49,7 @@ defmodule Nostrum.Api do
 
   alias Nostrum.Api.Helpers
   alias Nostrum.Api.Ratelimiter
+  alias Nostrum.Bot
   alias Nostrum.Cache.Me
 
   alias Nostrum.Struct.{
@@ -2254,7 +2255,7 @@ defmodule Nostrum.Api do
   def request(request) do
     TelemetryShim.span(
       ~w[nostrum api request]a,
-      %{method: request.method, route: request.route},
+      %{method: request.method, route: request.route, bot: Bot.fetch_bot_name()},
       fn ->
         case Ratelimiter.queue(request) do
           :ok = result ->
