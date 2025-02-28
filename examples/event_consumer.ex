@@ -1,13 +1,14 @@
 defmodule ExampleSupervisor do
   use Supervisor
 
-  def start_link(args) do
+  def start_link(args \\ []) do
     Supervisor.start_link(__MODULE__, args, name: __MODULE__)
   end
 
   @impl true
   def init(_init_arg) do
     bot_options = %{
+      name: :babys_first_bot,
       consumer: MyBot.Consumer,
       intents: [:direct_messages, :guild_messages, :message_content],
       wrapped_token: fn -> System.fetch_env!("BOT_TOKEN") end

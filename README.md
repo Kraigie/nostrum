@@ -60,13 +60,13 @@ additional config parameters, please see the
 [documentation](https://kraigie.github.io/nostrum/).
 
 ## Example Usage
-The below module needs to be started in some fashion to capture events. See
-[here](https://github.com/Kraigie/nostrum/blob/master/examples/event_consumer.ex)
+The below module needs to be defined and configured as your bot's consumer to capture 
+events. See [here](https://github.com/Kraigie/nostrum/blob/master/examples/event_consumer.ex)
 for a full example.
 
 ```elixir
 defmodule ExampleConsumer do
-  use Nostrum.Consumer
+  @behaviour Nostrum.Consumer
 
   alias Nostrum.Api.Message
 
@@ -81,23 +81,34 @@ defmodule ExampleConsumer do
 end
 ```
 
-You should start this under a supervisor or application:
+You can define and start your bot under your application supervision tree:
 
 ```elixir
 defmodule MyApp.Application do
   use Application
 
   def start(_type, _args) do
-    children = [ExampleConsumer]
-    Supervisor.start_link(children, strategy: :one_for_one)
+    bot_options = %{
+      consumer: ExampleConsumer,
+      intents: [:direct_messages, :guild_messages, :message_content],
+      wrapped_token: fn -> System.fetch_env!("BOT_TOKEN") end
+    }
+
+    children = [{Nostrum.Bot, bot_options}]
+    Supervisor.init(children, strategy: :one_for_one)
   end
 end
 ```
 
-For testing, you can start it from `iex`:
+You may also start bots dynamically at runtime from `iex`:
 
 ```elixir
-iex()> ExampleConsumer.start_link()
+iex()> bot_options = %{
+...()>   consumer: ExampleConsumer,
+...()>   intents: [:direct_messages, :guild_messages, :message_content],
+...()>   wrapped_token: fn -> System.fetch_env!("BOT_TOKEN") end
+...()> }
+iex()> Supervisor.start_link([{Nostrum.Bot, bot_options}], strategy: :one_for_one)
 {:ok, #PID<0.208.0>}
 ```
 

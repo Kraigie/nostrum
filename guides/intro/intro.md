@@ -56,7 +56,7 @@ Afterwards, run `mix deps.get` to fetch dependencies.
 ## Consumer setup
 
 Next up, you need to define a consumer - a module which handles events, see the
-`Nostrum.Consumer` docs. In `lib/my_bot/example_consumer.ex`, define the
+`Nostrum.Consumer` docs. In `lib/my_bot/consumer.ex`, define the
 following:
 
 A basic consumer could look like the following:
@@ -90,11 +90,12 @@ defmodule MyBot.Application do
   use Application
 
   @impl true
-  def start(_init_arg) do
+  def start(_type, _args) do
     bot_options = %{
+      name: MyBot,
       consumer: MyBot.Consumer,
       intents: [:direct_messages, :guild_messages, :message_content],
-      wrapped_token: fn -> System.fetch_env!("BOT_TOKEN") end,
+      wrapped_token: fn -> System.fetch_env!("BOT_TOKEN") end
     }
     children = [
       {Nostrum.Bot, bot_options}

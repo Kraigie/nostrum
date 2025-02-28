@@ -1,4 +1,4 @@
-# To get this example going, run `iex -S mix` and `ExampleSupervisor.start_link`.
+# To get this example going, run `iex -S mix` and `CacheExampleSupervisor.start_link`.
 # This will start the event consumer under a supervisor.
 defmodule CacheExampleSupervisor do
   use Supervisor
@@ -10,6 +10,7 @@ defmodule CacheExampleSupervisor do
   @impl true
   def init(_init_arg) do
     bot_options = %{
+      name: CacheMoney,
       consumer: CacheExampleConsumer,
       intents: [:direct_messages, :guild_messages, :message_content],
       wrapped_token: fn -> System.fetch_env!("BOT_TOKEN") end
@@ -27,11 +28,11 @@ end
 defmodule CacheExampleConsumer do
   @behaviour Nostrum.Consumer
 
-  # We only need to write event handlers for the events we are interested in,
-  # the rest will go to the catch-all case to be ignored.
   def handle_event({:MESSAGE_CREATE, message, _ws_state}) do
     ExampleCommands.command(message)
   end
+
+  def handle_event(_), do: :ok
 end
 
 # Our basic, example command handler that will be taking the message

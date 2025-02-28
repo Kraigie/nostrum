@@ -130,11 +130,9 @@ defmodule Nostrum.Voice do
   end
 
   defp fetch_session_supervisor(%VoiceState{voice_pid: voice_pid}) do
-    voice_pid
-    |> Process.info(:links)
-    |> elem(1)
+    Process.info(voice_pid)[:links]
     |> Enum.find(fn pid ->
-      pid |> Process.info(:dictionary) |> elem(1) |> Keyword.get(:"$initial_call") ==
+      Process.info(pid)[:dictionary][:"$initial_call"] ==
         {:supervisor, Nostrum.Voice.Supervisor, 1}
     end)
     |> Util.get_child_pid(DynamicSupervisor)
