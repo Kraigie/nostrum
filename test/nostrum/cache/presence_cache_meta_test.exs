@@ -43,17 +43,7 @@ defmodule Nostrum.Cache.PresenceCacheMetaTest do
       doctest @cache
 
       setup do
-        on_exit(:cleanup, fn ->
-          try do
-            if function_exported?(@cache, :teardown, 0) do
-              apply(@cache, :teardown, [])
-            end
-          rescue
-            e -> e
-          end
-        end)
-
-        [pid: start_supervised!(@cache)]
+        Nostrum.Cache.TestBase.setup_and_teardown_cache(@cache)
       end
 
       describe "empty cache" do

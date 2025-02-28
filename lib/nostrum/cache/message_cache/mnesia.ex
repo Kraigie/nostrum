@@ -49,9 +49,6 @@ if Code.ensure_loaded?(:mnesia) do
 
     @config Nostrum.Cache.Base.get_cache_options(:messages)
 
-    # allow us to override the table name for testing
-    # without accidentally overwriting the production table
-    @override_table_name @config[:table_name]
     @base_table_name :nostrum_messages
 
     @maximum_size @config[:size_limit] || 10_000
@@ -75,11 +72,17 @@ if Code.ensure_loaded?(:mnesia) do
       Supervisor.start_link(__MODULE__, opts)
     end
 
+    # allow us to override the table name for testing
+    # without accidentally overwriting the production table
+    defp override_table_name do
+      @config[:table_name]
+    end
+
     @impl Supervisor
     @doc "Set up the cache's Mnesia table."
     def init(opts) do
-      table_name = @override_table_name || :"#{@base_table_name}_#{Keyword.fetch!(opts, :name)}"
-      table_options = table_create_attributes(table_name)
+      table_name = override_table_name() || :"#{@base_table_name}_#{Keyword.fetch!(opts, :name)}"
+      table_options = table_create_attributes()
 
       case :mnesia.create_table(table_name, table_options) do
         {:atomic, :ok} -> :ok
@@ -91,9 +94,9 @@ if Code.ensure_loaded?(:mnesia) do
 
     @doc "Retrieve the Mnesia table name used for the cache."
     @spec table :: atom()
-    def table, do: @override_table_name || :"#{@base_table_name}_#{Bot.fetch_bot_name()}"
+    def table, do: override_table_name() || :"#{@base_table_name}_#{Bot.fetch_bot_name()}"
 
-    defp record_name, do: table()
+    defp record_name, do: :nostrum_message
 
     @doc "Drop the table used for caching."
     @spec teardown() :: {:atomic, :ok} | {:aborted, term()}
@@ -134,7 +137,7 @@ if Code.ensure_loaded?(:mnesia) do
 
       writer = fn ->
         maybe_evict_records()
-        :mnesia.write(record)
+        :mnesia.write(table(), record, :write)
       end
 
       {:atomic, :ok} = :mnesia.sync_transaction(writer)
@@ -164,7 +167,7 @@ if Code.ensure_loaded?(:mnesia) do
           [{_tag, _message_id, _channel_id, _author_id, old_message} = entry] ->
             updated_message = Message.to_struct(atomized_payload, old_message)
 
-            :mnesia.write(put_elem(entry, 4, updated_message))
+            :mnesia.write(table(), put_elem(entry, 4, updated_message), :write)
             {old_message, updated_message}
         end
       end)
@@ -336,7 +339,7 @@ if Code.ensure_loaded?(:mnesia) do
     end
 
     @doc false
-    def table_create_attributes(table_name) do
+    def table_create_attributes do
       ets_props =
         if @compressed_table do
           [:compressed]
@@ -347,7 +350,7 @@ if Code.ensure_loaded?(:mnesia) do
       [
         attributes: [:message_id, :channel_id, :author_id, :data],
         index: [:channel_id, :author_id],
-        record_name: table_name,
+        record_name: record_name(),
         storage_properties: [ets: ets_props],
         type: @table_type
       ]

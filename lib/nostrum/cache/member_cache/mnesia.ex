@@ -36,7 +36,7 @@ if Code.ensure_loaded?(:mnesia) do
       table_options = [
         attributes: [:key, :guild_id, :user_id, :data],
         index: [:guild_id, :user_id],
-        record_name: table_name
+        record_name: record_name()
       ]
 
       case :mnesia.create_table(table_name, table_options) do
@@ -51,7 +51,7 @@ if Code.ensure_loaded?(:mnesia) do
     @spec table :: atom()
     def table, do: :"#{@base_table_name}_#{Bot.fetch_bot_name()}"
 
-    defp record_name, do: table()
+    defp record_name, do: :nostrum_member
 
     @doc "Drop the table used for caching."
     @spec teardown() :: {:atomic, :ok} | {:aborted, term()}
@@ -128,7 +128,7 @@ if Code.ensure_loaded?(:mnesia) do
     def create(guild_id, payload) do
       member = Member.to_struct(payload)
       record = {record_name(), {guild_id, member.user_id}, guild_id, member.user_id, member}
-      writer = fn -> :mnesia.write(record) end
+      writer = fn -> :mnesia.write(table(), record, :write) end
       {:atomic, :ok} = :mnesia.sync_transaction(writer)
       member
     end
@@ -153,7 +153,7 @@ if Code.ensure_loaded?(:mnesia) do
             [{_tag, _key, _guild_id, _user_id, old_member} = entry] ->
               new_member = Member.to_struct(member_payload, old_member)
 
-              :mnesia.write(put_elem(entry, 4, new_member))
+              :mnesia.write(table(), put_elem(entry, 4, new_member), :write)
               {old_member, new_member}
 
             [] ->
@@ -194,8 +194,10 @@ if Code.ensure_loaded?(:mnesia) do
         Enum.each(
           members,
           &:mnesia.write(
+            table(),
             {record_name(), {guild_id, &1.user.id}, guild_id, &1.user.id,
-             Util.cast(&1, {:struct, Member})}
+             Util.cast(&1, {:struct, Member})},
+            :write
           )
         )
       end)

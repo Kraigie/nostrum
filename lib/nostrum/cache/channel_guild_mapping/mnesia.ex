@@ -30,7 +30,7 @@ if Code.ensure_loaded?(:mnesia) do
 
       table_options = [
         attributes: [:channel_id, :guild_id],
-        record_name: table_name
+        record_name: record_name()
       ]
 
       case :mnesia.create_table(table_name, table_options) do
@@ -45,7 +45,7 @@ if Code.ensure_loaded?(:mnesia) do
     @spec table() :: atom()
     def table, do: :"#{@base_table_name}_#{Bot.fetch_bot_name()}"
 
-    defp record_name, do: table()
+    defp record_name, do: :nostrum_channel_guild_mapping
 
     @doc "Drop the table used for caching."
     @spec teardown() :: {:atomic, :ok} | {:aborted, term()}
@@ -56,7 +56,7 @@ if Code.ensure_loaded?(:mnesia) do
     @spec create(Channel.id(), Guild.id()) :: true
     def create(channel_id, guild_id) do
       record = {record_name(), channel_id, guild_id}
-      {:atomic, :ok} = :mnesia.sync_transaction(fn -> :mnesia.write(record) end)
+      {:atomic, :ok} = :mnesia.sync_transaction(fn -> :mnesia.write(table(), record, :write) end)
       true
     end
 

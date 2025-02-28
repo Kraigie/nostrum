@@ -16,7 +16,7 @@ defmodule Nostrum.Cache.GuildCacheMetaTest do
 
   for cache <- @cache_modules do
     defmodule :"#{cache}Test" do
-      use ExUnit.Case
+      use ExUnit.Case, async: true
       # this is needed because otherwise we cannot access
       # the cache in the tests
       @cache cache
@@ -40,17 +40,7 @@ defmodule Nostrum.Cache.GuildCacheMetaTest do
       doctest @cache
 
       setup do
-        on_exit(:cleanup, fn ->
-          try do
-            if function_exported?(@cache, :teardown, 0) do
-              apply(@cache, :teardown, [])
-            end
-          rescue
-            e -> e
-          end
-        end)
-
-        [pid: start_supervised!(@cache)]
+        Nostrum.Cache.TestBase.setup_and_teardown_cache(@cache)
       end
 
       @doc """

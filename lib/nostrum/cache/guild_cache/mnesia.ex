@@ -33,7 +33,7 @@ if Code.ensure_loaded?(:mnesia) do
 
       table_options = [
         attributes: [:id, :data],
-        record_name: table_name
+        record_name: record_name()
       ]
 
       case :mnesia.create_table(table_name, table_options) do
@@ -48,7 +48,7 @@ if Code.ensure_loaded?(:mnesia) do
     @spec table :: atom()
     def table, do: :"#{@base_table_name}_#{Bot.fetch_bot_name()}"
 
-    defp record_name, do: table()
+    defp record_name, do: :nostrum_guild
 
     @doc "Drop the table used for caching."
     @spec teardown() :: {:atomic, :ok} | {:aborted, term()}
@@ -102,7 +102,7 @@ if Code.ensure_loaded?(:mnesia) do
     def create(payload) do
       guild = Guild.to_struct(payload)
       record = {record_name(), guild.id, guild}
-      writer = fn -> :mnesia.write(record) end
+      writer = fn -> :mnesia.write(table(), record, :write) end
       :ok = :mnesia.activity(:sync_transaction, writer)
       guild
     end
@@ -119,7 +119,7 @@ if Code.ensure_loaded?(:mnesia) do
             [{_tag, _id, old_guild} = entry] ->
               updated_guild = Guild.merge(old_guild, new_guild)
 
-              :mnesia.write(put_elem(entry, 2, updated_guild))
+              :mnesia.write(table(), put_elem(entry, 2, updated_guild), :write)
               old_guild
 
             [] ->
@@ -302,7 +302,7 @@ if Code.ensure_loaded?(:mnesia) do
           case :mnesia.read(table(), guild_id, :write) do
             [{_tag, _id, old_guild} = entry] ->
               {new_guild, result} = updater.(old_guild)
-              :mnesia.write(put_elem(entry, 2, new_guild))
+              :mnesia.write(table(), put_elem(entry, 2, new_guild), :write)
               result
 
             [] ->
@@ -318,7 +318,7 @@ if Code.ensure_loaded?(:mnesia) do
         fn ->
           [{_tag, _id, old_guild} = entry] = :mnesia.read(table(), guild_id, :write)
           {new_guild, result} = updater.(old_guild)
-          :mnesia.write(put_elem(entry, 2, new_guild))
+          :mnesia.write(table(), put_elem(entry, 2, new_guild), :write)
           result
         end
       )

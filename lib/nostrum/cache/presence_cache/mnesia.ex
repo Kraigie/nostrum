@@ -23,7 +23,7 @@ if Code.ensure_loaded?(:mnesia) do
     @spec table :: atom()
     def table, do: :"#{@base_table_name}_#{Bot.fetch_bot_name()}"
 
-    defp record_name, do: table()
+    defp record_name, do: :nostrum_presence
 
     @doc "Clear any objects in the cache."
     @spec clear() :: {:atomic, :ok} | {:aborted, term()}
@@ -42,9 +42,9 @@ if Code.ensure_loaded?(:mnesia) do
     @doc "Set up the cache's Mnesia table."
     def init(opts) do
       table_name = :"#{@base_table_name}_#{Keyword.fetch!(opts, :name)}"
-      table_options = [attributes: [:key, :data], record_name: table_name]
+      table_options = [attributes: [:key, :data], record_name: record_name()]
 
-      case :mnesia.create_table(table(), table_options) do
+      case :mnesia.create_table(table_name, table_options) do
         {:atomic, :ok} -> :ok
         {:aborted, {:already_exists, _tab}} -> :ok
       end
@@ -69,7 +69,7 @@ if Code.ensure_loaded?(:mnesia) do
     @spec create(map()) :: :ok
     def create(presence) do
       record = {record_name(), {presence.guild_id, presence.user.id}, presence}
-      :ok = :mnesia.activity(:sync_transaction, fn -> :mnesia.write(record) end)
+      :ok = :mnesia.activity(:sync_transaction, fn -> :mnesia.write(table(), record, :write) end)
     end
 
     @impl PresenceCache
@@ -89,7 +89,7 @@ if Code.ensure_loaded?(:mnesia) do
 
           [{_tag, _key, old}] ->
             merged = Map.merge(old, new)
-            :mnesia.write({record_name(), key, merged})
+            :mnesia.write(table(), {record_name(), key, merged}, :write)
             {new.guild_id, old, merged}
 
           [] ->
@@ -108,7 +108,7 @@ if Code.ensure_loaded?(:mnesia) do
 
         Enum.each(
           presences,
-          &:mnesia.write({record_name(), {guild_id, &1.user.id}, &1})
+          &:mnesia.write(table(), {record_name(), {guild_id, &1.user.id}, &1}, :write)
         )
       end)
     end

@@ -29,7 +29,7 @@ if Code.ensure_loaded?(:mnesia) do
 
       table_options = [
         attributes: [:id, :data],
-        record_name: table_name
+        record_name: record_name()
       ]
 
       case :mnesia.create_table(table_name, table_options) do
@@ -44,7 +44,7 @@ if Code.ensure_loaded?(:mnesia) do
     @spec table :: atom()
     def table, do: :"#{@base_table_name}_#{Bot.fetch_bot_name()}"
 
-    defp record_name, do: table()
+    defp record_name, do: :nostrum_user
 
     @doc "Drop the table used for caching."
     @spec teardown() :: {:atomic, :ok} | {:aborted, term()}
@@ -80,7 +80,7 @@ if Code.ensure_loaded?(:mnesia) do
     def create(payload) do
       user = User.to_struct(payload)
       record = {record_name(), user.id, user}
-      writer = fn -> :mnesia.write(record) end
+      writer = fn -> :mnesia.write(table(), record, :write) end
       :ok = :mnesia.activity(:sync_transaction, writer)
       user
     end
@@ -93,7 +93,10 @@ if Code.ensure_loaded?(:mnesia) do
         # Substantially reduces locking overhead for large amount of records.
         :mnesia.write_lock_table(table())
 
-        Enum.each(users, &:mnesia.write({record_name(), &1.id, User.to_struct(&1)}))
+        Enum.each(
+          users,
+          &:mnesia.write(table(), {record_name(), &1.id, User.to_struct(&1)}, :write)
+        )
       end)
 
       :ok
@@ -113,7 +116,7 @@ if Code.ensure_loaded?(:mnesia) do
           [{_tag, _id, old_user} = entry] ->
             new_user = User.to_struct(payload, old_user)
 
-            :mnesia.write(put_elem(entry, 2, new_user))
+            :mnesia.write(table(), put_elem(entry, 2, new_user), :write)
             {old_user, new_user}
 
           [] ->

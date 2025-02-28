@@ -23,10 +23,11 @@ defmodule Nostrum.Api.RatelimiterTest do
     info = :httpd.info(server)
     port = :proplists.get_value(:port, info)
     {:ok, _started} = :application.ensure_all_started(:gun)
-    _ratelimiter_group = start_supervised!(Nostrum.Api.RatelimiterGroup)
-    options = %{host: host, port: port, wrapped_token: fn -> "token" end}
-    spec = {Nostrum.Api.Ratelimiter, {options, []}}
-    ratelimiter = start_supervised!(spec)
+    options = %{name: :ratelimiter_test, host: host, port: port, wrapped_token: fn -> "token" end}
+    group_spec = {Nostrum.Api.RatelimiterGroup, options}
+    _ratelimiter_group = start_supervised!(group_spec)
+    limiter_spec = {Nostrum.Api.Ratelimiter, options}
+    ratelimiter = start_supervised!(limiter_spec)
     [ratelimiter: ratelimiter, server: server]
   end
 

@@ -41,6 +41,8 @@ defmodule Nostrum.ConsumerGroup do
   """
   @spec dispatch(nonempty_list(Consumer.event()), Bot.name()) :: :ok
   @spec dispatch(Consumer.event(), Bot.name()) :: :ok
+  def dispatch([:noop | events], bot_name), do: dispatch(events, bot_name)
+
   def dispatch([event | events], bot_name) do
     payload = {:event, event}
 
@@ -52,6 +54,7 @@ defmodule Nostrum.ConsumerGroup do
     dispatch(events, bot_name)
   end
 
+  def dispatch(:noop, _), do: :ok
   def dispatch([], _), do: :ok
   def dispatch(event, bot_name) when is_tuple(event), do: dispatch([event], bot_name)
 

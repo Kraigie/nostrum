@@ -1,6 +1,7 @@
 defmodule Nostrum.Cache.MessageCache.MnesiaAdditionalTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
+  import Nostrum.Bot, only: [with_bot: 2]
   alias Nostrum.Cache.MessageCache
   alias Nostrum.Struct.Message
 
@@ -56,15 +57,7 @@ defmodule Nostrum.Cache.MessageCache.MnesiaAdditionalTest do
   }
 
   setup do
-    on_exit(:cleanup, fn ->
-      try do
-        MessageCache.Mnesia.teardown()
-      rescue
-        e -> e
-      end
-    end)
-
-    [pid: start_supervised!(MessageCache.Mnesia)]
+    Nostrum.Cache.TestBase.setup_and_teardown_cache(MessageCache.Mnesia)
   end
 
   describe "create/1" do
@@ -88,21 +81,25 @@ defmodule Nostrum.Cache.MessageCache.MnesiaAdditionalTest do
       # drop and recreate the table with a different type
       MessageCache.Mnesia.teardown()
 
-      table_create_attributes =
-        MessageCache.Mnesia.table_create_attributes()
-        |> Keyword.put(:type, :set)
+      # Done separately here to prevent interfering with the cache managed above
+      with_bot(:my_fun_additional_test, fn ->
+        table_create_attributes =
+          MessageCache.Mnesia.table_create_attributes()
+          |> Keyword.put(:type, :set)
 
-      {:atomic, :ok} = :mnesia.create_table(MessageCache.Mnesia.table(), table_create_attributes)
+        {:atomic, :ok} =
+          :mnesia.create_table(MessageCache.Mnesia.table(), table_create_attributes)
 
-      for id <- 1..11, do: MessageCache.Mnesia.create(Map.put(@test_message, :id, id))
+        for id <- 1..11, do: MessageCache.Mnesia.create(Map.put(@test_message, :id, id))
 
-      for id <- 1..4 do
-        assert MessageCache.Mnesia.get(id) == {:error, :not_found}
-      end
+        for id <- 1..4 do
+          assert MessageCache.Mnesia.get(id) == {:error, :not_found}
+        end
 
-      for id <- 5..11 do
-        assert {:ok, %Message{id: ^id}} = MessageCache.Mnesia.get(id)
-      end
+        for id <- 5..11 do
+          assert {:ok, %Message{id: ^id}} = MessageCache.Mnesia.get(id)
+        end
+      end)
     end
   end
 
@@ -212,7 +209,7 @@ defmodule Nostrum.Cache.MessageCache.MnesiaAdditionalTest do
                )
     end
 
-    test "it allows constraining the messages by timestamp" do
+    test "allows constraining the messages by timestamp" do
       expected_message_one = Message.to_struct(@test_message)
 
       assert [expected_message_one] ==
@@ -223,7 +220,7 @@ defmodule Nostrum.Cache.MessageCache.MnesiaAdditionalTest do
                )
     end
 
-    test "it also allows giving a datetime instead of a snowflake" do
+    test "also allows giving a datetime instead of a snowflake" do
       expected_message_one = Message.to_struct(@test_message)
 
       assert [expected_message_one] ==

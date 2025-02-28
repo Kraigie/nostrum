@@ -17,13 +17,7 @@ defmodule Nostrum.Store.UnavailableGuildMetaTest do
       doctest @store
 
       setup do
-        on_exit(:cleanup, fn ->
-          if function_exported?(@store, :teardown, 0) do
-            apply(@store, :teardown, [])
-          end
-        end)
-
-        [pid: start_supervised!(@store)]
+        Nostrum.Cache.TestBase.setup_and_teardown_cache(@store)
       end
 
       test "create/1 and is?/1" do

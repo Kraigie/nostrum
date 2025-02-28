@@ -30,7 +30,7 @@ Before you submit any code, please run the following commands from your terminal
 - `mix format`
 - `mix credo --strict --ignore 'TagTODO'`
 - `mix dialyzer`
-- `mix test --no-start`
+- `mix test`
 
 or simply:
 
