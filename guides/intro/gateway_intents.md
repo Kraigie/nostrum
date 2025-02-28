@@ -1,10 +1,10 @@
 # Gateway Intents
 
-The Discord API allows you to fine tune the payloads that are received by your bot through gateway intents.
+The Discord API allows you to fine-tune the payloads that are received by your bot through gateway intents.
 
 When connecting to Discord you can instruct Discord on which events you want to receive (i.e. messages, user presences, etc.).
 
-Nostrum allows you to set these intents within your configuration, **by default all non-privileged intents are enabled**.
+Nostrum allows you to set these intents within your bots' options.
 
 To pass intents, configure them in your supervisor tree as part of
 `t:Nostrum.Bot.bot_options/0`, via the `:intents` field.
@@ -23,22 +23,40 @@ guilds:
   - CHANNEL_UPDATE
   - CHANNEL_DELETE
   - CHANNEL_PINS_UPDATE
+  - THREAD_CREATE
+  - THREAD_UPDATE
+  - THREAD_DELETE
+  - THREAD_LIST_SYNC
+  - THREAD_MEMBER_UPDATE
+  - THREAD_MEMBERS_UPDATE
+  - STAGE_INSTANCE_CREATE
+  - STAGE_INSTANCE_UPDATE
+  - STAGE_INSTANCE_DELETE
 
 guild_members*:
   - GUILD_MEMBER_ADD
   - GUILD_MEMBER_UPDATE
   - GUILD_MEMBER_REMOVE
+  - THREAD_MEMBERS_UPDATE
 
 guild_moderation:
   - GUILD_AUDIT_LOG_ENTRY_CREATE
   - GUILD_BAN_ADD
   - GUILD_BAN_REMOVE
 
-guild_emojis:
+guild_expressions:
   - GUILD_EMOJIS_UPDATE
+  - GUILD_STICKERS_UPDATE
+  - GUILD_SOUNDBOARD_SOUND_CREATE
+  - GUILD_SOUNDBOARD_SOUND_UPDATE
+  - GUILD_SOUNDBOARD_SOUND_DELETE
+  - GUILD_SOUNDBOARD_SOUNDS_UPDATE
 
 guild_integrations:
   - GUILD_INTEGRATIONS_UPDATE
+  - INTEGRATION_CREATE
+  - INTEGRATION_UPDATE
+  - INTEGRATION_DELETE
 
 guild_webhooks:
   - WEBHOOKS_UPDATE
@@ -48,6 +66,7 @@ guild_invites:
   - INVITE_DELETE
 
 guild_voice_states:
+  - VOICE_CHANNEL_EFFECT_SEND
   - VOICE_STATE_UPDATE
 
 guild_presences*:
@@ -84,7 +103,7 @@ direct_message_typing:
   - TYPING_START
 
 message_content*:
-  - MESSAGE_CONTENT
+  - MESSAGE_CONTENT ***
 
 guild_scheduled_events:
   - GUILD_SCHEDULED_EVENT_CREATE
@@ -113,12 +132,13 @@ direct_message_polls:
 Besides an explicit list of atoms, acceptable configuration values are `:all` and `:nonprivileged`.
 
 Note that intents marked with `*` are **privileged** intents. You must enable these intents by visiting the Discord Developer portal.
+Also note that `MESSAGE_CONTENT` is not an event type, but including the `:message_content` intent will change the data received in 
+message-related events.
 
 Once your bot passes 100 servers Discord will force you to **verify your bot**. If you require privileged intents you may need to write additional information on your usage of them.
 
-Nostrum's default value is `:nonprivileged`, which enables all non-privileged
-intents.  This is equivalent to setting the bot's `:intents` option to the above
-list without the **privileged** intents.  If you require all intents, including
-privileged ones, set `intents` to `:all`.
+The `:nonprivileged` option is equivalent to setting the bot's `:intents` to the entirety of the above 
+list except for the **privileged** intents.  If you require all intents, including
+privileged ones, set `:intents` to `:all`.
 
 More information on gateway intents can be found in the [Discord Developer documentation](https://discord.com/developers/docs/topics/gateway#gateway-intents).

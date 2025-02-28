@@ -28,7 +28,7 @@ defmodule Nostrum.Voice.Event do
   defp handle_event(:ready, payload, state) do
     Logger.debug("VOICE READY")
 
-    mode = Crypto.encryption_mode(payload["d"]["modes"])
+    mode = Crypto.encryption_mode(state.bot_options, payload["d"]["modes"])
 
     voice =
       Voice.update_voice(state.voice_pid, state.guild_id,

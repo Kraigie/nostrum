@@ -65,7 +65,7 @@ defmodule Nostrum.Shard.Dispatch do
 
   @spec handle({map(), WSState.t() | VoiceWSState.t()}) :: [Consumer.event()]
   def handle({payload, state}) do
-    if Application.get_env(:nostrum, :log_full_events),
+    if Util.get_config(state.bot_options, :log_full_events, false),
       do: Logger.debug(inspect(payload.d, pretty: true))
 
     payload.t
@@ -189,15 +189,15 @@ defmodule Nostrum.Shard.Dispatch do
       ChannelGuildMapping.create(channel.id, guild.id)
     end)
 
-    has_members = Intents.has_intent?(state.bot_options.intents, :guild_members)
-    has_presences = Intents.has_intent?(state.bot_options.intents, :guild_presences)
+    has_members? = Intents.has_intent?(state.bot_options.intents, :guild_members)
+    has_presences? = Intents.has_intent?(state.bot_options.intents, :guild_presences)
 
-    intents_should_request? = has_members and not has_presences
+    intents_should_request? = has_members? and not has_presences?
     large_server? = guild.member_count >= @large_threshold
 
     should_request? = large_server? or intents_should_request?
 
-    if should_request? and Application.get_env(:nostrum, :request_guild_members, false) do
+    if should_request? and Util.get_config(state.bot_options, :request_guild_members, false) do
       Session.request_guild_members(state.conn_pid, guild.id)
     end
 

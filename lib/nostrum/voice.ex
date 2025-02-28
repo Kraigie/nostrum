@@ -182,8 +182,8 @@ defmodule Nostrum.Voice do
     GenServer.cast(pid, {:remove, guild_id, pre_cleanup_args})
   end
 
-  defp get_bot_options(%VoiceState{voice_pid: pid}) do
-    GenServer.call(pid, :options)
+  defp get_voice_with_options(guild_id) do
+    GenServer.call(fetch_voice_pid(), {:get_with_options, guild_id})
   end
 
   @doc false
@@ -251,7 +251,7 @@ defmodule Nostrum.Voice do
       - `:stream` Input will be livestream url for `streamlink`, which gets automatically piped to `ffmpeg`.
       - `:raw` Input will be an enumerable of raw opus packets. This bypasses `ffmpeg` and all options.
       - `:raw_s` Same as `:raw` but input must be stateful, i.e. calling `Enum.take/2` on `input` is not idempotent.
-    - `options` - See options section below.
+    - `opts` - See options section below.
 
 
   Returns `{:error, reason}` if unable to play or a sound is playing, else `:ok`.
@@ -313,10 +313,10 @@ defmodule Nostrum.Voice do
   ```
   """
   @spec play(Guild.id(), play_input(), play_type(), keyword()) :: :ok | {:error, String.t()}
-  def play(guild_id, input, type \\ :url, options \\ []) do
-    maybe_warn(type)
+  def play(guild_id, input, type \\ :url, opts \\ []) do
+    {voice, conf} = get_voice_with_options(guild_id)
 
-    voice = get_voice(guild_id)
+    maybe_warn(type, conf)
 
     cond do
       not VoiceState.ready_for_rtp?(voice) ->
@@ -331,13 +331,13 @@ defmodule Nostrum.Voice do
         voice =
           update_voice(voice,
             current_url: if(type in @url_types, do: input),
-            ffmpeg_proc: if(type in @ffm_types, do: Audio.spawn_ffmpeg(input, type, options)),
+            ffmpeg_proc: if(type in @ffm_types, do: Audio.spawn_ffmpeg(input, type, opts, conf)),
             raw_audio: if(type in @raw_types, do: input),
             raw_stateful: type === :raw_s
           )
 
         set_speaking(voice, true)
-        update_voice(voice, player_pid: spawn(Audio, :start_player, [voice]))
+        update_voice(voice, player_pid: spawn(Audio, :start_player, [voice, conf]))
         :ok
     end
   end
@@ -451,7 +451,7 @@ defmodule Nostrum.Voice do
   """
   @spec resume(Guild.id()) :: :ok | {:error, String.t()}
   def resume(guild_id) do
-    voice = get_voice(guild_id)
+    {voice, conf} = get_voice_with_options(guild_id)
 
     cond do
       not VoiceState.ready_for_rtp?(voice) ->
@@ -465,7 +465,7 @@ defmodule Nostrum.Voice do
 
       true ->
         set_speaking(voice, true)
-        update_voice(voice, player_pid: spawn(Audio, :resume_player, [voice]))
+        update_voice(voice, player_pid: spawn(Audio, :resume_player, [voice, conf]))
         :ok
     end
   end
@@ -643,9 +643,8 @@ defmodule Nostrum.Voice do
   @doc since: "0.5.0"
   @spec connect_to_gateway(Guild.id()) :: :ok | {:error, String.t()}
   def connect_to_gateway(guild_id) do
-    with %VoiceState{} = voice <- get_voice(guild_id),
+    with {%VoiceState{} = voice, %{} = options} <- get_voice_with_options(guild_id),
          true <- VoiceState.ready_for_ws?(voice),
-         %{} = options <- get_bot_options(voice),
          sup when is_pid(sup) <- fetch_session_supervisor(voice) do
       {:ok, _pid} = VoiceSupervisor.create_session(sup, voice, options)
       :ok
@@ -824,7 +823,7 @@ defmodule Nostrum.Voice do
     state = Map.put(state, guild_id, voice)
     bot_options = state[:bot_options]
 
-    if Application.get_env(:nostrum, :voice_auto_connect, true),
+    if Util.get_config(bot_options, :voice_auto_connect, true),
       do: _result = start_if_ready(voice, bot_options)
 
     {:reply, voice, state}
@@ -836,8 +835,8 @@ defmodule Nostrum.Voice do
   end
 
   @doc false
-  def handle_call(:options, _from, state) do
-    {:reply, Map.get(state, :bot_options), state}
+  def handle_call({:get_with_options, guild_id}, _from, state) do
+    {:reply, {Map.get(state, guild_id), Map.get(state, :bot_options)}, state}
   end
 
   @doc false
@@ -915,8 +914,8 @@ defmodule Nostrum.Voice do
   if not Application.compile_env(:nostrum, :suppress_youtubedl_version, false) do
     @ytdl_old_version "2021.12.17"
 
-    defp check_youtubedl_version do
-      with ytdl when is_binary(ytdl) <- youtubedl_executable(),
+    defp check_youtubedl_version(conf) do
+      with ytdl when is_binary(ytdl) <- Audio.youtubedl_executable(conf),
            ["youtube-dl" | _] <- ytdl |> Path.basename() |> String.split("."),
            {version, 0} <- System.cmd(ytdl, ["--version"]),
            version when version <= @ytdl_old_version <- String.trim(version) do
@@ -932,13 +931,13 @@ defmodule Nostrum.Voice do
       end
     end
 
-    defp maybe_warn(:ytdl) do
+    defp maybe_warn(:ytdl, conf) do
       if not :persistent_term.get(:nostrum_has_checked_youtubedl_version, false) do
         :persistent_term.put(:nostrum_has_checked_youtubedl_version, true)
-        {:ok, _pid} = Task.start(fn -> check_youtubedl_version() end)
+        {:ok, _pid} = Task.start(fn -> check_youtubedl_version(conf) end)
       end
     end
   end
 
-  defp maybe_warn(_type), do: :noop
+  defp maybe_warn(_type, _conf), do: :noop
 end

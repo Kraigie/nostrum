@@ -255,17 +255,6 @@ defmodule Nostrum.Util do
     end
   end
 
-  @doc false
-  @spec fullsweep_after() :: {:fullsweep_after, non_neg_integer}
-  def fullsweep_after do
-    {:fullsweep_after,
-     Application.get_env(
-       :nostrum,
-       :fullsweep_after_default,
-       :erlang.system_info(:fullsweep_after) |> elem(1)
-     )}
-  end
-
   @doc """
   Gets the latency of the shard connection from a `Nostrum.Struct.WSState.t()` struct.
 
@@ -313,6 +302,11 @@ defmodule Nostrum.Util do
     |> Supervisor.which_children()
     |> Enum.filter(fn {id, _pid, _type, mods} -> child_module in [id | mods] end)
     |> Enum.map(fn {_id, pid, _type, _mods} -> pid end)
+  end
+
+  @doc false
+  def get_config(config, key, default) do
+    Map.get_lazy(config, key, fn -> Application.get_env(:nostrum, key, default) end)
   end
 
   @doc """

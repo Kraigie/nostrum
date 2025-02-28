@@ -126,6 +126,24 @@ defmodule Nostrum.Bot do
     should contain the total amount of shards that your bot is expected to
     have. Useful for splitting a single bot across multiple nodes, see the
     [multi-node documentation](./multi_node.html) for further information.
+
+  ## Global config override fields
+
+  The following fields will override global config values if provided.
+  More information on globally configuring these options and their defaults
+  [may be found here](./intro.html#configuration-options).
+
+  - `:request_guild_members`
+  - `:ffmpeg`
+  - `:youtubedl`
+  - `:streamlink`
+  - `:audio_timeout`
+  - `:audio_frames_per_burst`
+  - `:voice_auto_connect`
+  - `:voice_encryption_mode`
+  - `:log_full_events`
+  - `:log_dispatch_events`
+  - `:force_http1`
   """
   @type bot_options :: %{
           required(:consumer) => module(),
@@ -136,7 +154,18 @@ defmodule Nostrum.Bot do
             :auto
             | :manual
             | (num_shards :: pos_integer())
-            | {lowest :: pos_integer(), highest :: pos_integer(), total :: pos_integer()}
+            | {lowest :: pos_integer(), highest :: pos_integer(), total :: pos_integer()},
+          optional(:request_guild_members) => boolean(),
+          optional(:ffmpeg) => String.t(),
+          optional(:youtubedl) => String.t(),
+          optional(:streamlink) => String.t(),
+          optional(:audio_timeout) => pos_integer(),
+          optional(:audio_frames_per_burst) => pos_integer(),
+          optional(:voice_auto_connect) => boolean(),
+          optional(:voice_encryption_mode) => Nostrum.Voice.Crypto.cipher(),
+          optional(:log_full_events) => boolean(),
+          optional(:log_dispatch_events) => boolean(),
+          optional(:force_http1) => boolean()
         }
 
   @typedoc """

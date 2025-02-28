@@ -208,6 +208,7 @@ defmodule Nostrum.Api.Ratelimiter do
   alias Nostrum.Error.ApiError
 
   alias Nostrum.TelemetryShim
+  alias Nostrum.Util
 
   require Logger
 
@@ -272,6 +273,7 @@ defmodule Nostrum.Api.Ratelimiter do
 
   ## Optional fields
 
+  - `:force_http1`: Whether to force HTTP 1 connections.
   - `:host`: The remote host to connect to.
   - `:port`: The remote port to connect to.
   """
@@ -279,6 +281,7 @@ defmodule Nostrum.Api.Ratelimiter do
   @type config :: %{
           required(:wrapped_token) => (-> String.t()),
           required(:name) => Nostrum.Bot.name(),
+          optional(:force_http1) => boolean(),
           optional(:host) => String.t(),
           optional(:port) => :inet.port_number()
         }
@@ -390,7 +393,7 @@ defmodule Nostrum.Api.Ratelimiter do
   end
 
   def connecting(:internal, :open, %{config: config} = data) do
-    open_opts = get_open_opts()
+    open_opts = get_open_opts(config)
     host = to_charlist(Map.get(config, :host, Constants.domain()))
     port = Map.get(config, :port, 443)
 
@@ -1001,7 +1004,7 @@ defmodule Nostrum.Api.Ratelimiter do
 
   # End of callback functions
 
-  defp get_open_opts do
+  defp get_open_opts(config) do
     default_opts = %{
       connect_timeout: :timer.seconds(5),
       domain_lookup_timeout: :timer.seconds(5),
@@ -1014,7 +1017,7 @@ defmodule Nostrum.Api.Ratelimiter do
       tls_opts: Constants.gun_tls_opts()
     }
 
-    if Application.get_env(:nostrum, :force_http1, false) do
+    if Util.get_config(config, :force_http1, false) do
       Map.put(default_opts, :protocols, [:http])
     else
       default_opts

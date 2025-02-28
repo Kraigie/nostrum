@@ -47,7 +47,7 @@ defmodule ExampleCommands do
   # Fetch the defined prefix from our config, however,
   # if you have not defined it in your config yet, fear not,
   # the line below will default it to "!"
-  @prefix Application.get_env(:example_app, :prefix, "!")
+  @prefix Application.compile_env(:example_app, :prefix, "!")
 
   defp get_cached_with_fallback(id, cache, api) do
     case cache.(id) do

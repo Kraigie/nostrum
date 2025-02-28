@@ -116,13 +116,13 @@ feel free to use any other configuration method you like.
 > non-slash commands or moderation tools), you need to have the "Message Content
 > Intent" enabled on your [Bot's application
 > settings](https://discord.com/developers/applications/), and the
-> `:message_content` intent specified in the `[:nostrum, :gateway_intents]`
-> configuration key.
+> `:message_content` intent specified in the bot's options.
 
 
 ## Configuration options
 
-nostrum supports the following global configuration options:
+nostrum supports the following global configuration options with `:nostrum` as the
+config root key. Most of them may be overridden per-bot.
 
 - `request_guild_members` - perform member chunking to retrieve a complete list
   of members for all guilds at startup. Depending on your [cache
@@ -131,6 +131,7 @@ nostrum supports the following global configuration options:
 - `gateway_compression` - use either `:zlib` (default) or `:zstd` for compression
   of messages from the Discord gateway. See the documentation on
   [Gateway Compression](../advanced/gateway_compression.md) for more information.
+  *This is a global, compile-time config option only.*
 
 
 ### Voice-specific
@@ -162,16 +163,6 @@ nostrum supports the following global configuration options:
   websocket. Defaults to `false`.
 - `log_dispatch_events` - This will log dispatch events as they are received
   from the gateway. Defaults to `false`.
-- `fullsweep_after_default` - Sets the `fullsweep_after` flag for processes
-  that can have irregularly high memory usage due to Discord payloads. This
-  options will dramatically reduce the amount of memory used by some processes
-  at the cost of increased CPU usage. This is useful if you're running your
-  application under a memory constrained environment. This comes at the cost
-  of increased CPU usage. By default, this option will only affect some
-  processes. You can set this flag for *all* processes using environment
-  variables or by [setting the system flag
-  yourself](http://erlang.org/doc/man/erlang.html#system_flag-2). Defaults to
-  whatever your system recommends, which is probably `65535`.
 - `force_http1` - Set to `true` if you wish to disable automatic use of HTTP 2
   or newer HTTP versions for API requests to Discord. Useful to diagnose issues
   with ratelimiter connections during abnormal network conditions.

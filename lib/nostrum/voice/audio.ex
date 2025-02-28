@@ -13,19 +13,23 @@ defmodule Nostrum.Voice.Audio do
 
   # Default value
   @frames_per_burst 10
+  @audio_timeout 20_000
 
   # Executables
   @ffmpeg "ffmpeg"
   @ytdl "youtube-dl"
   @streamlink "streamlink"
 
-  def ffmpeg_executable, do: Application.get_env(:nostrum, :ffmpeg, @ffmpeg)
-  def youtubedl_executable, do: Application.get_env(:nostrum, :youtubedl, @ytdl)
-  def streamlink_executable, do: Application.get_env(:nostrum, :streamlink, @streamlink)
+  def ffmpeg_executable(conf \\ %{}), do: Util.get_config(conf, :ffmpeg, @ffmpeg)
+  def youtubedl_executable(conf \\ %{}), do: Util.get_config(conf, :youtubedl, @ytdl)
+  def streamlink_executable(conf \\ %{}), do: Util.get_config(conf, :streamlink, @streamlink)
 
   # How many consecutive packets to send before resting
-  def frames_per_burst,
-    do: Application.get_env(:nostrum, :audio_frames_per_burst, @frames_per_burst)
+  defp frames_per_burst(conf),
+    do: Util.get_config(conf, :audio_frames_per_burst, @frames_per_burst)
+
+  # Initial audio timeout in milliseconds
+  defp audio_timeout(conf), do: Util.get_config(conf, :audio_timeout, @audio_timeout)
 
   def rtp_header(%VoiceState{} = voice) do
     <<
@@ -77,27 +81,27 @@ defmodule Nostrum.Voice.Audio do
     end
   end
 
-  def start_player(voice) do
-    take_nap()
-    player_loop(voice, _init? = true)
+  def start_player(voice, conf) do
+    take_nap(0, conf)
+    player_loop(voice, _init? = true, conf)
   end
 
-  def resume_player(voice) do
-    player_loop(voice, _init? = false)
+  def resume_player(voice, conf) do
+    player_loop(voice, _init? = false, conf)
   end
 
-  def player_loop(voice, init?) do
+  def player_loop(voice, init?, conf) do
     t1 = Util.usec_now()
-    voice = try_send_data(voice, init?)
+    voice = try_send_data(voice, init?, conf)
     t2 = Util.usec_now()
 
-    take_nap(t2 - t1)
+    take_nap(t2 - t1, conf)
 
-    player_loop(voice, false)
+    player_loop(voice, false, conf)
   end
 
-  def take_nap(diff \\ 0) do
-    (Opus.usec_per_frame() * frames_per_burst() - diff)
+  def take_nap(diff, conf) do
+    (Opus.usec_per_frame() * frames_per_burst(conf) - diff)
     |> div(1_000)
     |> max(0)
     |> Process.sleep()
@@ -107,15 +111,15 @@ defmodule Nostrum.Voice.Audio do
 
   def get_source(%VoiceState{ffmpeg_proc: ffmpeg_proc}), do: Ports.get_stream(ffmpeg_proc)
 
-  def try_send_data(%VoiceState{} = voice, init?) do
-    wait = if(init?, do: Application.get_env(:nostrum, :audio_timeout, 20_000), else: 500)
+  def try_send_data(%VoiceState{} = voice, init?, conf) do
+    wait = if(init?, do: audio_timeout(conf), else: 500)
     {:ok, watchdog} = :timer.apply_after(wait, __MODULE__, :on_stall, [voice, self()])
 
     {voice, done} =
       voice
       |> get_source()
-      |> Enum.take(frames_per_burst())
-      |> send_frames(voice)
+      |> Enum.take(frames_per_burst(conf))
+      |> send_frames(voice, conf)
 
     {:ok, :cancel} = :timer.cancel(watchdog)
 
@@ -124,9 +128,9 @@ defmodule Nostrum.Voice.Audio do
       else: voice
   end
 
-  def try_send_data(_, _), do: :ok
+  def try_send_data(_, _, _), do: :ok
 
-  def send_frames(frames, %VoiceState{} = voice) do
+  def send_frames(frames, %VoiceState{} = voice, conf \\ %{}) do
     voice =
       Enum.reduce(frames, voice, fn f, v ->
         :ok =
@@ -150,17 +154,17 @@ defmodule Nostrum.Voice.Audio do
        # If using raw audio and it isn't stateful, update its state manually
        raw_audio:
          if not is_nil(voice.raw_audio) and not voice.raw_stateful do
-           Enum.slice(voice.raw_audio, frames_per_burst()..-1)
+           Enum.slice(voice.raw_audio, frames_per_burst(conf)..-1)
          else
            voice.raw_audio
          end
-     ), length(frames) < frames_per_burst()}
+     ), length(frames) < frames_per_burst(conf)}
   end
 
-  def spawn_youtubedl(url) do
+  def spawn_youtubedl(url, conf \\ %{}) do
     res =
       Ports.execute(
-        youtubedl_executable(),
+        youtubedl_executable(conf),
         [
           ["-f", "bestaudio"],
           ["-o", "-"],
@@ -180,10 +184,10 @@ defmodule Nostrum.Voice.Audio do
     end
   end
 
-  def spawn_streamlink(url) do
+  def spawn_streamlink(url, conf \\ %{}) do
     res =
       Ports.execute(
-        streamlink_executable(),
+        streamlink_executable(conf),
         [
           ["--stdout"],
           ["--quiet"],
@@ -202,7 +206,7 @@ defmodule Nostrum.Voice.Audio do
     end
   end
 
-  def spawn_ffmpeg(input, type \\ :url, options \\ []) do
+  def spawn_ffmpeg(input, type \\ :url, options \\ [], conf \\ %{}) do
     {input_url, stdin} =
       case type do
         :url ->
@@ -212,15 +216,15 @@ defmodule Nostrum.Voice.Audio do
           {"pipe:0", input}
 
         :ytdl ->
-          {"pipe:0", spawn_youtubedl(input)}
+          {"pipe:0", spawn_youtubedl(input, conf)}
 
         :stream ->
-          {"pipe:0", spawn_streamlink(input)}
+          {"pipe:0", spawn_streamlink(input, conf)}
       end
 
     res =
       Ports.execute(
-        ffmpeg_executable(),
+        ffmpeg_executable(conf),
         [
           ffmpeg_options(options, input_url),
           ["-ac", "2"],
