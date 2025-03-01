@@ -155,6 +155,7 @@ defmodule Nostrum.Shard.Session do
           bot_options: bot_options
         } = opts
       ) do
+    bot_options = Bot.put_default_name(bot_options)
     Logger.metadata(shard: shard_num, bot: bot_options.name)
     Bot.set_bot_name(bot_options.name)
 
@@ -411,7 +412,8 @@ defmodule Nostrum.Shard.Session do
         gateway: gateway,
         resume_gateway: resume_gateway,
         seq: seq,
-        session: session
+        session: session,
+        bot_options: bot_options
       }) do
     :ok = :gun.close(conn)
     :ok = :gun.flush(conn)
@@ -424,7 +426,8 @@ defmodule Nostrum.Shard.Session do
         gateway: gateway,
         resume_gateway: resume_gateway,
         session: session,
-        seq: seq
+        seq: seq,
+        bot_options: bot_options
       }}}
   end
 

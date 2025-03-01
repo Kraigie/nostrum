@@ -197,21 +197,28 @@ defmodule Nostrum.Bot do
   @typedoc false
   @type options :: bot_options() | {bot_options(), supervisor_options()}
 
+  @doc false
+  @doc since: "0.11.0"
+  @spec put_default_name(bot_options()) :: bot_options()
+  def put_default_name(%{wrapped_token: wrapped_token} = bot_options) do
+    # XXX: This should use something like `Plug.Crypto.prune_stacktrace`.
+    token = wrapped_token.()
+    bot_id = Token.decode_token!(token)
+    name = bot_options[:name] || bot_id
+
+    bot_options
+    |> Map.put(:name, name)
+    |> Map.put(:wrapped_token, fn -> token end)
+  end
+
   # Token is passed wrapped in an anonymous function to prevent exposing it in stacktraces.
   # https://erlef.github.io/security-wg/secure_coding_and_deployment_hardening/sensitive_data#wrapping
   @dialyzer nowarn_function: {:init, 1}
   @impl true
   def init(
-        {%{consumer: _consumer, wrapped_token: wrapped_token} = bot_options, supervisor_options}
+        {%{consumer: _consumer, wrapped_token: _wrapped_token} = bot_options, supervisor_options}
       ) do
-    token = wrapped_token.()
-    bot_id = Token.decode_token!(token)
-    name = bot_options[:name] || bot_id
-
-    bot_options =
-      bot_options
-      |> Map.put(:name, name)
-      |> Map.put(:wrapped_token, fn -> token end)
+    %{name: name} = bot_options = put_default_name(bot_options)
 
     Util.set_process_label({__MODULE__, name})
     name = {:via, Registry, {Nostrum.Bot.Registry, name, bot_options}}

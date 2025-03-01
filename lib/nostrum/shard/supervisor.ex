@@ -177,10 +177,13 @@ defmodule Nostrum.Shard.Supervisor do
   ```
   """
   @doc since: "0.10.0"
-  @spec disconnect(:gen_statem.server_ref() | nil, shard_num()) :: resume_information()
-  def disconnect(shard_session \\ nil, shard_num) do
+  @spec disconnect(Supervisor.supervisor(), :gen_statem.server_ref() | nil, shard_num()) ::
+          resume_information()
+  def disconnect(supervisor \\ fetch_shard_sup_pid(), shard_session \\ nil, shard_num) do
     shard_session = shard_session || fetch_shard_session_pid(shard_num)
-    Session.disconnect(shard_session)
+    resume_info = Session.disconnect(shard_session)
+    :ok = Supervisor.delete_child(supervisor, resume_info.shard_num)
+    resume_info
   end
 
   @doc """
