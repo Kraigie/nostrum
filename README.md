@@ -95,7 +95,7 @@ defmodule MyApp.Application do
     }
 
     children = [{Nostrum.Bot, bot_options}]
-    Supervisor.init(children, strategy: :one_for_one)
+    Supervisor.start_link(children, strategy: :one_for_one)
   end
 end
 ```

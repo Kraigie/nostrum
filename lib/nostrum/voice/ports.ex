@@ -41,7 +41,7 @@ defmodule Nostrum.Voice.Ports do
       ])
 
     # Spawn process to asynchronously send input to port
-    if input, do: spawn(fn -> send_input(port, input) end)
+    if input, do: Task.start(fn -> send_input(port, input) end)
 
     # Store reference if input is another process
     input_pid = if is_pid(input), do: input, else: nil
@@ -93,7 +93,7 @@ defmodule Nostrum.Voice.Ports do
       do: GenServer.cast(pid, :close)
   end
 
-  @empty_queue {[], []}
+  @empty_queue :queue.new()
 
   def handle_call(:get, _from, %{q: @empty_queue, port_done: true}) do
     {:stop, :shutdown, nil, nil}
