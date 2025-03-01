@@ -1,13 +1,16 @@
 # Managed Application Commands
 
-While developing your own bot, it can be annoying to have to manually manage what commands you have registered with Discord, what permissions they have, and checking if they need to be re-synced. 
+While developing your own bot, it can be annoying to have to manually manage
+what commands you have registered with Discord, what permissions they have,
+and checking if they need to be re-synced.
+
 This guide will show you how to write a manager for application commands.
 
 ## Additional Dependencies
 This guide requires the additional dependencies of
 - [Ecto](https://hexdocs.pm/ecto/Ecto.html) for database interactions
 - [EctoSQL](https://hexdocs.pm/ecto_sql/Ecto.Adapters.SQL.html)
-- Your database adapter of choice (e.g. [Postgrex](https://hexdocs.pm/postgrex/Postgrex.html))
+- Your database adapter of choice (e.g. [EctoSQLite3](https://hexdocs.pm/ecto_sqlite3/Ecto.Adapters.SQLite3.html))
 
 As such a certain amount of knowledge of Ecto is assumed.
 
@@ -136,6 +139,12 @@ defmodule MyApp.Commands.Ping do
 end
 ```
 
+Lets add that to our config so that we can access it later:
+
+```elixir
+config :my_app, commands: [MyApp.Commands.Ping]
+```
+
 
 ## Writing the Command Manager
 
@@ -158,16 +167,16 @@ defmodule MyApp.CommandManager do
   """
   def register_commands() do
     for command_module <- Application.get_env(:my_app, :commands) do
-      maybe_register_command(command_module)
+      parse_command_info(command_module)
     end
   end
 
-  defp maybe_register_command(command_module) do
+  defp parse_commnd_info(command_module) do
     creation_map = command_module.creation_map()
 
     case command_module.guild_id() do
       :global ->
-        maybe_register_command(creation_map, "global")
+        maybe_register_command(creation_map, "GLOBAL")
 
       guild_ids when is_list(guild_ids) ->
         for guild_id <- guild_ids do
@@ -197,12 +206,12 @@ defmodule MyApp.CommandManager do
     end
   end
 
-  defp register_command(creation_map, "global") do
+  defp register_command(creation_map, "GLOBAL") do
     {:ok, %{id: id}} = Nostrum.Api.ApplicationCommand.create_global_command(creation_map)
 
     %Command{
       name: creation_map.name,
-      guild_id: "global",
+      guild_id: "GLOBAL",
       command_id: id,
       creation_map: creation_map
     } |> MyApp.Repo.insert!(
@@ -225,3 +234,75 @@ defmodule MyApp.CommandManager do
 end
 ```
 
+We've now got a command manager, but where should we call it?
+That's up to you, but a good place might be in your event handler on
+the `:READY` event.
+
+## Dispatch
+
+So after all that work we still need a way to actually dispatch the commands.
+Lets handle that at compile time with a little macro magic:
+
+```elixir
+defmodule MyApp.CommandDispatch do
+  alias Nostrum.Api
+  alias Nostrum.Struct.Interaction
+
+  require Logger
+
+  @spec dispatch(Interaction.t()) :: term()
+  def dispatch(%Interaction{} = inter) do
+    handle_command(inter.data.name, inter)
+  end
+
+  @commands Application.get_env(:my_app, :commands)
+
+  for cmd <- @commands do
+    Code.ensure_compiled!(cmd)
+
+    name = cmd.get_create_map()[:name]
+    true = function_exported?(cmd, :call, 1)
+
+    defp handle_slash_command(unquote(name), inter) do
+      unquote(cmd).call(inter)
+    end
+  end
+
+  # add in a base case for when we have unrecognized commands
+  defp handle_slash_command(name, inter) do
+    Logger.warning("Unrecognized command: #{name}")
+    Api.Interaction.create_response(
+      inter,
+      %{
+        type: 4,
+        data: %{
+          content: "Unrecognized command: #{name}",
+          flags: 64
+        }
+      }
+    )
+  end
+end
+```
+
+So what's with the loop comprehension at compile time and
+all the `unquote` calls?
+
+Well, we're using the `@commands` module attribute to store
+the list of commands we want to dispatch. We then loop over
+each command, ensure its already compiled, and check if it
+has a `call/1` function. If it does, we define a new
+clause of `handle_slash_command/2` for that particular command.
+
+In the case of a `ping` command, the generated code would look like:
+
+```elixir
+defp handle_slash_command("ping", inter) do
+  MyApp.Commands.Ping.call(inter)
+end
+```
+
+If we have a lot of commands, this means that whenever we want to add a new command
+we only need to update a config value then recompile and we're done.
+
+Managing commands being removed and multibot support is left as an exercise for the reader.
