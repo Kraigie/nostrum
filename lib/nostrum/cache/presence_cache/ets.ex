@@ -12,27 +12,29 @@ defmodule Nostrum.Cache.PresenceCache.ETS do
 
   @behaviour PresenceCache
 
-  @table_name :nostrum_presences
+  @base_table_name :nostrum_presences
 
+  alias Nostrum.Bot
   alias Nostrum.Struct.Guild
   alias Nostrum.Struct.User
 
   use Supervisor
 
   @doc "Start the supervisor."
-  def start_link(init_arg) do
-    Supervisor.start_link(__MODULE__, init_arg, name: __MODULE__)
+  def start_link(opts) do
+    Supervisor.start_link(__MODULE__, opts)
   end
 
   @doc "Retrieve the ETS table reference used for the cache."
   @doc since: "0.8.0"
   @spec table :: :ets.table()
-  def table, do: @table_name
+  def table, do: :"#{@base_table_name}_#{Bot.fetch_bot_name()}"
 
   @doc "Set up the cache's ETS table."
   @impl Supervisor
-  def init(_init_arg) do
-    _tid = :ets.new(@table_name, [:set, :public, :named_table])
+  def init(opts) do
+    table_name = :"#{@base_table_name}_#{Keyword.fetch!(opts, :name)}"
+    _tid = :ets.new(table_name, [:set, :public, :named_table])
     Supervisor.init([], strategy: :one_for_one)
   end
 
@@ -40,7 +42,7 @@ defmodule Nostrum.Cache.PresenceCache.ETS do
   @doc "Retrieve a presence from the cache."
   @spec get(Guild.id(), User.id()) :: {:ok, PresenceCache.presence()} | {:error, any}
   def get(guild_id, user_id) do
-    case :ets.lookup(@table_name, {guild_id, user_id}) do
+    case :ets.lookup(table(), {guild_id, user_id}) do
       [{_, presence}] -> {:ok, presence}
       [] -> {:error, :presence_not_found}
     end
@@ -50,7 +52,7 @@ defmodule Nostrum.Cache.PresenceCache.ETS do
   @doc "Add the given presence data to the cache."
   @spec create(map) :: :ok
   def create(presence) do
-    :ets.insert(@table_name, {{presence.guild_id, presence.user.id}, presence})
+    :ets.insert(table(), {{presence.guild_id, presence.user.id}, presence})
     :ok
   end
 
@@ -59,7 +61,7 @@ defmodule Nostrum.Cache.PresenceCache.ETS do
   @spec update(map()) :: {Guild.id(), presence | nil, presence} | :noop
         when presence: PresenceCache.presence()
   def update(new) do
-    case :ets.lookup(@table_name, {new.guild_id, new.user.id}) do
+    case :ets.lookup(table(), {new.guild_id, new.user.id}) do
       [{{guild_id, _}, old}] ->
         merged = Map.merge(old, new)
         create(merged)
@@ -81,7 +83,7 @@ defmodule Nostrum.Cache.PresenceCache.ETS do
 
   def bulk_create(guild_id, presences) when is_list(presences) do
     Enum.each(presences, fn p ->
-      :ets.insert(@table_name, {{guild_id, p.user.id}, p})
+      :ets.insert(table(), {{guild_id, p.user.id}, p})
     end)
   end
 end

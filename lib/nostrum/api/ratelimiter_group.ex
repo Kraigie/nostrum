@@ -29,15 +29,17 @@ defmodule Nostrum.Api.RatelimiterGroup do
   `:erlang.phash2/2`.
   """
 
-  @scope_name __MODULE__
+  @base_scope_name :nostrum_ratelimiter_group
   @group_name :ratelimiters
+
+  alias Nostrum.Bot
 
   @doc """
   Return a ratelimiter PID to use for requests to the given ratelimiter `bucket`.
   """
   @spec limiter_for_bucket(String.t()) :: pid()
   def limiter_for_bucket(bucket) do
-    limiters = :pg.get_members(@scope_name, @group_name)
+    limiters = :pg.get_members(scope_name(), @group_name)
     # "Processes are returned in no specific order."
     sorted = Enum.sort(limiters)
     total = length(sorted)
@@ -46,15 +48,17 @@ defmodule Nostrum.Api.RatelimiterGroup do
   end
 
   @doc "Join the given ratelimiter to the group."
-  @spec join(pid()) :: :ok
-  def join(pid) do
-    :pg.join(@scope_name, @group_name, pid)
+  @spec join(pid(), Bot.name()) :: :ok
+  def join(pid, bot_name \\ Bot.fetch_bot_name()) do
+    :pg.join(scope_name(bot_name), @group_name, pid)
   end
 
   # Supervisor API
-  def start_link(_opts) do
-    :pg.start_link(@scope_name)
+  def start_link(%{name: bot_name} = _opts) do
+    :pg.start_link(scope_name(bot_name))
   end
+
+  defp scope_name(bot_name \\ Bot.fetch_bot_name()), do: :"#{@base_scope_name}_#{bot_name}"
 
   def child_spec(opts) do
     %{

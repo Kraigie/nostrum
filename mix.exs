@@ -126,7 +126,7 @@ defmodule Nostrum.Mixfile do
         "credo --strict --ignore 'TagTODO'",
         "dialyzer"
       ],
-      check: ["lint", "test --no-start"]
+      check: ["lint", "test"]
     ]
   end
 

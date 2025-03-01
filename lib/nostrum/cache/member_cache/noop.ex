@@ -2,7 +2,7 @@ defmodule Nostrum.Cache.MemberCache.NoOp do
   @moduledoc """
   A NoOp implementation for the MemberCache
 
-  This cache does nothing, enable it if you dont need to cache members
+  This cache does nothing, enable it if you don't need to cache members
   """
   @moduledoc since: "0.9.0"
   @behaviour Nostrum.Cache.MemberCache
@@ -13,8 +13,8 @@ defmodule Nostrum.Cache.MemberCache.NoOp do
   use Supervisor
 
   @doc "Start the supervisor."
-  def start_link(init_arg) do
-    Supervisor.start_link(__MODULE__, init_arg, name: __MODULE__)
+  def start_link(opts) do
+    Supervisor.start_link(__MODULE__, opts)
   end
 
   @impl Supervisor

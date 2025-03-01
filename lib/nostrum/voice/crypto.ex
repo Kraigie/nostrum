@@ -2,6 +2,7 @@ defmodule Nostrum.Voice.Crypto do
   @moduledoc false
 
   alias Nostrum.Struct.VoiceState
+  alias Nostrum.Util
   alias Nostrum.Voice.Audio
   alias Nostrum.Voice.Crypto.Aes
   alias Nostrum.Voice.Crypto.Chacha
@@ -29,9 +30,9 @@ defmodule Nostrum.Voice.Crypto do
     aes256_gcm: :aead_aes256_gcm_rtpsize
   }
 
-  @spec encryption_mode(list(String.t())) :: cipher()
-  def encryption_mode(available_modes) do
-    mode = Application.get_env(:nostrum, :voice_encryption_mode, :aes256_gcm)
+  @spec encryption_mode(Nostrum.Bot.options(), list(String.t())) :: cipher()
+  def encryption_mode(bot_options, available_modes) do
+    mode = Util.get_config(bot_options, :voice_encryption_mode, :aes256_gcm)
 
     mode = Map.get(@mode_aliases, mode, mode)
 

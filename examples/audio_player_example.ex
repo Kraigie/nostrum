@@ -1,17 +1,18 @@
 # This file can be placed somewhere in ./lib, and it can be started
-# by running iex -S mix then calling AudioPlayerSupervisor.start_link([]).
+# by running iex -S mix then calling AudioPlayerSupervisor.start_link().
 defmodule AudioPlayerSupervisor do
   use Supervisor
 
-  def start_link(args) do
+  def start_link(args \\ []) do
     Supervisor.start_link(__MODULE__, args, name: __MODULE__)
   end
 
   @impl true
   def init(_init_arg) do
     bot_options = %{
+      name: AudioPlayerBot,
       consumer: AudioPlayerConsumer,
-      intents: [:direct_messages, :guild_messages, :guild_voice_states, :message_content],
+      intents: [:guilds, :guild_messages, :guild_voice_states, :message_content],
       wrapped_token: fn -> System.fetch_env!("BOT_TOKEN") end
     }
 
@@ -104,11 +105,7 @@ defmodule AudioPlayerConsumer do
     Logger.debug("VOICE SPEAKING UPDATE #{inspect(payload)}")
   end
 
-  # Default event handler, if you don't include this, your consumer WILL crash if
-  # you don't have a method definition for each event type.
-  def handle_event(_event) do
-    :noop
-  end
+  def handle_event(_event), do: :noop
 
   def do_command(%{guild_id: guild_id, data: %{name: "summon"}} = interaction) do
     case get_voice_channel_of_interaction(interaction) do

@@ -10,14 +10,14 @@ defmodule Nostrum.Store.Supervisor do
 
   use Supervisor
 
-  def start_link([]) do
-    Supervisor.start_link(__MODULE__, [], name: __MODULE__)
+  def start_link(%{name: _name} = bot_options) do
+    Supervisor.start_link(__MODULE__, bot_options)
   end
 
-  def init([]) do
+  def init(%{name: name} = _bot_options) do
     children = [
-      Nostrum.Store.GuildShardMapping,
-      Nostrum.Store.UnavailableGuild
+      {Nostrum.Store.GuildShardMapping, name: name},
+      {Nostrum.Store.UnavailableGuild, name: name}
     ]
 
     Supervisor.init(children, strategy: :one_for_one)

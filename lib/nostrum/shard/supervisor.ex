@@ -49,14 +49,18 @@ defmodule Nostrum.Shard.Supervisor do
           shard_num: shard_num(),
           total_shards: total_shards(),
           gateway: String.t(),
+          bot_options: Nostrum.Bot.bot_options(),
           resume_gateway: String.t() | nil,
           session: String.t(),
           seq: pos_integer()
         }
-  use DynamicSupervisor
 
+  use Supervisor
+
+  alias Nostrum.Bot
   alias Nostrum.Error.CacheError
   alias Nostrum.Shard
+  alias Nostrum.Shard.Connector
   alias Nostrum.Shard.Session
   alias Nostrum.Store.GuildShardMapping
   alias Nostrum.Util
@@ -82,40 +86,30 @@ defmodule Nostrum.Shard.Supervisor do
     range
   end
 
-  def start_link({bot_options, _opts}) do
+  def start_link(%{name: bot_name} = bot_options) do
+    prev_value = Bot.set_bot_name(bot_name)
     {_url, gateway_shard_count} = Util.gateway()
+    _ = Bot.set_bot_name(prev_value)
 
-    on_start =
-      DynamicSupervisor.start_link(
-        __MODULE__,
-        nil,
-        name: __MODULE__
-      )
+    shard_children =
+      case Map.get(bot_options, :shards, :auto) do
+        :manual ->
+          []
 
-    case Map.get(bot_options, :shards, :auto) do
-      :manual ->
-        on_start
+        value ->
+          {lowest, highest, total} = cast_shard_range(gateway_shard_count, value)
 
-      value ->
-        {lowest, highest, total} = cast_shard_range(gateway_shard_count, value)
+          Enum.map(lowest..highest, &shard_child_spec(&1 - 1, total, bot_options))
+      end
 
-        shard_range = lowest..highest
-
-        for num <- shard_range, do: {:ok, _pid} = connect(num - 1, total, bot_options)
-    end
-
-    on_start
+    Supervisor.start_link(__MODULE__, shard_children)
   end
 
   def update_status(status, activity) do
-    __MODULE__
-    |> DynamicSupervisor.which_children()
-    |> Enum.filter(fn {_id, _pid, _type, [modules]} -> modules == Nostrum.Shard end)
-    |> Enum.map(fn {_id, pid, _type, _modules} -> Supervisor.which_children(pid) end)
-    |> List.flatten()
-    |> Enum.map(fn {_id, pid, _type, _modules} ->
-      Session.update_status(pid, status, activity)
-    end)
+    fetch_shard_sup_pid()
+    |> Util.get_children_pids(Shard)
+    |> Enum.map(&Util.get_child_pid(&1, Session))
+    |> Enum.map(&Session.update_status(&1, status, activity))
   end
 
   def update_voice_state(guild_id, channel_id, self_mute, self_deaf) do
@@ -124,23 +118,48 @@ defmodule Nostrum.Shard.Supervisor do
         raise CacheError, key: guild_id, cache_name: GuildShardMapping
 
       shard_num ->
-        :"Nostrum.Shard-#{shard_num}"
-        |> Supervisor.which_children()
-        |> Enum.find(fn {id, _pid, _type, _modules} -> id == Nostrum.Shard.Session end)
-        |> elem(1)
+        shard_num
+        |> fetch_shard_session_pid()
         |> Session.update_voice_state(guild_id, channel_id, self_mute, self_deaf)
     end
   end
 
   @doc false
-  def init(_) do
-    DynamicSupervisor.init(strategy: :one_for_one, max_restarts: 3, max_seconds: 60)
+  def init(shard_children) do
+    children = [Connector | shard_children]
+    Supervisor.init(children, strategy: :one_for_one, max_restarts: 3, max_seconds: 60)
   end
 
   @doc false
-  def create_worker(shard_num, total, bot_options) do
+  def fetch_shard_sup_pid do
+    Util.get_child_pid(Bot.fetch_bot_pid(), __MODULE__)
+  end
+
+  @doc false
+  def fetch_shard_pid(shard_num) do
+    Util.get_child_pid(fetch_shard_sup_pid(), shard_num)
+  end
+
+  @doc false
+  def fetch_shard_session_pid(shard_num) do
+    Util.get_child_pid(fetch_shard_pid(shard_num), Session)
+  end
+
+  @doc false
+  def shard_child_spec(shard_num, total_shards, bot_options) do
     {gateway, _gateway_shard_count} = Util.gateway()
-    {Shard, [gateway, shard_num, total, bot_options]}
+
+    shard_child_spec(%{
+      gateway: gateway,
+      shard_num: shard_num,
+      total_shards: total_shards,
+      bot_options: bot_options
+    })
+  end
+
+  @doc false
+  def shard_child_spec(%{shard_num: shard_num} = shard_opts) do
+    Supervisor.child_spec({Shard, shard_opts}, id: shard_num)
   end
 
   @doc """
@@ -158,26 +177,22 @@ defmodule Nostrum.Shard.Supervisor do
   ```
   """
   @doc since: "0.10.0"
-  @spec disconnect(shard_num()) :: resume_information()
-  def disconnect(shard_num) do
-    :"Nostrum.Shard-#{shard_num}"
-    |> Supervisor.which_children()
-    |> Enum.find(fn {id, _pid, _type, _modules} -> id == Nostrum.Shard.Session end)
-    |> elem(1)
-    |> Session.disconnect()
+  @spec disconnect(:gen_statem.server_ref() | nil, shard_num()) :: resume_information()
+  def disconnect(shard_session \\ nil, shard_num) do
+    shard_session = shard_session || fetch_shard_session_pid(shard_num)
+    Session.disconnect(shard_session)
   end
 
   @doc """
   Spawns a shard with the specified number and connects it to the discord gateway.
   """
-  @spec connect(shard_num(), total_shards(), Nostrum.Bot.bot_options()) ::
-          DynamicSupervisor.on_start_child()
-  def connect(shard_num, total_shards, bot_options) do
-    # XXX: This currently relies on the module being registered under that name.
-    # We need to name it according to the bot, but that's not enough either,
-    # because we also need to name it according to the shards that are being
-    # started, otherwise we could have conflicts.
-    DynamicSupervisor.start_child(__MODULE__, create_worker(shard_num, total_shards, bot_options))
+  @spec connect(Supervisor.supervisor(), shard_num(), total_shards(), Bot.bot_options()) ::
+          Supervisor.on_start_child()
+  def connect(supervisor \\ fetch_shard_sup_pid(), shard_num, total_shards, bot_options) do
+    Supervisor.start_child(
+      supervisor,
+      shard_child_spec(shard_num, total_shards, bot_options)
+    )
   end
 
   @doc """
@@ -201,20 +216,22 @@ defmodule Nostrum.Shard.Supervisor do
   ```
   """
   @doc since: "0.10.0"
-  @spec reconnect(resume_information()) :: DynamicSupervisor.on_start_child()
+  @spec reconnect(Supervisor.supervisor(), resume_information()) :: Supervisor.on_start_child()
   def reconnect(
+        supervisor \\ fetch_shard_sup_pid(),
         %{
           shard_num: _shard_num,
           total_shards: _total_shards,
           gateway: _gateway,
+          bot_options: _bot_options,
           resume_gateway: _resume_gateway,
           seq: _seq,
           session: _session
         } = opts
       ) do
-    DynamicSupervisor.start_child(
-      __MODULE__,
-      {Shard, {:reconnect, opts}}
+    Supervisor.start_child(
+      supervisor,
+      shard_child_spec(opts)
     )
   end
 end

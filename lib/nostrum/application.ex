@@ -36,9 +36,13 @@ defmodule Nostrum.Application do
       """
     end
 
+    children = [
+      {Registry, keys: :unique, name: Nostrum.Bot.Registry}
+    ]
+
     if Application.get_env(:nostrum, :dev),
-      do: Supervisor.start_link([DummySupervisor], strategy: :one_for_one),
-      else: Supervisor.start_link([], strategy: :one_for_one, name: Nostrum.Supervisor)
+      do: Supervisor.start_link(children ++ [DummySupervisor], strategy: :one_for_one),
+      else: Supervisor.start_link(children, strategy: :one_for_one, name: Nostrum.Supervisor)
   end
 
   defp check_executables do
@@ -85,7 +89,7 @@ defmodule Nostrum.Application do
   defp check_otp_version do
     _module_info = :pg.module_info()
 
-    unless function_exported?(:pg, :monitor, 2) do
+    if not function_exported?(:pg, :monitor, 2) do
       Logger.critical("""
       Your Erlang/OTP version needs to be 25.1 or newer to use Nostrum 0.9 and newer.
       Current major version: #{System.otp_release()}

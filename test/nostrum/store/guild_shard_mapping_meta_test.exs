@@ -17,17 +17,7 @@ defmodule Nostrum.Store.GuildShardMappingMetaTest do
       doctest @store
 
       setup do
-        on_exit(:cleanup, fn ->
-          try do
-            if function_exported?(@store, :teardown, 0) do
-              apply(@store, :teardown, [])
-            end
-          rescue
-            e -> e
-          end
-        end)
-
-        [pid: start_supervised!(@store)]
+        Nostrum.Cache.TestBase.setup_and_teardown_cache(@store)
       end
 
       test "storing functionality" do

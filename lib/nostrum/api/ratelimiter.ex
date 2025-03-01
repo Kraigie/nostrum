@@ -57,7 +57,7 @@ defmodule Nostrum.Api.Ratelimiter do
   ### Connection setup
 
   The state machine begins its life in the `:disconnected` state. The state
-  represents wheher the state machine is connected to the HTTP endpoint,
+  represents whether the state machine is connected to the HTTP endpoint,
   connections are kept open for some time. If a request comes in, it will
   transition to the `:connecting` state and try to open the connection. If this
   succeeds, it transitions to the `:connected` state.
@@ -85,7 +85,7 @@ defmodule Nostrum.Api.Ratelimiter do
   retrieve how many calls we have for this bucket (`:initial`, see above).
 
   - If none of the above is true, a new queue is created and the pending
-  rqeuest marked as the `:initial` request. It will be run as soon as the bot's
+  request marked as the `:initial` request. It will be run as soon as the bot's
   global limit limit expires.
 
   The request starting function, `:next`, will start new requests from the
@@ -208,6 +208,7 @@ defmodule Nostrum.Api.Ratelimiter do
   alias Nostrum.Error.ApiError
 
   alias Nostrum.TelemetryShim
+  alias Nostrum.Util
 
   require Logger
 
@@ -267,14 +268,20 @@ defmodule Nostrum.Api.Ratelimiter do
   - `:wrapped_token`: An anonymous function that returns the bot token. This is
   wrapped to ensure that ti is not accidentally exposed in stacktraces.
 
+  - `:name`: The name of the bot this ratelimiter and accompanying ratelimiter
+  process group are starting under.
+
   ## Optional fields
 
+  - `:force_http1`: Whether to force HTTP 1 connections.
   - `:host`: The remote host to connect to.
   - `:port`: The remote port to connect to.
   """
   @typedoc since: "0.11.0"
   @type config :: %{
           required(:wrapped_token) => (-> String.t()),
+          required(:name) => Nostrum.Bot.name(),
+          optional(:force_http1) => boolean(),
           optional(:host) => String.t(),
           optional(:port) => :inet.port_number()
         }
@@ -326,13 +333,13 @@ defmodule Nostrum.Api.Ratelimiter do
   @doc """
   Starts the ratelimiter.
   """
-  @spec start_link({String.t(), [:gen_statem.start_opt()]}) :: :gen_statem.start_ret()
-  def start_link({token, opts}) do
-    :gen_statem.start_link(__MODULE__, token, opts)
+  @spec start_link(Nostrum.Bot.bot_options()) :: :gen_statem.start_ret()
+  def start_link(%{wrapped_token: _, name: _} = bot_options) do
+    :gen_statem.start_link(__MODULE__, bot_options, [])
   end
 
-  def init(%{} = options) do
-    :ok = RatelimiterGroup.join(self())
+  def init(%{name: bot_name} = options) do
+    :ok = RatelimiterGroup.join(self(), bot_name)
     # Uncomment the following to trace everything the ratelimiter is doing:
     #   me = self()
     #   spawn(fn -> :sys.trace(me, true) end)
@@ -386,7 +393,7 @@ defmodule Nostrum.Api.Ratelimiter do
   end
 
   def connecting(:internal, :open, %{config: config} = data) do
-    open_opts = get_open_opts()
+    open_opts = get_open_opts(config)
     host = to_charlist(Map.get(config, :host, Constants.domain()))
     port = Map.get(config, :port, 443)
 
@@ -395,7 +402,7 @@ defmodule Nostrum.Api.Ratelimiter do
   end
 
   def connecting(:info, {:gun_up, conn_pid, _protocol}, %{conn: conn_pid} = data) do
-    TelemetryShim.execute(~w[nostrum ratelimiter connected]a, %{}, %{})
+    TelemetryShim.execute(~w[nostrum ratelimiter connected]a, %{}, %{bot: data.config.name})
     {:next_state, :connected, data}
   end
 
@@ -407,8 +414,8 @@ defmodule Nostrum.Api.Ratelimiter do
     {:keep_state_and_data, :postpone}
   end
 
-  def connecting(:state_timeout, :connect_timeout, _data) do
-    TelemetryShim.execute(~w[nostrum ratelimiter connect_timeout]a, %{})
+  def connecting(:state_timeout, :connect_timeout, data) do
+    TelemetryShim.execute(~w[nostrum ratelimiter connect_timeout]a, %{}, %{bot: data.config.name})
     {:stop, :connect_timeout}
   end
 
@@ -425,6 +432,8 @@ defmodule Nostrum.Api.Ratelimiter do
       ) do
     bucket = get_endpoint(payload.route, payload.method)
 
+    meta = %{bot: data.config.name, major_route: bucket, global: nil}
+
     # The outstanding maps contains pairs in the form `{remaining, queue}`,
     # where `remaining` is the amount of remaining calls we may make, and
     # `queue` is the waiting line of requests. If the ratelimit on the bucket
@@ -440,7 +449,7 @@ defmodule Nostrum.Api.Ratelimiter do
         TelemetryShim.execute(
           ~w[nostrum ratelimiter postponed]a,
           %{},
-          %{major_route: bucket, global: false}
+          %{meta | global: false}
         )
 
         data_with_this_queued =
@@ -481,7 +490,7 @@ defmodule Nostrum.Api.Ratelimiter do
         TelemetryShim.execute(
           ~w[nostrum ratelimiter postponed]a,
           %{},
-          %{major_route: bucket, global: true}
+          %{meta | global: true}
         )
 
         data_with_this_queued =
@@ -925,7 +934,8 @@ defmodule Nostrum.Api.Ratelimiter do
 
     TelemetryShim.execute(
       ~w[nostrum ratelimiter disconnected]a,
-      %{}
+      %{},
+      %{bot: config.name}
     )
 
     # Streams that we previously received `:gun_error` notifications for have
@@ -937,7 +947,7 @@ defmodule Nostrum.Api.Ratelimiter do
     replies =
       killed_streams
       |> Stream.map(&Map.get(running, &1))
-      |> Stream.reject(&(&1 == nil))
+      |> Stream.reject(&is_nil/1)
       |> Enum.map(fn stream ->
         {_bucket, _request, client} = Map.fetch!(running, stream)
         {:reply, client, {:error, {:connection_died, reason}}}
@@ -994,7 +1004,7 @@ defmodule Nostrum.Api.Ratelimiter do
 
   # End of callback functions
 
-  defp get_open_opts do
+  defp get_open_opts(config) do
     default_opts = %{
       connect_timeout: :timer.seconds(5),
       domain_lookup_timeout: :timer.seconds(5),
@@ -1007,7 +1017,7 @@ defmodule Nostrum.Api.Ratelimiter do
       tls_opts: Constants.gun_tls_opts()
     }
 
-    if Application.get_env(:nostrum, :force_http1, false) do
+    if Util.get_config(config, :force_http1, false) do
       Map.put(default_opts, :protocols, [:http])
     else
       default_opts
@@ -1070,12 +1080,11 @@ defmodule Nostrum.Api.Ratelimiter do
   defp parse_headers({:ok, {_status, headers, _body}}) do
     limit_scope = header_value(headers, "x-ratelimit-scope")
     remaining = header_value(headers, "x-ratelimit-remaining")
-    remaining = unless is_nil(remaining), do: String.to_integer(remaining)
+    remaining = if remaining, do: String.to_integer(remaining)
 
     reset_after = header_value(headers, "x-ratelimit-reset-after")
 
-    reset_after =
-      unless is_nil(reset_after), do: :erlang.trunc(String.to_float(reset_after) * 1000)
+    reset_after = if reset_after, do: :erlang.trunc(String.to_float(reset_after) * 1000)
 
     cond do
       is_nil(remaining) and is_nil(reset_after) ->

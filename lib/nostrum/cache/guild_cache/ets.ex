@@ -1,12 +1,12 @@
 defmodule Nostrum.Cache.GuildCache.ETS do
-  @table_name :nostrum_guilds
+  @base_table_name :nostrum_guilds
   @moduledoc """
   An ETS-based cache for guilds.
 
   The supervisor defined by this module will set up the ETS table associated
   with it.
 
-  The default table name under which guilds are cached is `#{@table_name}`.
+  The default table name under which guilds are cached is prefixed by `#{@base_table_name}`.
   In addition to the cache behaviour implementations provided by this module,
   you can also call regular ETS table methods on it, such as `:ets.info`.
 
@@ -19,6 +19,7 @@ defmodule Nostrum.Cache.GuildCache.ETS do
 
   @behaviour Nostrum.Cache.GuildCache
 
+  alias Nostrum.Bot
   alias Nostrum.Cache.GuildCache
   alias Nostrum.Struct.Channel
   alias Nostrum.Struct.Emoji
@@ -29,20 +30,21 @@ defmodule Nostrum.Cache.GuildCache.ETS do
   use Supervisor
 
   @doc "Start the supervisor."
-  def start_link(init_arg) do
-    Supervisor.start_link(__MODULE__, init_arg, name: __MODULE__)
+  def start_link(opts) do
+    Supervisor.start_link(__MODULE__, opts)
   end
 
   @doc "Set up the cache's ETS table."
   @impl Supervisor
-  def init(_init_arg) do
-    _tid = :ets.new(tabname(), [:set, :public, :named_table])
+  def init(opts) do
+    table_name = :"#{@base_table_name}_#{Keyword.fetch!(opts, :name)}"
+    _tid = :ets.new(table_name, [:set, :public, :named_table])
     Supervisor.init([], strategy: :one_for_one)
   end
 
   @doc "Retrieve the ETS table name used for the cache."
-  @spec tabname :: atom()
-  def tabname, do: @table_name
+  @spec table :: atom()
+  def table, do: :"#{@base_table_name}_#{Bot.fetch_bot_name()}"
 
   # IMPLEMENTATION
 
@@ -50,7 +52,7 @@ defmodule Nostrum.Cache.GuildCache.ETS do
   @impl GuildCache
   @spec get(Guild.id()) :: {:ok, Guild.t()} | {:error, :not_found}
   def get(guild_id) do
-    case :ets.lookup(@table_name, guild_id) do
+    case :ets.lookup(table(), guild_id) do
       [{_id, guild}] -> {:ok, guild}
       [] -> {:error, :not_found}
     end
@@ -63,7 +65,7 @@ defmodule Nostrum.Cache.GuildCache.ETS do
     ms = [{{:_, :"$1"}, [], [:"$1"]}]
 
     Stream.resource(
-      fn -> :ets.select(@table_name, ms, 100) end,
+      fn -> :ets.select(table(), ms, 100) end,
       fn items ->
         case items do
           {matches, cont} ->
@@ -83,7 +85,7 @@ defmodule Nostrum.Cache.GuildCache.ETS do
   def create(payload) do
     guild = Guild.to_struct(payload)
     # A duplicate guild insert is treated as a replace.
-    true = :ets.insert(@table_name, {guild.id, guild})
+    true = :ets.insert(table(), {guild.id, guild})
     guild
   end
 
@@ -93,10 +95,10 @@ defmodule Nostrum.Cache.GuildCache.ETS do
   def update(payload) do
     casted = Util.cast(payload, {:struct, Guild})
 
-    case :ets.lookup(@table_name, payload.id) do
+    case :ets.lookup(table(), payload.id) do
       [{_id, old_guild}] ->
         new_guild = Guild.merge(old_guild, casted)
-        true = :ets.update_element(@table_name, payload.id, {2, new_guild})
+        true = :ets.update_element(table(), payload.id, {2, new_guild})
         {old_guild, new_guild}
 
       [] ->
@@ -109,7 +111,7 @@ defmodule Nostrum.Cache.GuildCache.ETS do
   @spec delete(Guild.id()) :: Guild.t() | nil
   def delete(guild_id) do
     # Returns the old guild, if cached
-    case :ets.take(@table_name, guild_id) do
+    case :ets.take(table(), guild_id) do
       [{_id, guild}] -> guild
       [] -> nil
     end
@@ -119,11 +121,11 @@ defmodule Nostrum.Cache.GuildCache.ETS do
   @impl GuildCache
   @spec channel_create(Guild.id(), map()) :: Channel.t()
   def channel_create(guild_id, channel) do
-    [{_id, guild}] = :ets.lookup(@table_name, guild_id)
+    [{_id, guild}] = :ets.lookup(table(), guild_id)
     new_channel = Util.cast(channel, {:struct, Channel})
     new_channels = Map.put(guild.channels, channel.id, new_channel)
     new_guild = %{guild | channels: new_channels}
-    true = :ets.update_element(@table_name, guild_id, {2, new_guild})
+    true = :ets.update_element(table(), guild_id, {2, new_guild})
     new_channel
   end
 
@@ -131,10 +133,10 @@ defmodule Nostrum.Cache.GuildCache.ETS do
   @impl GuildCache
   @spec channel_delete(Guild.id(), Channel.id()) :: Channel.t() | :noop
   def channel_delete(guild_id, channel_id) do
-    [{_id, guild}] = :ets.lookup(@table_name, guild_id)
+    [{_id, guild}] = :ets.lookup(table(), guild_id)
     {popped, new_channels} = Map.pop(guild.channels, channel_id)
     new_guild = %{guild | channels: new_channels}
-    true = :ets.update_element(@table_name, guild_id, {2, new_guild})
+    true = :ets.update_element(table(), guild_id, {2, new_guild})
     if popped, do: popped, else: :noop
   end
 
@@ -142,13 +144,13 @@ defmodule Nostrum.Cache.GuildCache.ETS do
   @impl GuildCache
   @spec channel_update(Guild.id(), map()) :: {Channel.t(), Channel.t()}
   def channel_update(guild_id, channel) do
-    [{_id, guild}] = :ets.lookup(@table_name, guild_id)
+    [{_id, guild}] = :ets.lookup(table(), guild_id)
 
     {old, new, new_channels} =
       GuildCache.Base.upsert(guild.channels, channel.id, channel, Channel)
 
     new_guild = %{guild | channels: new_channels}
-    true = :ets.update_element(@table_name, guild_id, {2, new_guild})
+    true = :ets.update_element(table(), guild_id, {2, new_guild})
     {old, new}
   end
 
@@ -156,10 +158,10 @@ defmodule Nostrum.Cache.GuildCache.ETS do
   @impl GuildCache
   @spec emoji_update(Guild.id(), [map()]) :: {[Emoji.t()], [Emoji.t()]}
   def emoji_update(guild_id, emojis) do
-    [{_id, guild}] = :ets.lookup(@table_name, guild_id)
+    [{_id, guild}] = :ets.lookup(table(), guild_id)
     casted = Util.cast(emojis, {:list, {:struct, Emoji}})
     new = %{guild | emojis: casted}
-    true = :ets.update_element(@table_name, guild_id, {2, new})
+    true = :ets.update_element(table(), guild_id, {2, new})
     {guild.emojis, casted}
   end
 
@@ -167,10 +169,10 @@ defmodule Nostrum.Cache.GuildCache.ETS do
   @impl GuildCache
   @spec stickers_update(Guild.id(), [map()]) :: {[Sticker.t()], [Sticker.t()]}
   def stickers_update(guild_id, stickers) do
-    [{_id, guild}] = :ets.lookup(@table_name, guild_id)
+    [{_id, guild}] = :ets.lookup(table(), guild_id)
     casted = Util.cast(stickers, {:list, {:struct, Sticker}})
     new = %{guild | stickers: casted}
-    true = :ets.update_element(@table_name, guild_id, {2, new})
+    true = :ets.update_element(table(), guild_id, {2, new})
     {guild.stickers, casted}
   end
 
@@ -178,10 +180,10 @@ defmodule Nostrum.Cache.GuildCache.ETS do
   @impl GuildCache
   @spec role_create(Guild.id(), map()) :: {Guild.id(), Role.t()}
   def role_create(guild_id, role) do
-    [{_id, guild}] = :ets.lookup(@table_name, guild_id)
+    [{_id, guild}] = :ets.lookup(table(), guild_id)
     {_old, new, new_roles} = GuildCache.Base.upsert(guild.roles, role.id, role, Role)
     new_guild = %{guild | roles: new_roles}
-    true = :ets.update_element(@table_name, guild_id, {2, new_guild})
+    true = :ets.update_element(table(), guild_id, {2, new_guild})
     {guild_id, new}
   end
 
@@ -189,10 +191,10 @@ defmodule Nostrum.Cache.GuildCache.ETS do
   @impl GuildCache
   @spec role_delete(Guild.id(), Role.id()) :: {Guild.id(), Role.t()} | :noop
   def role_delete(guild_id, role_id) do
-    [{_id, guild}] = :ets.lookup(@table_name, guild_id)
+    [{_id, guild}] = :ets.lookup(table(), guild_id)
     {popped, new_roles} = Map.pop(guild.roles, role_id)
     new_guild = %{guild | roles: new_roles}
-    true = :ets.update_element(@table_name, guild_id, {2, new_guild})
+    true = :ets.update_element(table(), guild_id, {2, new_guild})
     if popped, do: {guild_id, popped}, else: :noop
   end
 
@@ -200,10 +202,10 @@ defmodule Nostrum.Cache.GuildCache.ETS do
   @impl GuildCache
   @spec role_update(Guild.id(), map()) :: {Guild.id(), Role.t(), Role.t()}
   def role_update(guild_id, role) do
-    [{_id, guild}] = :ets.lookup(@table_name, guild_id)
+    [{_id, guild}] = :ets.lookup(table(), guild_id)
     {old, new_role, new_roles} = GuildCache.Base.upsert(guild.roles, role.id, role, Role)
     new_guild = %{guild | roles: new_roles}
-    true = :ets.update_element(@table_name, guild_id, {2, new_guild})
+    true = :ets.update_element(table(), guild_id, {2, new_guild})
     {guild_id, old, new_role}
   end
 
@@ -211,7 +213,7 @@ defmodule Nostrum.Cache.GuildCache.ETS do
   @impl GuildCache
   @spec voice_state_update(Guild.id(), map()) :: {Guild.id(), [map()]}
   def voice_state_update(guild_id, payload) do
-    [{_id, guild}] = :ets.lookup(@table_name, guild_id)
+    [{_id, guild}] = :ets.lookup(table(), guild_id)
     # Trim the `member` from the update payload.
     # Remove both `"member"` and `:member` in case of future key changes.
     trimmed_update = Map.drop(payload, [:member, "member"])
@@ -225,7 +227,7 @@ defmodule Nostrum.Cache.GuildCache.ETS do
       )
 
     new_guild = %{guild | voice_states: new_state}
-    true = :ets.update_element(@table_name, guild_id, {2, new_guild})
+    true = :ets.update_element(table(), guild_id, {2, new_guild})
     {guild_id, new_state}
   end
 
@@ -234,9 +236,9 @@ defmodule Nostrum.Cache.GuildCache.ETS do
   @impl GuildCache
   @spec member_count_up(Guild.id()) :: true
   def member_count_up(guild_id) do
-    case :ets.lookup(@table_name, guild_id) do
+    case :ets.lookup(table(), guild_id) do
       [{^guild_id, guild}] ->
-        :ets.insert(@table_name, {guild_id, %{guild | member_count: guild.member_count + 1}})
+        :ets.insert(table(), {guild_id, %{guild | member_count: guild.member_count + 1}})
 
       _ ->
         # Guilds caching disabled but member caching isn't
@@ -249,9 +251,9 @@ defmodule Nostrum.Cache.GuildCache.ETS do
   @impl GuildCache
   @spec member_count_down(Guild.id()) :: true
   def member_count_down(guild_id) do
-    case :ets.lookup(@table_name, guild_id) do
+    case :ets.lookup(table(), guild_id) do
       [{^guild_id, guild}] ->
-        :ets.insert(@table_name, {guild_id, %{guild | member_count: guild.member_count - 1}})
+        :ets.insert(table(), {guild_id, %{guild | member_count: guild.member_count - 1}})
 
       _ ->
         # Guilds caching disabled but member caching isn't

@@ -16,7 +16,7 @@ defmodule Nostrum.Cache.MemberCacheMetaTest do
 
   for cache <- @cache_modules do
     defmodule :"#{cache}Test" do
-      use ExUnit.Case
+      use ExUnit.Case, async: true
       # this is needed because otherwise we cannot access
       # the cache in the tests
       @cache cache
@@ -43,20 +43,7 @@ defmodule Nostrum.Cache.MemberCacheMetaTest do
       end
 
       setup do
-        # For cache backends that persist across test cases, this is needed
-        # to clean them up nicely again. Other cache backends may already
-        # be stopped by then, and are `rescue`d appropriately.
-        on_exit(:cleanup, fn ->
-          try do
-            if function_exported?(@cache, :teardown, 0) do
-              apply(@cache, :teardown, [])
-            end
-          rescue
-            e -> e
-          end
-        end)
-
-        [pid: start_supervised!(@cache)]
+        Nostrum.Cache.TestBase.setup_and_teardown_cache(@cache)
       end
 
       if function_exported?(@cache, :wrap_query, 1) do
@@ -114,8 +101,11 @@ defmodule Nostrum.Cache.MemberCacheMetaTest do
       end
 
       describe "get_with_user/3" do
-        setup do
-          [user_pid: start_supervised!(UserCache)]
+        setup %{cache_id: cache_id} do
+          [pid: user_pid, bot_name: bot_name, cache_id: _cache_id] =
+            Nostrum.Cache.TestBase.setup_and_teardown_cache(UserCache, @cache, cache_id)
+
+          [user_pid: user_pid, bot_name: bot_name]
         end
 
         test "no member and no user" do
@@ -150,8 +140,11 @@ defmodule Nostrum.Cache.MemberCacheMetaTest do
       end
 
       describe "fold_with_users/4" do
-        setup do
-          [user_pid: start_supervised!(UserCache)]
+        setup %{cache_id: cache_id} do
+          [pid: user_pid, bot_name: bot_name, cache_id: _cache_id] =
+            Nostrum.Cache.TestBase.setup_and_teardown_cache(UserCache, @cache, cache_id)
+
+          [user_pid: user_pid, bot_name: bot_name]
         end
 
         test "with unknown guild" do
@@ -172,8 +165,11 @@ defmodule Nostrum.Cache.MemberCacheMetaTest do
       end
 
       describe "fold_by_user/4" do
-        setup do
-          [user_pid: start_supervised!(UserCache)]
+        setup %{cache_id: cache_id} do
+          [pid: user_pid, bot_name: bot_name, cache_id: _cache_id] =
+            Nostrum.Cache.TestBase.setup_and_teardown_cache(UserCache, @cache, cache_id)
+
+          [user_pid: user_pid, bot_name: bot_name]
         end
 
         test "with unknown guild" do

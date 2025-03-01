@@ -14,12 +14,12 @@ defmodule Nostrum.Shard.Event do
   def handle(:dispatch, payload, state) do
     payload = Util.safe_atom_map(payload)
 
-    if Application.get_env(:nostrum, :log_dispatch_events),
+    if Util.get_config(state.bot_options, :log_dispatch_events, false),
       do: payload.t |> inspect() |> Logger.debug()
 
     {payload, state}
     |> Dispatch.handle()
-    |> ConsumerGroup.dispatch()
+    |> ConsumerGroup.dispatch(state.bot_options.name)
 
     if payload.t == :READY do
       Logger.info("READY")

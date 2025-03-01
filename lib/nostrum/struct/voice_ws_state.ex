@@ -12,6 +12,7 @@ defmodule Nostrum.Struct.VoiceWSState do
     :secret_key,
     :conn,
     :conn_pid,
+    :voice_pid,
     :stream,
     :gateway,
     :identified,
@@ -22,7 +23,7 @@ defmodule Nostrum.Struct.VoiceWSState do
     :heartbeat_ack,
     :heartbeat_interval,
     :heartbeat_ref,
-    :consumer
+    :bot_options
   ]
 
   @typedoc "The guild id that this voice websocket state applies to"
@@ -56,6 +57,9 @@ defmodule Nostrum.Struct.VoiceWSState do
 
   @typedoc "PID of the connection process"
   @type conn_pid :: pid()
+
+  @typedoc "PID of the voice state map"
+  @type voice_pid :: pid()
 
   @typedoc "Stream reference for `:gun`"
   @type stream :: :gun.stream_ref()
@@ -93,10 +97,6 @@ defmodule Nostrum.Struct.VoiceWSState do
   @typedoc "Time ref for the heartbeat"
   @type heartbeat_ref :: :timer.tref() | nil
 
-  @typedoc "The consumer callback module. See `Nostrum.Consumer`."
-  @typedoc since: "0.11.0"
-  @type consumer :: module()
-
   @type t :: %__MODULE__{
           guild_id: guild_id,
           channel_id: channel_id,
@@ -106,6 +106,7 @@ defmodule Nostrum.Struct.VoiceWSState do
           secret_key: secret_key,
           conn: conn,
           conn_pid: conn_pid,
+          voice_pid: voice_pid,
           stream: stream,
           gateway: gateway,
           identified: identified,
@@ -116,6 +117,6 @@ defmodule Nostrum.Struct.VoiceWSState do
           heartbeat_ack: heartbeat_ack,
           heartbeat_interval: heartbeat_interval,
           heartbeat_ref: heartbeat_ref,
-          consumer: consumer
+          bot_options: Nostrum.Bot.bot_options()
         }
 end

@@ -56,7 +56,7 @@ Afterwards, run `mix deps.get` to fetch dependencies.
 ## Consumer setup
 
 Next up, you need to define a consumer - a module which handles events, see the
-`Nostrum.Consumer` docs. In `lib/my_bot/example_consumer.ex`, define the
+`Nostrum.Consumer` docs. In `lib/my_bot/consumer.ex`, define the
 following:
 
 A basic consumer could look like the following:
@@ -90,17 +90,18 @@ defmodule MyBot.Application do
   use Application
 
   @impl true
-  def start(_init_arg) do
+  def start(_type, _args) do
     bot_options = %{
+      name: MyBot,
       consumer: MyBot.Consumer,
       intents: [:direct_messages, :guild_messages, :message_content],
-      wrapped_token: fn -> System.fetch_env!("BOT_TOKEN") end,
+      wrapped_token: fn -> System.fetch_env!("BOT_TOKEN") end
     }
     children = [
       {Nostrum.Bot, bot_options}
     ]
 
-    Supervisor.init(children, strategy: :one_for_one)
+    Supervisor.start_link(children, strategy: :one_for_one)
   end
 end
 ```
@@ -115,13 +116,13 @@ feel free to use any other configuration method you like.
 > non-slash commands or moderation tools), you need to have the "Message Content
 > Intent" enabled on your [Bot's application
 > settings](https://discord.com/developers/applications/), and the
-> `:message_content` intent specified in the `[:nostrum, :gateway_intents]`
-> configuration key.
+> `:message_content` intent specified in the bot's options.
 
 
 ## Configuration options
 
-nostrum supports the following global configuration options:
+nostrum supports the following global configuration options with `:nostrum` as the
+config root key. Most of them may be overridden per-bot.
 
 - `request_guild_members` - perform member chunking to retrieve a complete list
   of members for all guilds at startup. Depending on your [cache
@@ -130,6 +131,7 @@ nostrum supports the following global configuration options:
 - `gateway_compression` - use either `:zlib` (default) or `:zstd` for compression
   of messages from the Discord gateway. See the documentation on
   [Gateway Compression](../advanced/gateway_compression.md) for more information.
+  *This is a global, compile-time config option only.*
 
 
 ### Voice-specific
@@ -161,16 +163,6 @@ nostrum supports the following global configuration options:
   websocket. Defaults to `false`.
 - `log_dispatch_events` - This will log dispatch events as they are received
   from the gateway. Defaults to `false`.
-- `fullsweep_after_default` - Sets the `fullsweep_after` flag for processes
-  that can have irregularly high memory usage due to Discord payloads. This
-  options will dramatically reduce the amount of memory used by some processes
-  at the cost of increased CPU usage. This is useful if you're running your
-  application under a memory constrained environment. This comes at the cost
-  of increased CPU usage. By default, this option will only affect some
-  processes. You can set this flag for *all* processes using environment
-  variables or by [setting the system flag
-  yourself](http://erlang.org/doc/man/erlang.html#system_flag-2). Defaults to
-  whatever your system recommends, which is probably `65535`.
 - `force_http1` - Set to `true` if you wish to disable automatic use of HTTP 2
   or newer HTTP versions for API requests to Discord. Useful to diagnose issues
   with ratelimiter connections during abnormal network conditions.
@@ -195,6 +187,7 @@ events. Normal messages include Discord-requested shard reconnections and the
 
 The following metadata fields through logger:
 
+ - `bot` - Name of the bot that received the event
  - `shard` - Id of the shard on which the event occurred
  - `guild` - Name of the guild on which the voice connection event occurred
  - `channel` - Name of the channel on which the voice connection event occurred
@@ -202,7 +195,7 @@ The following metadata fields through logger:
 To enable this metadata, logger can be configured as such:
 ```elixir
 config :logger, :console,
-  metadata: [:shard, :guild, :channel]
+  metadata: [:bot, :shard, :guild, :channel]
 ```  
 
 For more information on how this works, and how to change the logging

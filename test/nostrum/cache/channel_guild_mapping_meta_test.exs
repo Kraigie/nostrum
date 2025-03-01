@@ -1,5 +1,6 @@
 defmodule Nostrum.Cache.ChannelGuildMappingMetaTest do
   alias Nostrum.Cache.ChannelGuildMapping
+  import Nostrum.Bot, only: [set_bot_name: 1, with_bot: 2]
   use ExUnit.Case, async: true
 
   @cache_modules [
@@ -12,16 +13,25 @@ defmodule Nostrum.Cache.ChannelGuildMappingMetaTest do
 
   for cache <- @cache_modules do
     defmodule :"#{cache}Test" do
-      use ExUnit.Case
+      use ExUnit.Case, async: true
       @cache cache
       doctest @cache
 
       setup do
+        bot_name = :"#{@cache}test"
+
         if function_exported?(@cache, :teardown, 0) do
-          on_exit(:cleanup, fn -> apply(@cache, :teardown, []) end)
+          on_exit(:cleanup, fn ->
+            with_bot(bot_name, fn ->
+              apply(@cache, :teardown, [])
+            end)
+          end)
         end
 
-        [pid: start_supervised!(@cache)]
+        set_bot_name(bot_name)
+
+        spec = {@cache, name: bot_name}
+        [pid: start_supervised!(spec)]
       end
 
       test "storing functionality" do

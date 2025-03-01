@@ -4,9 +4,10 @@ defmodule Nostrum.ConsumerGroup do
   """
   @moduledoc since: "0.7.0"
 
+  alias Nostrum.Bot
   alias Nostrum.Consumer
 
-  @scope_name __MODULE__
+  @base_scope_name :nostrum_consumer_group
   @group_name :consumers
 
   @doc """
@@ -20,7 +21,7 @@ defmodule Nostrum.ConsumerGroup do
   @doc since: "0.9.0"
   @spec monitor :: {reference(), [pid()]}
   def monitor do
-    :pg.monitor(@scope_name, @group_name)
+    :pg.monitor(scope_name(), @group_name)
   end
 
   @doc """
@@ -29,7 +30,7 @@ defmodule Nostrum.ConsumerGroup do
   @doc since: "0.9.0"
   @spec demonitor(reference()) :: :ok | false
   def demonitor(ref) do
-    :pg.demonitor(@scope_name, ref)
+    :pg.demonitor(scope_name(), ref)
   end
 
   @doc """
@@ -38,25 +39,24 @@ defmodule Nostrum.ConsumerGroup do
   This is called by nostrum internally, you likely won't need to call this
   manually.
   """
-  @spec dispatch(nonempty_list(Consumer.event())) :: :ok
-  @spec dispatch(Consumer.event()) :: :ok
-  def dispatch([:noop | events]) do
-    dispatch(events)
-  end
+  @spec dispatch(nonempty_list(Consumer.event()), Bot.name()) :: :ok
+  @spec dispatch(Consumer.event(), Bot.name()) :: :ok
+  def dispatch([:noop | events], bot_name), do: dispatch(events, bot_name)
 
-  def dispatch([event | events]) do
+  def dispatch([event | events], bot_name) do
     payload = {:event, event}
 
-    @scope_name
+    bot_name
+    |> scope_name()
     |> :pg.get_members(@group_name)
     |> Enum.each(&send(&1, payload))
 
-    dispatch(events)
+    dispatch(events, bot_name)
   end
 
-  def dispatch([]), do: :ok
-  def dispatch(event) when is_tuple(event), do: dispatch([event])
-  def dispatch(:noop), do: :ok
+  def dispatch(:noop, _), do: :ok
+  def dispatch([], _), do: :ok
+  def dispatch(event, bot_name) when is_tuple(event), do: dispatch([event], bot_name)
 
   @doc """
   Equivalent to `ConsumerGroup.join(self())`. See `join/1`.
@@ -107,12 +107,14 @@ defmodule Nostrum.ConsumerGroup do
   """
   @spec join(pid()) :: :ok
   def join(pid) do
-    :pg.join(@scope_name, @group_name, pid)
+    :pg.join(scope_name(), @group_name, pid)
   end
 
-  def start_link(_opts) do
-    :pg.start_link(@scope_name)
+  def start_link(%{name: bot_name} = _opts) do
+    :pg.start_link(scope_name(bot_name))
   end
+
+  defp scope_name(bot_name \\ Bot.fetch_bot_name()), do: :"#{@base_scope_name}_#{bot_name}"
 
   def child_spec(opts) do
     %{

@@ -9,13 +9,14 @@ below telemetry events.
 
 |event | measurements | metadata |
 |------|--------------|----------|
-| `[:nostrum, :api, :request, :start]` | `:system_time` | `:method`, `:route` |
-| `[:nostrum, :api, :request, :stop]` | `:duration` | `:method`, `:route`, `:status` |
-| `[:nostrum, :api, :request, :exception]` | `:duration` | `:method`, `:route`, `:kind`, `:reason`, `:stacktrace` |
+| `[:nostrum, :api, :request, :start]` | `:system_time` | `:method`, `:route`, `:bot` |
+| `[:nostrum, :api, :request, :stop]` | `:duration` | `:method`, `:route`, `:bot`, `:status` |
+| `[:nostrum, :api, :request, :exception]` | `:duration` | `:method`, `:route`, `:bot`, `:kind`, `:reason`, `:stacktrace` |
 
 ### Metadata
 * `:method` - A lowercase atom representing the HTTP method used for the request. E.g. `:get`, `:post`.
 * `:route` - The route used for the request.
+* `:bot` - The name of the bot.
 * `:status` - one of the atoms `:ok` or `:error`.
 
 See `:telemetry.span/3` for more information on the measurements and metadata.
@@ -26,12 +27,13 @@ Nostrum's Ratelimiter will emit the below telemetry events.
 
 |event | measurements | metadata |
 |------|--------------|----------|
-| `[:nostrum, :ratelimiter, :connected]` | - | - |
-| `[:nostrum, :ratelimiter, :connect_timeout]` | - | - |
-| `[:nostrum, :ratelimiter, :disconnected]` | - | - |
-| `[:nostrum, :ratelimiter, :postponed]` | - | `:major_route`, `:global` |
+| `[:nostrum, :ratelimiter, :connected]` | - | `:bot` |
+| `[:nostrum, :ratelimiter, :connect_timeout]` | - | `:bot` |
+| `[:nostrum, :ratelimiter, :disconnected]` | - | `:bot` |
+| `[:nostrum, :ratelimiter, :postponed]` | - | `:bot`, `:major_route`, `:global` |
 
 ### Metadata
+* `:bot` - The name of the bot.
 * `:major_route` - A String that is Nostrum's internal representation of how it keys request paths for rate limits.
 * `:global` - A boolean indicating whether the request was delayed due to a global ratelimit.
 
@@ -39,11 +41,12 @@ Nostrum's Ratelimiter will emit the below telemetry events.
 Nostrum's Gateway will emit the below telemetry events.
 |event | measurements | metadata |
 |------|--------------|----------|
-| `[:nostrum, :gateway, :shard, :connected]` | - | `:shard_number` |
-| `[:nostrum, :gateway, :shard, :disconnected]` | - | `:shard_number`, `:reason` |
-| `[:nostrum, :gateway, :shard, :heartbeat]` | `:seq` | `:shard_number` |
+| `[:nostrum, :gateway, :shard, :connected]` | - | `:shard_number`, `:bot` |
+| `[:nostrum, :gateway, :shard, :disconnected]` | - | `:shard_number`, `:bot`, `:reason` |
+| `[:nostrum, :gateway, :shard, :heartbeat]` | `:seq` | `:shard_number`, `:bot` |
 
-### Metadata
+### Measurements and Metadata
 * `:shard_number` - The shard number of the shard which connected or disconnected.
+* `:bot` - The name of the bot.
 * `:reason` - The reason for the disconnection, for example `:reconnect`.
 * `:seq` - The sequence number of the heartbeat.

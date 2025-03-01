@@ -9,8 +9,9 @@ defmodule Nostrum.Cache.MemberCache.ETS do
 
   @behaviour Nostrum.Cache.MemberCache
 
-  @table_name :nostrum_guild_members
+  @base_table_name :nostrum_guild_members
 
+  alias Nostrum.Bot
   alias Nostrum.Cache.MemberCache
   alias Nostrum.Snowflake
   alias Nostrum.Struct.Guild
@@ -19,27 +20,28 @@ defmodule Nostrum.Cache.MemberCache.ETS do
   use Supervisor
 
   @doc "Start the supervisor."
-  def start_link(init_arg) do
-    Supervisor.start_link(__MODULE__, init_arg, name: __MODULE__)
+  def start_link(opts) do
+    Supervisor.start_link(__MODULE__, opts)
   end
 
   @doc "Set up the cache's ETS table."
   @impl Supervisor
-  def init(_init_arg) do
-    _tid = :ets.new(@table_name, [:set, :public, :named_table])
+  def init(opts) do
+    table_name = :"#{@base_table_name}_#{Keyword.fetch!(opts, :name)}"
+    _tid = :ets.new(table_name, [:set, :public, :named_table])
     Supervisor.init([], strategy: :one_for_one)
   end
 
   @doc "Retrieve the ETS table reference used for the cache."
   @doc since: "0.8.0"
   @spec table :: :ets.table()
-  def table, do: @table_name
+  def table, do: :"#{@base_table_name}_#{Bot.fetch_bot_name()}"
 
   @doc "Clear any objects in the cache."
   @doc since: "0.8.0"
   @spec clear() :: :ok
   def clear do
-    :ets.delete_all_objects(@table_name)
+    :ets.delete_all_objects(table())
     :ok
   end
 
@@ -55,10 +57,10 @@ defmodule Nostrum.Cache.MemberCache.ETS do
   @impl MemberCache
   @spec wrap_query((-> query_result)) :: query_result when query_result: term()
   def wrap_query(fun) do
-    :ets.safe_fixtable(@table_name, true)
+    :ets.safe_fixtable(table(), true)
     fun.()
   after
-    :ets.safe_fixtable(@table_name, false)
+    :ets.safe_fixtable(table(), false)
   end
 
   # Used by dispatch
@@ -67,7 +69,7 @@ defmodule Nostrum.Cache.MemberCache.ETS do
   @doc "Retrieve the member for the given guild and user in the cache."
   @spec get(Guild.id(), Member.user_id()) :: {:ok, Member.t()} | {:error, atom()}
   def get(guild_id, user_id) do
-    case :ets.lookup(@table_name, {guild_id, user_id}) do
+    case :ets.lookup(table(), {guild_id, user_id}) do
       [{_, member}] ->
         {:ok, member}
 
@@ -83,7 +85,7 @@ defmodule Nostrum.Cache.MemberCache.ETS do
     ms = [{{{:"$1", user_id}, :"$2"}, [], [{{:"$1", :"$2"}}]}]
 
     Stream.resource(
-      fn -> :ets.select(@table_name, ms, 100) end,
+      fn -> :ets.select(table(), ms, 100) end,
       fn items ->
         case items do
           {matches, cont} ->
@@ -104,7 +106,7 @@ defmodule Nostrum.Cache.MemberCache.ETS do
     ms = [{{{guild_id, :_}, :"$1"}, [], [:"$1"]}]
 
     Stream.resource(
-      fn -> :ets.select(@table_name, ms, 100) end,
+      fn -> :ets.select(table(), ms, 100) end,
       fn items ->
         case items do
           {matches, cont} ->
@@ -124,7 +126,7 @@ defmodule Nostrum.Cache.MemberCache.ETS do
   def create(guild_id, payload) do
     member = Util.cast(payload, {:struct, Member})
     key = {guild_id, member.user_id}
-    true = :ets.insert(@table_name, {key, member})
+    true = :ets.insert(table(), {key, member})
     member
   end
 
@@ -140,10 +142,10 @@ defmodule Nostrum.Cache.MemberCache.ETS do
 
     member_id = Util.cast(member_payload[:user][:id], Snowflake)
 
-    case :ets.lookup(@table_name, {guild_id, member_id}) do
+    case :ets.lookup(table(), {guild_id, member_id}) do
       [{key, old_member}] ->
         new_member = Member.to_struct(member_payload, old_member)
-        true = :ets.update_element(@table_name, key, {2, new_member})
+        true = :ets.update_element(table(), key, {2, new_member})
         {guild_id, old_member, new_member}
 
       [] ->
@@ -156,7 +158,7 @@ defmodule Nostrum.Cache.MemberCache.ETS do
   @doc "Remove the given member from the given guild in the cache."
   @spec delete(Guild.id(), Member.user_id()) :: {Guild.id(), Member.t()} | :noop
   def delete(guild_id, user_id) do
-    case :ets.take(@table_name, {guild_id, user_id}) do
+    case :ets.take(table(), {guild_id, user_id}) do
       [{{_guild_id, _user_id}, member}] ->
         {guild_id, member}
 
@@ -170,6 +172,6 @@ defmodule Nostrum.Cache.MemberCache.ETS do
   def bulk_create(guild_id, members) do
     # CHONK like that one cat of craig
     new_members = Enum.map(members, &{{guild_id, &1.user.id}, Util.cast(&1, {:struct, Member})})
-    true = :ets.insert(@table_name, new_members)
+    true = :ets.insert(table(), new_members)
   end
 end

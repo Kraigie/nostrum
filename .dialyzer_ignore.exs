@@ -7,4 +7,6 @@
   {"lib/nostrum/struct/message/poll.ex", "The contract for put_answer/3 is overloaded."},
   {"lib/nostrum/shard/session/compression/zstd.ex", "The @spec return type does not match the expected return type for create_context."},
   {"lib/nostrum/shard/session/compression/zstd.ex", "The @spec return type does not match the expected return type for inflate."},
+  {"test/nostrum/cache/test_base.ex", "Function ExUnit.Callbacks.on_exit/2 does not exist."},
+{"test/nostrum/cache/test_base.ex", "Function ExUnit.Callbacks.start_supervised!/1 does not exist."},
 ]
