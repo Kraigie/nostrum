@@ -12,7 +12,7 @@
 
     <link rel="stylesheet" href="dist/html-elixir-6X3L5KMG.css" />
 
-    <script defer src="dist/sidebar_items-C709D224.js"></script>
+    <script defer src="dist/sidebar_items-D705B453.js"></script>
     <script defer src="docs_config.js"></script>
     <script defer src="dist/html-6XHBGSGW.js"></script>
 
@@ -101,25 +101,25 @@ Nostrum will emit the below events for you to subscribe to.</p><section class="h
   <span class="text">API Request</span>
 </h2>
 <p>Any requests made through the <a href="Nostrum.Api.html"><code class="inline">Nostrum.Api</code></a> module will emit the
-below telemetry events.</p><table><thead><tr><th style="text-align: left;">event</th><th style="text-align: left;">measurements</th><th style="text-align: left;">metadata</th></tr></thead><tbody><tr><td style="text-align: left;"><code class="inline">[:nostrum, :api, :request, :start]</code></td><td style="text-align: left;"><code class="inline">:system_time</code></td><td style="text-align: left;"><code class="inline">:method</code>, <code class="inline">:route</code></td></tr><tr><td style="text-align: left;"><code class="inline">[:nostrum, :api, :request, :stop]</code></td><td style="text-align: left;"><code class="inline">:duration</code></td><td style="text-align: left;"><code class="inline">:method</code>, <code class="inline">:route</code>, <code class="inline">:status</code></td></tr><tr><td style="text-align: left;"><code class="inline">[:nostrum, :api, :request, :exception]</code></td><td style="text-align: left;"><code class="inline">:duration</code></td><td style="text-align: left;"><code class="inline">:method</code>, <code class="inline">:route</code>, <code class="inline">:kind</code>, <code class="inline">:reason</code>, <code class="inline">:stacktrace</code></td></tr></tbody></table><section class="h3"><h3 id="metadata" class="section-heading">
+below telemetry events.</p><table><thead><tr><th style="text-align: left;">event</th><th style="text-align: left;">measurements</th><th style="text-align: left;">metadata</th></tr></thead><tbody><tr><td style="text-align: left;"><code class="inline">[:nostrum, :api, :request, :start]</code></td><td style="text-align: left;"><code class="inline">:system_time</code></td><td style="text-align: left;"><code class="inline">:method</code>, <code class="inline">:route</code>, <code class="inline">:bot</code></td></tr><tr><td style="text-align: left;"><code class="inline">[:nostrum, :api, :request, :stop]</code></td><td style="text-align: left;"><code class="inline">:duration</code></td><td style="text-align: left;"><code class="inline">:method</code>, <code class="inline">:route</code>, <code class="inline">:bot</code>, <code class="inline">:status</code></td></tr><tr><td style="text-align: left;"><code class="inline">[:nostrum, :api, :request, :exception]</code></td><td style="text-align: left;"><code class="inline">:duration</code></td><td style="text-align: left;"><code class="inline">:method</code>, <code class="inline">:route</code>, <code class="inline">:bot</code>, <code class="inline">:kind</code>, <code class="inline">:reason</code>, <code class="inline">:stacktrace</code></td></tr></tbody></table><section class="h3"><h3 id="metadata" class="section-heading">
   <a href="#metadata" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
   <span class="text">Metadata</span>
 </h3>
-<ul><li><code class="inline">:method</code> - A lowercase atom representing the HTTP method used for the request. E.g. <code class="inline">:get</code>, <code class="inline">:post</code>.</li><li><code class="inline">:route</code> - The route used for the request.</li><li><code class="inline">:status</code> - one of the atoms <code class="inline">:ok</code> or <code class="inline">:error</code>.</li></ul><p>See <a href="https://hexdocs.pm/telemetry/1.3.0/telemetry.html#span/3"><code class="inline">:telemetry.span/3</code></a> for more information on the measurements and metadata.</p></section></section><section class="h2"><h2 id="ratelimiter" class="section-heading">
+<ul><li><code class="inline">:method</code> - A lowercase atom representing the HTTP method used for the request. E.g. <code class="inline">:get</code>, <code class="inline">:post</code>.</li><li><code class="inline">:route</code> - The route used for the request.</li><li><code class="inline">:bot</code> - The name of the bot.</li><li><code class="inline">:status</code> - one of the atoms <code class="inline">:ok</code> or <code class="inline">:error</code>.</li></ul><p>See <a href="https://hexdocs.pm/telemetry/1.3.0/telemetry.html#span/3"><code class="inline">:telemetry.span/3</code></a> for more information on the measurements and metadata.</p></section></section><section class="h2"><h2 id="ratelimiter" class="section-heading">
   <a href="#ratelimiter" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
   <span class="text">Ratelimiter</span>
 </h2>
-<p>Nostrum's Ratelimiter will emit the below telemetry events.</p><table><thead><tr><th style="text-align: left;">event</th><th style="text-align: left;">measurements</th><th style="text-align: left;">metadata</th></tr></thead><tbody><tr><td style="text-align: left;"><code class="inline">[:nostrum, :ratelimiter, :connected]</code></td><td style="text-align: left;">-</td><td style="text-align: left;">-</td></tr><tr><td style="text-align: left;"><code class="inline">[:nostrum, :ratelimiter, :connect_timeout]</code></td><td style="text-align: left;">-</td><td style="text-align: left;">-</td></tr><tr><td style="text-align: left;"><code class="inline">[:nostrum, :ratelimiter, :disconnected]</code></td><td style="text-align: left;">-</td><td style="text-align: left;">-</td></tr><tr><td style="text-align: left;"><code class="inline">[:nostrum, :ratelimiter, :postponed]</code></td><td style="text-align: left;">-</td><td style="text-align: left;"><code class="inline">:major_route</code>, <code class="inline">:global</code></td></tr></tbody></table><section class="h3"><h3 id="metadata-1" class="section-heading">
+<p>Nostrum's Ratelimiter will emit the below telemetry events.</p><table><thead><tr><th style="text-align: left;">event</th><th style="text-align: left;">measurements</th><th style="text-align: left;">metadata</th></tr></thead><tbody><tr><td style="text-align: left;"><code class="inline">[:nostrum, :ratelimiter, :connected]</code></td><td style="text-align: left;">-</td><td style="text-align: left;"><code class="inline">:bot</code></td></tr><tr><td style="text-align: left;"><code class="inline">[:nostrum, :ratelimiter, :connect_timeout]</code></td><td style="text-align: left;">-</td><td style="text-align: left;"><code class="inline">:bot</code></td></tr><tr><td style="text-align: left;"><code class="inline">[:nostrum, :ratelimiter, :disconnected]</code></td><td style="text-align: left;">-</td><td style="text-align: left;"><code class="inline">:bot</code></td></tr><tr><td style="text-align: left;"><code class="inline">[:nostrum, :ratelimiter, :postponed]</code></td><td style="text-align: left;">-</td><td style="text-align: left;"><code class="inline">:bot</code>, <code class="inline">:major_route</code>, <code class="inline">:global</code></td></tr></tbody></table><section class="h3"><h3 id="metadata-1" class="section-heading">
   <a href="#metadata-1" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
   <span class="text">Metadata</span>
 </h3>
-<ul><li><code class="inline">:major_route</code> - A String that is Nostrum's internal representation of how it keys request paths for rate limits.</li><li><code class="inline">:global</code> - A boolean indicating whether the request was delayed due to a global ratelimit.</li></ul></section></section><section class="h2"><h2 id="gateway" class="section-heading">
+<ul><li><code class="inline">:bot</code> - The name of the bot.</li><li><code class="inline">:major_route</code> - A String that is Nostrum's internal representation of how it keys request paths for rate limits.</li><li><code class="inline">:global</code> - A boolean indicating whether the request was delayed due to a global ratelimit.</li></ul></section></section><section class="h2"><h2 id="gateway" class="section-heading">
   <a href="#gateway" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
@@ -128,15 +128,15 @@ below telemetry events.</p><table><thead><tr><th style="text-align: left;">event
 <p>Nostrum's Gateway will emit the below telemetry events.
 |event | measurements | metadata |
 |------|--------------|----------|
-| <code class="inline">[:nostrum, :gateway, :shard, :connected]</code> | - | <code class="inline">:shard_number</code> |
-| <code class="inline">[:nostrum, :gateway, :shard, :disconnected]</code> | - | <code class="inline">:shard_number</code>, <code class="inline">:reason</code> |
-| <code class="inline">[:nostrum, :gateway, :shard, :heartbeat]</code> | <code class="inline">:seq</code> | <code class="inline">:shard_number</code> |</p><section class="h3"><h3 id="metadata-2" class="section-heading">
-  <a href="#metadata-2" class="hover-link">
+| <code class="inline">[:nostrum, :gateway, :shard, :connected]</code> | - | <code class="inline">:shard_number</code>, <code class="inline">:bot</code> |
+| <code class="inline">[:nostrum, :gateway, :shard, :disconnected]</code> | - | <code class="inline">:shard_number</code>, <code class="inline">:bot</code>, <code class="inline">:reason</code> |
+| <code class="inline">[:nostrum, :gateway, :shard, :heartbeat]</code> | <code class="inline">:seq</code> | <code class="inline">:shard_number</code>, <code class="inline">:bot</code> |</p><section class="h3"><h3 id="measurements-and-metadata" class="section-heading">
+  <a href="#measurements-and-metadata" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
-  <span class="text">Metadata</span>
+  <span class="text">Measurements and Metadata</span>
 </h3>
-<ul><li><code class="inline">:shard_number</code> - The shard number of the shard which connected or disconnected.</li><li><code class="inline">:reason</code> - The reason for the disconnection, for example <code class="inline">:reconnect</code>.</li><li><code class="inline">:seq</code> - The sequence number of the heartbeat.</li></ul></section></section>
+<ul><li><code class="inline">:shard_number</code> - The shard number of the shard which connected or disconnected.</li><li><code class="inline">:bot</code> - The name of the bot.</li><li><code class="inline">:reason</code> - The reason for the disconnection, for example <code class="inline">:reconnect</code>.</li><li><code class="inline">:seq</code> - The sequence number of the heartbeat.</li></ul></section></section>
 </div>
 
 <div class="bottom-actions" id="bottom-actions">

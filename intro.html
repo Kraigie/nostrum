@@ -12,7 +12,7 @@
 
     <link rel="stylesheet" href="dist/html-elixir-6X3L5KMG.css" />
 
-    <script defer src="dist/sidebar_items-C709D224.js"></script>
+    <script defer src="dist/sidebar_items-D705B453.js"></script>
     <script defer src="docs_config.js"></script>
     <script defer src="dist/html-6XHBGSGW.js"></script>
 
@@ -108,11 +108,11 @@ your bot for you.</p><h2 id="adding-the-dependency" class="section-heading">
 </h2>
 <p>We need to add nostrum as a dependency to be able to use it. Dependencies are
 tracked in <code class="inline">mix.exs</code>. Open this file with your favourite text editor, and head
-down to the <code class="inline">def deps do</code> function. Update it as follows:</p><pre><code class="makeup elixir" translate="no"><span class="kd">def</span><span class="w"> </span><span class="nf">deps</span><span class="w"> </span><span class="k" data-group-id="9025108702-1">do</span><span class="w">
-  </span><span class="p" data-group-id="9025108702-2">[</span><span class="p" data-group-id="9025108702-3">{</span><span class="ss">:nostrum</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;~&gt; 0.10&quot;</span><span class="p" data-group-id="9025108702-3">}</span><span class="p" data-group-id="9025108702-2">]</span><span class="w">
+down to the <code class="inline">def deps do</code> function. Update it as follows:</p><pre><code class="makeup elixir" translate="no"><span class="kd">def</span><span class="w"> </span><span class="nf">deps</span><span class="w"> </span><span class="k" data-group-id="6356608520-1">do</span><span class="w">
+  </span><span class="p" data-group-id="6356608520-2">[</span><span class="p" data-group-id="6356608520-3">{</span><span class="ss">:nostrum</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;~&gt; 0.10&quot;</span><span class="p" data-group-id="6356608520-3">}</span><span class="p" data-group-id="6356608520-2">]</span><span class="w">
   </span><span class="c1"># Or, for bleeding edge changes:</span><span class="w">
   </span><span class="c1"># [{:nostrum, github: &quot;Kraigie/nostrum&quot;}]</span><span class="w">
-</span><span class="k" data-group-id="9025108702-1">end</span></code></pre><p>Afterwards, run <a href="https://hexdocs.pm/mix/Mix.Tasks.Deps.Get.html"><code class="inline">mix deps.get</code></a> to fetch dependencies.</p><blockquote><h4>Stable and development versions</h4><p>There are two versions of nostrum, a stable version released on Hex and a dev
+</span><span class="k" data-group-id="6356608520-1">end</span></code></pre><p>Afterwards, run <a href="https://hexdocs.pm/mix/Mix.Tasks.Deps.Get.html"><code class="inline">mix deps.get</code></a> to fetch dependencies.</p><blockquote><h4>Stable and development versions</h4><p>There are two versions of nostrum, a stable version released on Hex and a dev
 version on GitHub. The development version will be more up to date but might
 suffer from some bugs - we generally patch them quickly if you report them on
 the issue tracker. It's appreciated if you can use the development version to
@@ -123,60 +123,62 @@ help test nostrum.</p></blockquote><h2 id="consumer-setup" class="section-headin
   <span class="text">Consumer setup</span>
 </h2>
 <p>Next up, you need to define a consumer - a module which handles events, see the
-<a href="Nostrum.Consumer.html"><code class="inline">Nostrum.Consumer</code></a> docs. In <code class="inline">lib/my_bot/example_consumer.ex</code>, define the
-following:</p><p>A basic consumer could look like the following:</p><pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">MyBot.Consumer</span><span class="w"> </span><span class="k" data-group-id="2320543092-1">do</span><span class="w">
+<a href="Nostrum.Consumer.html"><code class="inline">Nostrum.Consumer</code></a> docs. In <code class="inline">lib/my_bot/consumer.ex</code>, define the
+following:</p><p>A basic consumer could look like the following:</p><pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">MyBot.Consumer</span><span class="w"> </span><span class="k" data-group-id="5865594278-1">do</span><span class="w">
   </span><span class="na">@behaviour</span><span class="w"> </span><span class="nc">Nostrum.Consumer</span><span class="w">
 
   </span><span class="kn">alias</span><span class="w"> </span><span class="nc">Nostrum.Api.Message</span><span class="w">
 
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_event</span><span class="p" data-group-id="2320543092-2">(</span><span class="p" data-group-id="2320543092-3">{</span><span class="ss">:MESSAGE_CREATE</span><span class="p">,</span><span class="w"> </span><span class="n">msg</span><span class="p">,</span><span class="w"> </span><span class="c">_ws_state</span><span class="p" data-group-id="2320543092-3">}</span><span class="p" data-group-id="2320543092-2">)</span><span class="w"> </span><span class="k" data-group-id="2320543092-4">do</span><span class="w">
-    </span><span class="k">case</span><span class="w"> </span><span class="n">msg</span><span class="o">.</span><span class="n">content</span><span class="w"> </span><span class="k" data-group-id="2320543092-5">do</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_event</span><span class="p" data-group-id="5865594278-2">(</span><span class="p" data-group-id="5865594278-3">{</span><span class="ss">:MESSAGE_CREATE</span><span class="p">,</span><span class="w"> </span><span class="n">msg</span><span class="p">,</span><span class="w"> </span><span class="c">_ws_state</span><span class="p" data-group-id="5865594278-3">}</span><span class="p" data-group-id="5865594278-2">)</span><span class="w"> </span><span class="k" data-group-id="5865594278-4">do</span><span class="w">
+    </span><span class="k">case</span><span class="w"> </span><span class="n">msg</span><span class="o">.</span><span class="n">content</span><span class="w"> </span><span class="k" data-group-id="5865594278-5">do</span><span class="w">
       </span><span class="s">&quot;!hello&quot;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
-        </span><span class="p" data-group-id="2320543092-6">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="c">_message</span><span class="p" data-group-id="2320543092-6">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Message</span><span class="o">.</span><span class="n">create</span><span class="p" data-group-id="2320543092-7">(</span><span class="n">msg</span><span class="o">.</span><span class="n">channel_id</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Hello, world!&quot;</span><span class="p" data-group-id="2320543092-7">)</span><span class="w">
+        </span><span class="p" data-group-id="5865594278-6">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="c">_message</span><span class="p" data-group-id="5865594278-6">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Message</span><span class="o">.</span><span class="n">create</span><span class="p" data-group-id="5865594278-7">(</span><span class="n">msg</span><span class="o">.</span><span class="n">channel_id</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Hello, world!&quot;</span><span class="p" data-group-id="5865594278-7">)</span><span class="w">
 
       </span><span class="bp">_</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
         </span><span class="ss">:ignore</span><span class="w">
-    </span><span class="k" data-group-id="2320543092-5">end</span><span class="w">
-  </span><span class="k" data-group-id="2320543092-4">end</span><span class="w">
+    </span><span class="k" data-group-id="5865594278-5">end</span><span class="w">
+  </span><span class="k" data-group-id="5865594278-4">end</span><span class="w">
 
   </span><span class="c1"># Ignore any other events</span><span class="w">
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_event</span><span class="p" data-group-id="2320543092-8">(</span><span class="bp">_</span><span class="p" data-group-id="2320543092-8">)</span><span class="p">,</span><span class="w"> </span><span class="ss">do</span><span class="p">:</span><span class="w"> </span><span class="ss">:ok</span><span class="w">
-</span><span class="k" data-group-id="2320543092-1">end</span></code></pre><p>Finally, you need to add <a href="Nostrum.Bot.html"><code class="inline">Nostrum.Bot</code></a> to your app's supervisor tree in
-<code class="inline">lib/my_bot/application.ex</code> to start the bot as part of your app's startup:</p><pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">MyBot.Application</span><span class="w"> </span><span class="k" data-group-id="1686946989-1">do</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_event</span><span class="p" data-group-id="5865594278-8">(</span><span class="bp">_</span><span class="p" data-group-id="5865594278-8">)</span><span class="p">,</span><span class="w"> </span><span class="ss">do</span><span class="p">:</span><span class="w"> </span><span class="ss">:ok</span><span class="w">
+</span><span class="k" data-group-id="5865594278-1">end</span></code></pre><p>Finally, you need to add <a href="Nostrum.Bot.html"><code class="inline">Nostrum.Bot</code></a> to your app's supervisor tree in
+<code class="inline">lib/my_bot/application.ex</code> to start the bot as part of your app's startup:</p><pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">MyBot.Application</span><span class="w"> </span><span class="k" data-group-id="3736350785-1">do</span><span class="w">
   </span><span class="kn">use</span><span class="w"> </span><span class="nc">Application</span><span class="w">
 
   </span><span class="na">@impl</span><span class="w"> </span><span class="no">true</span><span class="w">
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">start</span><span class="p" data-group-id="1686946989-2">(</span><span class="c">_init_arg</span><span class="p" data-group-id="1686946989-2">)</span><span class="w"> </span><span class="k" data-group-id="1686946989-3">do</span><span class="w">
-    </span><span class="n">bot_options</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="1686946989-4">%{</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">start</span><span class="p" data-group-id="3736350785-2">(</span><span class="c">_type</span><span class="p">,</span><span class="w"> </span><span class="c">_args</span><span class="p" data-group-id="3736350785-2">)</span><span class="w"> </span><span class="k" data-group-id="3736350785-3">do</span><span class="w">
+    </span><span class="n">bot_options</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="3736350785-4">%{</span><span class="w">
+      </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="nc">MyBot</span><span class="p">,</span><span class="w">
       </span><span class="ss">consumer</span><span class="p">:</span><span class="w"> </span><span class="nc">MyBot.Consumer</span><span class="p">,</span><span class="w">
-      </span><span class="ss">intents</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="1686946989-5">[</span><span class="ss">:direct_messages</span><span class="p">,</span><span class="w"> </span><span class="ss">:guild_messages</span><span class="p">,</span><span class="w"> </span><span class="ss">:message_content</span><span class="p" data-group-id="1686946989-5">]</span><span class="p">,</span><span class="w">
-      </span><span class="ss">wrapped_token</span><span class="p">:</span><span class="w"> </span><span class="k" data-group-id="1686946989-6">fn</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nc">System</span><span class="o">.</span><span class="n">fetch_env!</span><span class="p" data-group-id="1686946989-7">(</span><span class="s">&quot;BOT_TOKEN&quot;</span><span class="p" data-group-id="1686946989-7">)</span><span class="w"> </span><span class="k" data-group-id="1686946989-6">end</span><span class="p">,</span><span class="w">
-    </span><span class="p" data-group-id="1686946989-4">}</span><span class="w">
-    </span><span class="n">children</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="1686946989-8">[</span><span class="w">
-      </span><span class="p" data-group-id="1686946989-9">{</span><span class="nc">Nostrum.Bot</span><span class="p">,</span><span class="w"> </span><span class="n">bot_options</span><span class="p" data-group-id="1686946989-9">}</span><span class="w">
-    </span><span class="p" data-group-id="1686946989-8">]</span><span class="w">
+      </span><span class="ss">intents</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="3736350785-5">[</span><span class="ss">:direct_messages</span><span class="p">,</span><span class="w"> </span><span class="ss">:guild_messages</span><span class="p">,</span><span class="w"> </span><span class="ss">:message_content</span><span class="p" data-group-id="3736350785-5">]</span><span class="p">,</span><span class="w">
+      </span><span class="ss">wrapped_token</span><span class="p">:</span><span class="w"> </span><span class="k" data-group-id="3736350785-6">fn</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nc">System</span><span class="o">.</span><span class="n">fetch_env!</span><span class="p" data-group-id="3736350785-7">(</span><span class="s">&quot;BOT_TOKEN&quot;</span><span class="p" data-group-id="3736350785-7">)</span><span class="w"> </span><span class="k" data-group-id="3736350785-6">end</span><span class="w">
+    </span><span class="p" data-group-id="3736350785-4">}</span><span class="w">
+    </span><span class="n">children</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="3736350785-8">[</span><span class="w">
+      </span><span class="p" data-group-id="3736350785-9">{</span><span class="nc">Nostrum.Bot</span><span class="p">,</span><span class="w"> </span><span class="n">bot_options</span><span class="p" data-group-id="3736350785-9">}</span><span class="w">
+    </span><span class="p" data-group-id="3736350785-8">]</span><span class="w">
 
-    </span><span class="nc">Supervisor</span><span class="o">.</span><span class="n">init</span><span class="p" data-group-id="1686946989-10">(</span><span class="n">children</span><span class="p">,</span><span class="w"> </span><span class="ss">strategy</span><span class="p">:</span><span class="w"> </span><span class="ss">:one_for_one</span><span class="p" data-group-id="1686946989-10">)</span><span class="w">
-  </span><span class="k" data-group-id="1686946989-3">end</span><span class="w">
-</span><span class="k" data-group-id="1686946989-1">end</span></code></pre><p>Note that this assumes you set the environment variable <code class="inline">$BOT_TOKEN</code> to your bot
+    </span><span class="nc">Supervisor</span><span class="o">.</span><span class="n">start_link</span><span class="p" data-group-id="3736350785-10">(</span><span class="n">children</span><span class="p">,</span><span class="w"> </span><span class="ss">strategy</span><span class="p">:</span><span class="w"> </span><span class="ss">:one_for_one</span><span class="p" data-group-id="3736350785-10">)</span><span class="w">
+  </span><span class="k" data-group-id="3736350785-3">end</span><span class="w">
+</span><span class="k" data-group-id="3736350785-1">end</span></code></pre><p>Note that this assumes you set the environment variable <code class="inline">$BOT_TOKEN</code> to your bot
 token, for example via <code class="inline">export BOT_TOKEN=my-bot-token</code>. This is recommended, but
 feel free to use any other configuration method you like.</p><section role="note" class="admonition info"><h4 class="admonition-title info">Message intents</h4><p>Due to Discord API changes, <em>in order to receive message content</em> (e.g.  for
 non-slash commands or moderation tools), you need to have the &quot;Message Content
 Intent&quot; enabled on your <a href="https://discord.com/developers/applications/">Bot's application
 settings</a>, and the
-<code class="inline">:message_content</code> intent specified in the <code class="inline">[:nostrum, :gateway_intents]</code>
-configuration key.</p></section><h2 id="configuration-options" class="section-heading">
+<code class="inline">:message_content</code> intent specified in the bot's options.</p></section><h2 id="configuration-options" class="section-heading">
   <a href="#configuration-options" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
   <span class="text">Configuration options</span>
 </h2>
-<p>nostrum supports the following global configuration options:</p><ul><li><code class="inline">request_guild_members</code> - perform member chunking to retrieve a complete list
+<p>nostrum supports the following global configuration options with <code class="inline">:nostrum</code> as the
+config root key. Most of them may be overridden per-bot.</p><ul><li><code class="inline">request_guild_members</code> - perform member chunking to retrieve a complete list
 of members for all guilds at startup. Depending on your <a href="pluggable_caching.html">cache
 backend</a>, this may increase startup time
 and memory usage by quite a bit. Defaults to <code class="inline">false</code>.</li><li><code class="inline">gateway_compression</code> - use either <code class="inline">:zlib</code> (default) or <code class="inline">:zstd</code> for compression
 of messages from the Discord gateway. See the documentation on
-<a href="gateway_compression.html">Gateway Compression</a> for more information.</li></ul><h3 id="voice-specific" class="section-heading">
+<a href="gateway_compression.html">Gateway Compression</a> for more information.
+<em>This is a global, compile-time config option only.</em></li></ul><h3 id="voice-specific" class="section-heading">
   <a href="#voice-specific" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
@@ -202,16 +204,7 @@ option can be found <a href="./voice-2.html#encryption-modes">here</a>.</li></ul
 </h3>
 <ul><li><code class="inline">log_full_events</code> - This will log the full payload received over the
 websocket. Defaults to <code class="inline">false</code>.</li><li><code class="inline">log_dispatch_events</code> - This will log dispatch events as they are received
-from the gateway. Defaults to <code class="inline">false</code>.</li><li><code class="inline">fullsweep_after_default</code> - Sets the <code class="inline">fullsweep_after</code> flag for processes
-that can have irregularly high memory usage due to Discord payloads. This
-options will dramatically reduce the amount of memory used by some processes
-at the cost of increased CPU usage. This is useful if you're running your
-application under a memory constrained environment. This comes at the cost
-of increased CPU usage. By default, this option will only affect some
-processes. You can set this flag for <em>all</em> processes using environment
-variables or by <a href="http://erlang.org/doc/man/erlang.html#system_flag-2">setting the system flag
-yourself</a>. Defaults to
-whatever your system recommends, which is probably <code class="inline">65535</code>.</li><li><code class="inline">force_http1</code> - Set to <code class="inline">true</code> if you wish to disable automatic use of HTTP 2
+from the gateway. Defaults to <code class="inline">false</code>.</li><li><code class="inline">force_http1</code> - Set to <code class="inline">true</code> if you wish to disable automatic use of HTTP 2
 or newer HTTP versions for API requests to Discord. Useful to diagnose issues
 with ratelimiter connections during abnormal network conditions.</li></ul><h3 id="internal-options" class="section-heading">
   <a href="#internal-options" class="hover-link">
@@ -231,8 +224,8 @@ alongside your application some of your events will be consumed. Defaults to
 </h2>
 <p>nostrum uses Elixir's standard logger to inform you about regular and irregular
 events. Normal messages include Discord-requested shard reconnections and the
-<code class="inline">IDENTIFY</code> and <code class="inline">READY</code> events.</p><p>The following metadata fields through logger:</p><ul><li><code class="inline">shard</code> - Id of the shard on which the event occurred</li><li><code class="inline">guild</code> - Name of the guild on which the voice connection event occurred</li><li><code class="inline">channel</code> - Name of the channel on which the voice connection event occurred</li></ul><p>To enable this metadata, logger can be configured as such:</p><pre><code class="makeup elixir" translate="no"><span class="n">config</span><span class="w"> </span><span class="ss">:logger</span><span class="p">,</span><span class="w"> </span><span class="ss">:console</span><span class="p">,</span><span class="w">
-  </span><span class="ss">metadata</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="0019337807-1">[</span><span class="ss">:shard</span><span class="p">,</span><span class="w"> </span><span class="ss">:guild</span><span class="p">,</span><span class="w"> </span><span class="ss">:channel</span><span class="p" data-group-id="0019337807-1">]</span></code></pre><p>For more information on how this works, and how to change the logging
+<code class="inline">IDENTIFY</code> and <code class="inline">READY</code> events.</p><p>The following metadata fields through logger:</p><ul><li><code class="inline">bot</code> - Name of the bot that received the event</li><li><code class="inline">shard</code> - Id of the shard on which the event occurred</li><li><code class="inline">guild</code> - Name of the guild on which the voice connection event occurred</li><li><code class="inline">channel</code> - Name of the channel on which the voice connection event occurred</li></ul><p>To enable this metadata, logger can be configured as such:</p><pre><code class="makeup elixir" translate="no"><span class="n">config</span><span class="w"> </span><span class="ss">:logger</span><span class="p">,</span><span class="w"> </span><span class="ss">:console</span><span class="p">,</span><span class="w">
+  </span><span class="ss">metadata</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="2073364121-1">[</span><span class="ss">:bot</span><span class="p">,</span><span class="w"> </span><span class="ss">:shard</span><span class="p">,</span><span class="w"> </span><span class="ss">:guild</span><span class="p">,</span><span class="w"> </span><span class="ss">:channel</span><span class="p" data-group-id="2073364121-1">]</span></code></pre><p>For more information on how this works, and how to change the logging
 configuration for nostrum on its own, please see the <a href="https://hexdocs.pm/logger/Logger.html">Logger
 documentation</a></p><h3 id="why-elixir" class="section-heading">
   <a href="#why-elixir" class="hover-link">

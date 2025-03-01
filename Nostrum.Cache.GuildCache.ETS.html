@@ -12,7 +12,7 @@
 
     <link rel="stylesheet" href="dist/html-elixir-6X3L5KMG.css" />
 
-    <script defer src="dist/sidebar_items-C709D224.js"></script>
+    <script defer src="dist/sidebar_items-D705B453.js"></script>
     <script defer src="docs_config.js"></script>
     <script defer src="dist/html-6XHBGSGW.js"></script>
 
@@ -94,7 +94,7 @@ nostrum
 
     <section id="moduledoc">
 <p>An ETS-based cache for guilds.</p><p>The supervisor defined by this module will set up the ETS table associated
-with it.</p><p>The default table name under which guilds are cached is <code class="inline">nostrum_guilds</code>.
+with it.</p><p>The default table name under which guilds are cached is prefixed by <code class="inline">nostrum_guilds</code>.
 In addition to the cache behaviour implementations provided by this module,
 you can also call regular ETS table methods on it, such as <code class="inline">:ets.info</code>.</p><p>Note that users should not call the functions not related to this specific
 implementation of the cache directly. Instead, call the functions of
@@ -198,7 +198,7 @@ cache.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#init/1" data-no-tooltip="" translate="no">init(init_arg)</a>
+        <a href="#init/1" data-no-tooltip="" translate="no">init(opts)</a>
 
       </div>
 
@@ -258,7 +258,7 @@ cache.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#start_link/1" data-no-tooltip="" translate="no">start_link(init_arg)</a>
+        <a href="#start_link/1" data-no-tooltip="" translate="no">start_link(opts)</a>
 
       </div>
 
@@ -278,7 +278,7 @@ cache.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#tabname/0" data-no-tooltip="" translate="no">tabname()</a>
+        <a href="#table/0" data-no-tooltip="" translate="no">table()</a>
 
       </div>
 
@@ -331,7 +331,7 @@ cache.</p>
         <span class="note">(since 0.5.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache/ets.ex#L121" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache/ets.ex#L123" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -361,7 +361,7 @@ cache.</p>
         <span class="note">(since 0.5.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache/ets.ex#L133" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache/ets.ex#L135" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -392,7 +392,7 @@ cache.</p>
         <span class="note">(since 0.5.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache/ets.ex#L144" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache/ets.ex#L146" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -423,7 +423,7 @@ cache.</p>
         <span class="note">(since 0.5.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache/ets.ex#L29" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache/ets.ex#L30" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -447,7 +447,7 @@ cache.</p>
         <span class="note">(since 0.5.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache/ets.ex#L83" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache/ets.ex#L85" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -477,7 +477,7 @@ cache.</p>
         <span class="note">(since 0.5.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache/ets.ex#L110" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache/ets.ex#L112" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -507,7 +507,7 @@ cache.</p>
         <span class="note">(since 0.5.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache/ets.ex#L158" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache/ets.ex#L160" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -538,7 +538,7 @@ cache.</p>
         <span class="note">(since 0.5.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache/ets.ex#L52" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache/ets.ex#L54" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -564,12 +564,12 @@ cache.</p>
       <i class="ri-link-m" aria-hidden="true"></i>
     </a>
     <div class="heading-with-actions">
-      <h1 class="signature" translate="no">init(init_arg)</h1>
+      <h1 class="signature" translate="no">init(opts)</h1>
 
         <span class="note">(since 0.5.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache/ets.ex#L38" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache/ets.ex#L39" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -593,7 +593,7 @@ cache.</p>
         <span class="note">(since 0.7.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache/ets.ex#L251" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache/ets.ex#L253" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -623,7 +623,7 @@ cache.</p>
         <span class="note">(since 0.7.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache/ets.ex#L236" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache/ets.ex#L238" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -653,7 +653,7 @@ cache.</p>
         <span class="note">(since 0.5.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache/ets.ex#L180" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache/ets.ex#L182" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -684,7 +684,7 @@ cache.</p>
         <span class="note">(since 0.5.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache/ets.ex#L191" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache/ets.ex#L193" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -715,7 +715,7 @@ cache.</p>
         <span class="note">(since 0.5.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache/ets.ex#L202" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache/ets.ex#L204" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -742,12 +742,12 @@ cache.</p>
       <i class="ri-link-m" aria-hidden="true"></i>
     </a>
     <div class="heading-with-actions">
-      <h1 class="signature" translate="no">start_link(init_arg)</h1>
+      <h1 class="signature" translate="no">start_link(opts)</h1>
 
         <span class="note">(since 0.5.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache/ets.ex#L32" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache/ets.ex#L33" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -771,7 +771,7 @@ cache.</p>
         <span class="note">(since 0.5.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache/ets.ex#L169" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache/ets.ex#L171" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -790,19 +790,19 @@ cache.</p>
 <p>Update the sticker list for the given guild in the cache.</p>
   </section>
 </section>
-<section class="detail" id="tabname/0">
+<section class="detail" id="table/0">
 
   <div class="detail-header">
-    <a href="#tabname/0" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+    <a href="#table/0" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
     </a>
     <div class="heading-with-actions">
-      <h1 class="signature" translate="no">tabname()</h1>
+      <h1 class="signature" translate="no">table()</h1>
 
         <span class="note">(since 0.5.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache/ets.ex#L45" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache/ets.ex#L47" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -813,7 +813,7 @@ cache.</p>
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> tabname() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>()</pre>
+          <pre translate="no"><span class="attribute">@spec</span> table() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>()</pre>
 
       </div>
 
@@ -832,7 +832,7 @@ cache.</p>
         <span class="note">(since 0.5.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache/ets.ex#L93" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache/ets.ex#L95" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -862,7 +862,7 @@ cache.</p>
         <span class="note">(since 0.5.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache/ets.ex#L213" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache/ets.ex#L215" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 

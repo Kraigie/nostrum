@@ -12,7 +12,7 @@
 
     <link rel="stylesheet" href="dist/html-elixir-6X3L5KMG.css" />
 
-    <script defer src="dist/sidebar_items-C709D224.js"></script>
+    <script defer src="dist/sidebar_items-D705B453.js"></script>
     <script defer src="docs_config.js"></script>
     <script defer src="dist/html-6XHBGSGW.js"></script>
 
@@ -169,7 +169,7 @@ handle yet, thus growing the message queue and the memory usage.</p></li></ol>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#child_spec/1" data-no-tooltip="" translate="no">child_spec(arg)</a>
+        <a href="#child_spec/1" data-no-tooltip="" translate="no">child_spec(init_arg)</a>
 
       </div>
 
@@ -179,7 +179,7 @@ handle yet, thus growing the message queue and the memory usage.</p></li></ol>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#connect/3" data-no-tooltip="" translate="no">connect(shard_num, total_shards, bot_options)</a>
+        <a href="#connect/4" data-no-tooltip="" translate="no">connect(supervisor \\ fetch_shard_sup_pid(), shard_num, total_shards, bot_options)</a>
 
       </div>
 
@@ -189,7 +189,7 @@ handle yet, thus growing the message queue and the memory usage.</p></li></ol>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#disconnect/1" data-no-tooltip="" translate="no">disconnect(shard_num)</a>
+        <a href="#disconnect/2" data-no-tooltip="" translate="no">disconnect(shard_session \\ nil, shard_num)</a>
 
       </div>
 
@@ -199,7 +199,7 @@ handle yet, thus growing the message queue and the memory usage.</p></li></ol>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#reconnect/1" data-no-tooltip="" translate="no">reconnect(opts)</a>
+        <a href="#reconnect/2" data-no-tooltip="" translate="no">reconnect(supervisor \\ fetch_shard_sup_pid(), opts)</a>
 
       </div>
 
@@ -209,7 +209,7 @@ handle yet, thus growing the message queue and the memory usage.</p></li></ol>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#start_link/1" data-no-tooltip="" translate="no">start_link(arg)</a>
+        <a href="#start_link/1" data-no-tooltip="" translate="no">start_link(bot_options)</a>
 
       </div>
 
@@ -269,6 +269,7 @@ handle yet, thus growing the message queue and the memory usage.</p></li></ol>
   shard_num: <a href="#t:shard_num/0">shard_num</a>(),
   total_shards: <a href="#t:total_shards/0">total_shards</a>(),
   gateway: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(),
+  bot_options: <a href="Nostrum.Bot.html#t:bot_options/0">Nostrum.Bot.bot_options</a>(),
   resume_gateway: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil,
   session: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(),
   seq: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pos_integer</a>()
@@ -354,10 +355,10 @@ handle yet, thus growing the message queue and the memory usage.</p></li></ol>
       <i class="ri-link-m" aria-hidden="true"></i>
     </a>
     <div class="heading-with-actions">
-      <h1 class="signature" translate="no">child_spec(arg)</h1>
+      <h1 class="signature" translate="no">child_spec(init_arg)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L56" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L58" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -369,17 +370,19 @@ handle yet, thus growing the message queue and the memory usage.</p></li></ol>
 <p>Returns a specification to start this module under a supervisor.</p><p>See <a href="https://hexdocs.pm/elixir/Supervisor.html"><code class="inline">Supervisor</code></a>.</p>
   </section>
 </section>
-<section class="detail" id="connect/3">
+<section class="detail" id="connect/4">
+
+    <span id="connect/3"></span>
 
   <div class="detail-header">
-    <a href="#connect/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+    <a href="#connect/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
     </a>
     <div class="heading-with-actions">
-      <h1 class="signature" translate="no">connect(shard_num, total_shards, bot_options)</h1>
+      <h1 class="signature" translate="no">connect(supervisor \\ fetch_shard_sup_pid(), shard_num, total_shards, bot_options)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L175" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L191" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -390,27 +393,34 @@ handle yet, thus growing the message queue and the memory usage.</p></li></ol>
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> connect(<a href="#t:shard_num/0">shard_num</a>(), <a href="#t:total_shards/0">total_shards</a>(), <a href="Nostrum.Bot.html#t:bot_options/0">Nostrum.Bot.bot_options</a>()) ::
-  <a href="https://hexdocs.pm/elixir/DynamicSupervisor.html#t:on_start_child/0">DynamicSupervisor.on_start_child</a>()</pre>
+          <pre translate="no"><span class="attribute">@spec</span> connect(
+  <a href="https://hexdocs.pm/elixir/Supervisor.html#t:supervisor/0">Supervisor.supervisor</a>(),
+  <a href="#t:shard_num/0">shard_num</a>(),
+  <a href="#t:total_shards/0">total_shards</a>(),
+  <a href="Nostrum.Bot.html#t:bot_options/0">Nostrum.Bot.bot_options</a>()
+) ::
+  <a href="https://hexdocs.pm/elixir/Supervisor.html#t:on_start_child/0">Supervisor.on_start_child</a>()</pre>
 
       </div>
 
 <p>Spawns a shard with the specified number and connects it to the discord gateway.</p>
   </section>
 </section>
-<section class="detail" id="disconnect/1">
+<section class="detail" id="disconnect/2">
+
+    <span id="disconnect/1"></span>
 
   <div class="detail-header">
-    <a href="#disconnect/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+    <a href="#disconnect/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
     </a>
     <div class="heading-with-actions">
-      <h1 class="signature" translate="no">disconnect(shard_num)</h1>
+      <h1 class="signature" translate="no">disconnect(shard_session \\ nil, shard_num)</h1>
 
         <span class="note">(since 0.10.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L162" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L181" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -421,35 +431,37 @@ handle yet, thus growing the message queue and the memory usage.</p></li></ol>
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> disconnect(<a href="#t:shard_num/0">shard_num</a>()) :: <a href="#t:resume_information/0">resume_information</a>()</pre>
+          <pre translate="no"><span class="attribute">@spec</span> disconnect(<a href="https://www.erlang.org/doc/apps/stdlib/gen_statem.html#t:server_ref/0">:gen_statem.server_ref</a>() | nil, <a href="#t:shard_num/0">shard_num</a>()) :: <a href="#t:resume_information/0">resume_information</a>()</pre>
 
       </div>
 
 <p>Disconnects the shard with the given shard number from the Gateway.</p><p>This function returns <a href="#t:resume_information/0"><code class="inline">resume_information/0</code></a> which can be provided
 to <a href="#reconnect/1"><code class="inline">reconnect/1</code></a> to reconnect a shard to the gateway and (attempt) to
-catch up on any missed events.</p><h3 id="disconnect/1-examples" class="section-heading">
-  <a href="#disconnect/1-examples" class="hover-link">
+catch up on any missed events.</p><h3 id="disconnect/2-examples" class="section-heading">
+  <a href="#disconnect/2-examples" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
   <span class="text">Examples</span>
 </h3>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Shard.Supervisor</span><span class="o">.</span><span class="n">disconnect</span><span class="p" data-group-id="1191929261-1">(</span><span class="mi">4</span><span class="p" data-group-id="1191929261-1">)</span><span class="w">
-</span><span class="p" data-group-id="1191929261-2">%{</span><span class="ss">shard_num</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="1191929261-2">}</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Shard.Supervisor</span><span class="o">.</span><span class="n">disconnect</span><span class="p" data-group-id="4247047386-1">(</span><span class="mi">4</span><span class="p" data-group-id="4247047386-1">)</span><span class="w">
+</span><span class="p" data-group-id="4247047386-2">%{</span><span class="ss">shard_num</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="4247047386-2">}</span></code></pre>
   </section>
 </section>
-<section class="detail" id="reconnect/1">
+<section class="detail" id="reconnect/2">
+
+    <span id="reconnect/1"></span>
 
   <div class="detail-header">
-    <a href="#reconnect/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+    <a href="#reconnect/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
     </a>
     <div class="heading-with-actions">
-      <h1 class="signature" translate="no">reconnect(opts)</h1>
+      <h1 class="signature" translate="no">reconnect(supervisor \\ fetch_shard_sup_pid(), opts)</h1>
 
         <span class="note">(since 0.10.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L205" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L220" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -460,7 +472,8 @@ catch up on any missed events.</p><h3 id="disconnect/1-examples" class="section-
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> reconnect(<a href="#t:resume_information/0">resume_information</a>()) :: <a href="https://hexdocs.pm/elixir/DynamicSupervisor.html#t:on_start_child/0">DynamicSupervisor.on_start_child</a>()</pre>
+          <pre translate="no"><span class="attribute">@spec</span> reconnect(<a href="https://hexdocs.pm/elixir/Supervisor.html#t:supervisor/0">Supervisor.supervisor</a>(), <a href="#t:resume_information/0">resume_information</a>()) ::
+  <a href="https://hexdocs.pm/elixir/Supervisor.html#t:on_start_child/0">Supervisor.on_start_child</a>()</pre>
 
       </div>
 
@@ -469,15 +482,15 @@ guaranteed that a resume will work (though Nostrum will handle failed attempts
 at a resumption). If a reconnect is successful, any events received during the
 reconnection period should be received. If the reconnect fails, events
 received between the disconnect and re-authentication may be lost.</p><p>For more information about resuming sessions, visit
-<a href="https://discord.com/developers/docs/topics/gateway#resuming">the Discord Developer Portal</a>.</p><h3 id="reconnect/1-examples" class="section-heading">
-  <a href="#reconnect/1-examples" class="hover-link">
+<a href="https://discord.com/developers/docs/topics/gateway#resuming">the Discord Developer Portal</a>.</p><h3 id="reconnect/2-examples" class="section-heading">
+  <a href="#reconnect/2-examples" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
   <span class="text">Examples</span>
 </h3>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">resume</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Nostrum.Shard.Supervisor</span><span class="o">.</span><span class="n">disconnect</span><span class="p" data-group-id="0373350522-1">(</span><span class="mi">4</span><span class="p" data-group-id="0373350522-1">)</span><span class="w">
-</span><span class="p" data-group-id="0373350522-2">%{</span><span class="ss">shard_num</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="0373350522-2">}</span><span class="w">
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Shard.Supervisor</span><span class="o">.</span><span class="n">reconnect</span><span class="p" data-group-id="0373350522-3">(</span><span class="n">resume</span><span class="p" data-group-id="0373350522-3">)</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">resume</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Nostrum.Shard.Supervisor</span><span class="o">.</span><span class="n">disconnect</span><span class="p" data-group-id="6518649055-1">(</span><span class="mi">4</span><span class="p" data-group-id="6518649055-1">)</span><span class="w">
+</span><span class="p" data-group-id="6518649055-2">%{</span><span class="ss">shard_num</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="6518649055-2">}</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Shard.Supervisor</span><span class="o">.</span><span class="n">reconnect</span><span class="p" data-group-id="6518649055-3">(</span><span class="n">resume</span><span class="p" data-group-id="6518649055-3">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="start_link/1">
@@ -487,10 +500,10 @@ received between the disconnect and re-authentication may be lost.</p><p>For mor
       <i class="ri-link-m" aria-hidden="true"></i>
     </a>
     <div class="heading-with-actions">
-      <h1 class="signature" translate="no">start_link(arg)</h1>
+      <h1 class="signature" translate="no">start_link(bot_options)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L85" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L89" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -512,7 +525,7 @@ received between the disconnect and re-authentication may be lost.</p><p>For mor
       <h1 class="signature" translate="no">update_status(status, activity)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L110" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L108" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -534,7 +547,7 @@ received between the disconnect and re-authentication may be lost.</p><p>For mor
       <h1 class="signature" translate="no">update_voice_state(guild_id, channel_id, self_mute, self_deaf)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L121" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L115" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 

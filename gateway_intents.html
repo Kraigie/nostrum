@@ -12,7 +12,7 @@
 
     <link rel="stylesheet" href="dist/html-elixir-6X3L5KMG.css" />
 
-    <script defer src="dist/sidebar_items-C709D224.js"></script>
+    <script defer src="dist/sidebar_items-D705B453.js"></script>
     <script defer src="docs_config.js"></script>
     <script defer src="dist/html-6XHBGSGW.js"></script>
 
@@ -88,7 +88,7 @@ nostrum
 
   </div>
 
-<p>The Discord API allows you to fine tune the payloads that are received by your bot through gateway intents.</p><p>When connecting to Discord you can instruct Discord on which events you want to receive (i.e. messages, user presences, etc.).</p><p>Nostrum allows you to set these intents within your configuration, <strong>by default all non-privileged intents are enabled</strong>.</p><p>To pass intents, configure them in your supervisor tree as part of
+<p>The Discord API allows you to fine-tune the payloads that are received by your bot through gateway intents.</p><p>When connecting to Discord you can instruct Discord on which events you want to receive (i.e. messages, user presences, etc.).</p><p>Nostrum allows you to set these intents within your bots' options.</p><p>To pass intents, configure them in your supervisor tree as part of
 <a href="Nostrum.Bot.html#t:bot_options/0"><code class="inline">Nostrum.Bot.bot_options/0</code></a>, via the <code class="inline">:intents</code> field.</p><p>Possible intents (and the gateway events they correspond to) are:</p><pre><code class="makeup elixir" translate="no"><span class="ss">guilds</span><span class="p">:</span><span class="w">
   </span><span class="o">-</span><span class="w"> </span><span class="nc">GUILD_CREATE</span><span class="w">
   </span><span class="o">-</span><span class="w"> </span><span class="nc">GUILD_UPDATE</span><span class="w">
@@ -100,22 +100,40 @@ nostrum
   </span><span class="o">-</span><span class="w"> </span><span class="nc">CHANNEL_UPDATE</span><span class="w">
   </span><span class="o">-</span><span class="w"> </span><span class="nc">CHANNEL_DELETE</span><span class="w">
   </span><span class="o">-</span><span class="w"> </span><span class="nc">CHANNEL_PINS_UPDATE</span><span class="w">
+  </span><span class="o">-</span><span class="w"> </span><span class="nc">THREAD_CREATE</span><span class="w">
+  </span><span class="o">-</span><span class="w"> </span><span class="nc">THREAD_UPDATE</span><span class="w">
+  </span><span class="o">-</span><span class="w"> </span><span class="nc">THREAD_DELETE</span><span class="w">
+  </span><span class="o">-</span><span class="w"> </span><span class="nc">THREAD_LIST_SYNC</span><span class="w">
+  </span><span class="o">-</span><span class="w"> </span><span class="nc">THREAD_MEMBER_UPDATE</span><span class="w">
+  </span><span class="o">-</span><span class="w"> </span><span class="nc">THREAD_MEMBERS_UPDATE</span><span class="w">
+  </span><span class="o">-</span><span class="w"> </span><span class="nc">STAGE_INSTANCE_CREATE</span><span class="w">
+  </span><span class="o">-</span><span class="w"> </span><span class="nc">STAGE_INSTANCE_UPDATE</span><span class="w">
+  </span><span class="o">-</span><span class="w"> </span><span class="nc">STAGE_INSTANCE_DELETE</span><span class="w">
 
 </span><span class="n">guild_members</span><span class="ss">*</span><span class="p">:</span><span class="w">
   </span><span class="o">-</span><span class="w"> </span><span class="nc">GUILD_MEMBER_ADD</span><span class="w">
   </span><span class="o">-</span><span class="w"> </span><span class="nc">GUILD_MEMBER_UPDATE</span><span class="w">
   </span><span class="o">-</span><span class="w"> </span><span class="nc">GUILD_MEMBER_REMOVE</span><span class="w">
+  </span><span class="o">-</span><span class="w"> </span><span class="nc">THREAD_MEMBERS_UPDATE</span><span class="w">
 
 </span><span class="ss">guild_moderation</span><span class="p">:</span><span class="w">
   </span><span class="o">-</span><span class="w"> </span><span class="nc">GUILD_AUDIT_LOG_ENTRY_CREATE</span><span class="w">
   </span><span class="o">-</span><span class="w"> </span><span class="nc">GUILD_BAN_ADD</span><span class="w">
   </span><span class="o">-</span><span class="w"> </span><span class="nc">GUILD_BAN_REMOVE</span><span class="w">
 
-</span><span class="ss">guild_emojis</span><span class="p">:</span><span class="w">
+</span><span class="ss">guild_expressions</span><span class="p">:</span><span class="w">
   </span><span class="o">-</span><span class="w"> </span><span class="nc">GUILD_EMOJIS_UPDATE</span><span class="w">
+  </span><span class="o">-</span><span class="w"> </span><span class="nc">GUILD_STICKERS_UPDATE</span><span class="w">
+  </span><span class="o">-</span><span class="w"> </span><span class="nc">GUILD_SOUNDBOARD_SOUND_CREATE</span><span class="w">
+  </span><span class="o">-</span><span class="w"> </span><span class="nc">GUILD_SOUNDBOARD_SOUND_UPDATE</span><span class="w">
+  </span><span class="o">-</span><span class="w"> </span><span class="nc">GUILD_SOUNDBOARD_SOUND_DELETE</span><span class="w">
+  </span><span class="o">-</span><span class="w"> </span><span class="nc">GUILD_SOUNDBOARD_SOUNDS_UPDATE</span><span class="w">
 
 </span><span class="ss">guild_integrations</span><span class="p">:</span><span class="w">
   </span><span class="o">-</span><span class="w"> </span><span class="nc">GUILD_INTEGRATIONS_UPDATE</span><span class="w">
+  </span><span class="o">-</span><span class="w"> </span><span class="nc">INTEGRATION_CREATE</span><span class="w">
+  </span><span class="o">-</span><span class="w"> </span><span class="nc">INTEGRATION_UPDATE</span><span class="w">
+  </span><span class="o">-</span><span class="w"> </span><span class="nc">INTEGRATION_DELETE</span><span class="w">
 
 </span><span class="ss">guild_webhooks</span><span class="p">:</span><span class="w">
   </span><span class="o">-</span><span class="w"> </span><span class="nc">WEBHOOKS_UPDATE</span><span class="w">
@@ -125,6 +143,7 @@ nostrum
   </span><span class="o">-</span><span class="w"> </span><span class="nc">INVITE_DELETE</span><span class="w">
 
 </span><span class="ss">guild_voice_states</span><span class="p">:</span><span class="w">
+  </span><span class="o">-</span><span class="w"> </span><span class="nc">VOICE_CHANNEL_EFFECT_SEND</span><span class="w">
   </span><span class="o">-</span><span class="w"> </span><span class="nc">VOICE_STATE_UPDATE</span><span class="w">
 
 </span><span class="n">guild_presences</span><span class="ss">*</span><span class="p">:</span><span class="w">
@@ -161,7 +180,7 @@ nostrum
   </span><span class="o">-</span><span class="w"> </span><span class="nc">TYPING_START</span><span class="w">
 
 </span><span class="n">message_content</span><span class="ss">*</span><span class="p">:</span><span class="w">
-  </span><span class="o">-</span><span class="w"> </span><span class="nc">MESSAGE_CONTENT</span><span class="w">
+  </span><span class="o">-</span><span class="w"> </span><span class="nc">MESSAGE_CONTENT</span><span class="w"> </span><span class="o">*</span><span class="o">*</span><span class="o">*</span><span class="w">
 
 </span><span class="ss">guild_scheduled_events</span><span class="p">:</span><span class="w">
   </span><span class="o">-</span><span class="w"> </span><span class="nc">GUILD_SCHEDULED_EVENT_CREATE</span><span class="w">
@@ -184,10 +203,11 @@ nostrum
 
 </span><span class="ss">direct_message_polls</span><span class="p">:</span><span class="w">
   </span><span class="o">-</span><span class="w"> </span><span class="nc">MESSAGE_POLL_VOTE_ADD</span><span class="w">
-  </span><span class="o">-</span><span class="w"> </span><span class="nc">MESSAGE_POLL_VOTE_REMOVE</span></code></pre><p>Besides an explicit list of atoms, acceptable configuration values are <code class="inline">:all</code> and <code class="inline">:nonprivileged</code>.</p><p>Note that intents marked with <code class="inline">*</code> are <strong>privileged</strong> intents. You must enable these intents by visiting the Discord Developer portal.</p><p>Once your bot passes 100 servers Discord will force you to <strong>verify your bot</strong>. If you require privileged intents you may need to write additional information on your usage of them.</p><p>Nostrum's default value is <code class="inline">:nonprivileged</code>, which enables all non-privileged
-intents.  This is equivalent to setting the bot's <code class="inline">:intents</code> option to the above
-list without the <strong>privileged</strong> intents.  If you require all intents, including
-privileged ones, set <code class="inline">intents</code> to <code class="inline">:all</code>.</p><p>More information on gateway intents can be found in the <a href="https://discord.com/developers/docs/topics/gateway#gateway-intents">Discord Developer documentation</a>.</p>
+  </span><span class="o">-</span><span class="w"> </span><span class="nc">MESSAGE_POLL_VOTE_REMOVE</span></code></pre><p>Besides an explicit list of atoms, acceptable configuration values are <code class="inline">:all</code> and <code class="inline">:nonprivileged</code>.</p><p>Note that intents marked with <code class="inline">*</code> are <strong>privileged</strong> intents. You must enable these intents by visiting the Discord Developer portal.
+Also note that <code class="inline">MESSAGE_CONTENT</code> is not an event type, but including the <code class="inline">:message_content</code> intent will change the data received in 
+message-related events.</p><p>Once your bot passes 100 servers Discord will force you to <strong>verify your bot</strong>. If you require privileged intents you may need to write additional information on your usage of them.</p><p>The <code class="inline">:nonprivileged</code> option is equivalent to setting the bot's <code class="inline">:intents</code> to the entirety of the above 
+list except for the <strong>privileged</strong> intents.  If you require all intents, including
+privileged ones, set <code class="inline">:intents</code> to <code class="inline">:all</code>.</p><p>More information on gateway intents can be found in the <a href="https://discord.com/developers/docs/topics/gateway#gateway-intents">Discord Developer documentation</a>.</p>
 </div>
 
 <div class="bottom-actions" id="bottom-actions">

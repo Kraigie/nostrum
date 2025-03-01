@@ -12,7 +12,7 @@
 
     <link rel="stylesheet" href="dist/html-elixir-6X3L5KMG.css" />
 
-    <script defer src="dist/sidebar_items-C709D224.js"></script>
+    <script defer src="dist/sidebar_items-D705B453.js"></script>
     <script defer src="docs_config.js"></script>
     <script defer src="dist/html-6XHBGSGW.js"></script>
 
@@ -99,12 +99,12 @@ nostrum
   </a>
   <span class="text">Usage</span>
 </h2>
-<p>In your supervisor tree, write:</p><pre><code class="makeup elixir" translate="no"><span class="n">bot_options</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="2237190074-1">%{</span><span class="w">
+<p>In your supervisor tree, write:</p><pre><code class="makeup elixir" translate="no"><span class="n">bot_options</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="6292774157-1">%{</span><span class="w">
   </span><span class="ss">consumer</span><span class="p">:</span><span class="w"> </span><span class="nc">MyBot.Consumer</span><span class="p">,</span><span class="w">
   </span><span class="c1"># This is an example and includes privileged intents, but</span><span class="w">
   </span><span class="c1"># should provide a useful set of intents for bots. Feel</span><span class="w">
   </span><span class="c1"># free to adjust this as you see fit.</span><span class="w">
-  </span><span class="ss">intents</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="2237190074-2">[</span><span class="w">
+  </span><span class="ss">intents</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="6292774157-2">[</span><span class="w">
     </span><span class="ss">:direct_messages</span><span class="p">,</span><span class="w">
     </span><span class="ss">:guild_bans</span><span class="p">,</span><span class="w">
     </span><span class="ss">:guild_members</span><span class="p">,</span><span class="w">
@@ -112,12 +112,12 @@ nostrum
     </span><span class="ss">:guild_messages</span><span class="p">,</span><span class="w">
     </span><span class="ss">:guilds</span><span class="p">,</span><span class="w">
     </span><span class="ss">:message_content</span><span class="w">
-  </span><span class="p" data-group-id="2237190074-2">]</span><span class="p">,</span><span class="w">
-  </span><span class="ss">wrapped_token</span><span class="p">:</span><span class="w"> </span><span class="k" data-group-id="2237190074-3">fn</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nc">System</span><span class="o">.</span><span class="n">fetch_env!</span><span class="p" data-group-id="2237190074-4">(</span><span class="s">&quot;BOT_TOKEN&quot;</span><span class="p" data-group-id="2237190074-4">)</span><span class="w"> </span><span class="k" data-group-id="2237190074-3">end</span><span class="p">,</span><span class="w">
-</span><span class="p" data-group-id="2237190074-1">}</span><span class="w">
-</span><span class="n">children</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="2237190074-5">[</span><span class="w">
-  </span><span class="p" data-group-id="2237190074-6">{</span><span class="nc">Nostrum.Bot</span><span class="p">,</span><span class="w"> </span><span class="n">bot_options</span><span class="p" data-group-id="2237190074-6">}</span><span class="w">
-</span><span class="p" data-group-id="2237190074-5">]</span></code></pre><p>See <a href="#t:bot_options/0"><code class="inline">bot_options/0</code></a> for which options you can configure here.
+  </span><span class="p" data-group-id="6292774157-2">]</span><span class="p">,</span><span class="w">
+  </span><span class="ss">wrapped_token</span><span class="p">:</span><span class="w"> </span><span class="k" data-group-id="6292774157-3">fn</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nc">System</span><span class="o">.</span><span class="n">fetch_env!</span><span class="p" data-group-id="6292774157-4">(</span><span class="s">&quot;BOT_TOKEN&quot;</span><span class="p" data-group-id="6292774157-4">)</span><span class="w"> </span><span class="k" data-group-id="6292774157-3">end</span><span class="p">,</span><span class="w">
+</span><span class="p" data-group-id="6292774157-1">}</span><span class="w">
+</span><span class="n">children</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="6292774157-5">[</span><span class="w">
+  </span><span class="p" data-group-id="6292774157-6">{</span><span class="nc">Nostrum.Bot</span><span class="p">,</span><span class="w"> </span><span class="n">bot_options</span><span class="p" data-group-id="6292774157-6">}</span><span class="w">
+</span><span class="p" data-group-id="6292774157-5">]</span></code></pre><p>See <a href="#t:bot_options/0"><code class="inline">bot_options/0</code></a> for which options you can configure here.
 You may also configure <a href="#t:supervisor_options/0"><code class="inline">supervisor_options/0</code></a>, which allow you
 to customize the options we start the <a href="https://hexdocs.pm/elixir/Supervisor.html"><code class="inline">Supervisor</code></a> with by defining
 your child in the form <code class="inline">{Nostrum.Bot, {bot_options, supervisor_options}}</code>,
@@ -134,18 +134,21 @@ automatic startup via the application is disabled.</p></li><li><p>Remove your co
 setting, cut the value you previously had in your <code class="inline">config.exs</code> and use it
 here. Do the same with <code class="inline">:num_shards</code>, renaming it to <code class="inline">:shards</code> on the
 <code class="inline">bot_options</code> map. You can then remove the old config values.</p></li><li><p>In your consumer, change <code class="inline">use Nostrum.Consumer</code> to <code class="inline">@behaviour Nostrum.Consumer</code>.</p></li><li><p>In your consumer, add a default event handling clause for unmatched events
-at the end of the module, such as:</p></li></ol><pre><code class="makeup elixir" translate="no"><span class="w">  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_event</span><span class="p" data-group-id="2010154376-1">(</span><span class="bp">_</span><span class="p" data-group-id="2010154376-1">)</span><span class="p">,</span><span class="w"> </span><span class="ss">do</span><span class="p">:</span><span class="w"> </span><span class="ss">:ok</span></code></pre><h2 id="module-limitations" class="section-heading">
-  <a href="#module-limitations" class="hover-link">
+at the end of the module, such as:</p></li></ol><pre><code class="makeup elixir" translate="no"><span class="w">  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_event</span><span class="p" data-group-id="6504854356-1">(</span><span class="bp">_</span><span class="p" data-group-id="6504854356-1">)</span><span class="p">,</span><span class="w"> </span><span class="ss">do</span><span class="p">:</span><span class="w"> </span><span class="ss">:ok</span></code></pre><h2 id="module-multiple-bots" class="section-heading">
+  <a href="#module-multiple-bots" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
-  <span class="text">Limitations</span>
+  <span class="text">Multiple Bots</span>
 </h2>
-<p>This module was introduced in version <code class="inline">0.11.0</code> to provide a first step
-towards migrating away from nostrum starting as an application. However, at
-present, you are not able to start multiple bots with this at the same time
-due to global names used internally. However, as we migrate away from the
-application-based deployment, further internal changes should not require any
-update from you.</p>
+<p>Nostrum allows you to start multiple bots under your supervision tree. If you are
+calling a function that interacts with an API specific to a bot - Rest, Cache, Voice, etc. -
+nostrum needs to determine which bot to call it for. It does this with a bot <a href="https://hexdocs.pm/elixir/Registry.html"><code class="inline">Registry</code></a>
+and process dictionaries so that you don't have to pass an additional argument to every
+function.</p><p>Inside the <code class="inline">handle_event/1</code> callback in your consumer, the calling process already
+has the context of the bot that generated the event for any API calls that follow.</p><p>If you have a single bot running and need to call an API asynchronously, i.e. <em>not</em> as a response
+to a gateway event in your consumer, nostrum will automatically determine the bot.</p><p>However, if you have multiple bots running <em>and</em> you need to make unprompted bot calls, you
+will need to assist nostrum by setting the process's context in one of three ways:</p><ul><li><code class="inline">Nostrum.Bot.with_bot(MyBot, fn -&gt; ... end)</code> to wrap the API function calls</li><li><code class="inline">use Nostrum.Bot, name: MyBot</code> at the top of the module where the API-calling functions are defined</li><li><code class="inline">Nostrum.Bot.set_bot_name(MyBot)</code> dynamically before each API call</li></ul><p>You are free to call API functions from newly-spawned tasks as nostrum will search the process dictionaries
+of a few generations of calling processes to find the bot context.</p>
     </section>
 
 </div>
@@ -184,6 +187,16 @@ update from you.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
+        <a href="#t:name/0" data-no-tooltip="" translate="no">name()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Unique name for the bot.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
         <a href="#t:supervisor_options/0" data-no-tooltip="" translate="no">supervisor_options()</a>
 
       </div>
@@ -203,6 +216,36 @@ update from you.</p>
         <a href="#child_spec/1" data-no-tooltip="" translate="no">child_spec(nostrum_options)</a>
 
       </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#fetch_all_bots/0" data-no-tooltip="" translate="no">fetch_all_bots()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Returns all running bots</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#set_bot_name/1" data-no-tooltip="" translate="no">set_bot_name(name)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Manually set the bot name in the calling process's context</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#with_bot/3" data-no-tooltip="" translate="no">with_bot(name, function, next \\ :reset)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Call a function with the context of the provided bot</p></div>
 
     </div>
 
@@ -231,7 +274,7 @@ update from you.</p>
         <span class="note">(since 0.11.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/bot.ex#L114" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/bot.ex#L148" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -246,12 +289,24 @@ update from you.</p>
   :consumer =&gt; <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">module</a>(),
   :intents =&gt; :all | :nonprivileged | [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>()],
   :wrapped_token =&gt; (-&gt; <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()),
+  optional(:name) =&gt; <a href="#t:name/0">name</a>(),
   optional(:shards) =&gt;
     :auto
     | :manual
     | (num_shards :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pos_integer</a>())
     | {lowest :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pos_integer</a>(), highest :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pos_integer</a>(),
-       total :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pos_integer</a>()}
+       total :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pos_integer</a>()},
+  optional(:request_guild_members) =&gt; <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>(),
+  optional(:ffmpeg) =&gt; <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(),
+  optional(:youtubedl) =&gt; <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(),
+  optional(:streamlink) =&gt; <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(),
+  optional(:audio_timeout) =&gt; <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pos_integer</a>(),
+  optional(:audio_frames_per_burst) =&gt; <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pos_integer</a>(),
+  optional(:voice_auto_connect) =&gt; <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>(),
+  optional(:voice_encryption_mode) =&gt; Nostrum.Voice.Crypto.cipher(),
+  optional(:log_full_events) =&gt; <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>(),
+  optional(:log_dispatch_events) =&gt; <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>(),
+  optional(:force_http1) =&gt; <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()
 }</pre>
 
       </div>
@@ -272,14 +327,22 @@ stacktraces.</p></li></ul><h2 id="t:bot_options/0-optional-fields" class="sectio
   </a>
   <span class="text">Optional fields</span>
 </h2>
-<ul><li><code class="inline">:shards</code>: Shards that should be started with this bot. Possible values:<ul><li><p><code class="inline">:auto</code> uses the suggested amount of shards as provided by Discord. This
+<ul><li><p><code class="inline">:name</code>: Unique name for your bot. Defaults to the integer bot id encoded into the token.</p></li><li><p><code class="inline">:shards</code>: Shards that should be started with this bot. Possible values:</p><ul><li><p><code class="inline">:auto</code> uses the suggested amount of shards as provided by Discord. This
 value is the default.</p></li><li><p><code class="inline">:manual</code> do not automatically spawn shards. In this case, it is your
 responsibility to spawn shards manually, see <a href="./manual_sharding.html">the manual sharding
 documentation</a>.</p></li><li><p><code class="inline">pos_integer()</code>: A number of shards to run. nostrum will warn if this is
 not the recommended amount.</p></li><li><p><code class="inline">{lowest, highest, total}</code> starts shards <code class="inline">lowest</code> to <code class="inline">highest</code>. <code class="inline">total</code>
 should contain the total amount of shards that your bot is expected to
 have. Useful for splitting a single bot across multiple nodes, see the
-<a href="./multi_node.html">multi-node documentation</a> for further information.</p></li></ul></li></ul>
+<a href="./multi_node.html">multi-node documentation</a> for further information.</p></li></ul></li></ul><h2 id="t:bot_options/0-global-config-override-fields" class="section-heading">
+  <a href="#t:bot_options/0-global-config-override-fields" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Global config override fields</span>
+</h2>
+<p>The following fields will override global config values if provided.
+More information on globally configuring these options and their defaults
+<a href="./intro.html#configuration-options">may be found here</a>.</p><ul><li><code class="inline">:request_guild_members</code></li><li><code class="inline">:ffmpeg</code></li><li><code class="inline">:youtubedl</code></li><li><code class="inline">:streamlink</code></li><li><code class="inline">:audio_timeout</code></li><li><code class="inline">:audio_frames_per_burst</code></li><li><code class="inline">:voice_auto_connect</code></li><li><code class="inline">:voice_encryption_mode</code></li><li><code class="inline">:log_full_events</code></li><li><code class="inline">:log_dispatch_events</code></li><li><code class="inline">:force_http1</code></li></ul>
   </section>
 </section>
 <section class="detail" id="t:intents/0">
@@ -294,7 +357,7 @@ have. Useful for splitting a single bot across multiple nodes, see the
         <span class="note">(since 0.11.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/bot.ex#L133" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/bot.ex#L178" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -314,6 +377,36 @@ Discord</a>
 or on our <a href="gateway_intents.html">Gateway Intents</a> documentation.</p>
   </section>
 </section>
+<section class="detail" id="t:name/0">
+
+  <div class="detail-header">
+    <a href="#t:name/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">name()</h1>
+
+        <span class="note">(since 0.11.0)</span>
+
+
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/bot.ex#L183" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> name() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>() | <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
+
+      </div>
+
+<p>Unique name for the bot.</p>
+  </section>
+</section>
 <section class="detail" id="t:supervisor_options/0">
 
   <div class="detail-header">
@@ -326,7 +419,7 @@ or on our <a href="gateway_intents.html">Gateway Intents</a> documentation.</p>
         <span class="note">(since 0.11.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/bot.ex#L141" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/bot.ex#L191" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -369,7 +462,7 @@ nostrum.</p>
         <span class="note">(since 0.11.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/bot.ex#L174" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/bot.ex#L229" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -385,6 +478,113 @@ nostrum.</p>
       </div>
 
 
+  </section>
+</section>
+<section class="detail" id="fetch_all_bots/0">
+
+  <div class="detail-header">
+    <a href="#fetch_all_bots/0" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">fetch_all_bots()</h1>
+
+        <span class="note">(since 0.11.0)</span>
+
+
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/bot.ex#L253" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> fetch_all_bots() :: [%{name: <a href="#t:name/0">name</a>(), pid: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), bot_options: <a href="#t:bot_options/0">bot_options</a>()}]</pre>
+
+      </div>
+
+<p>Returns all running bots</p>
+  </section>
+</section>
+<section class="detail" id="set_bot_name/1">
+
+  <div class="detail-header">
+    <a href="#set_bot_name/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">set_bot_name(name)</h1>
+
+        <span class="note">(since 0.11.0)</span>
+
+
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/bot.ex#L344" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> set_bot_name(<a href="#t:name/0">name</a>()) :: <a href="#t:name/0">name</a>() | nil</pre>
+
+      </div>
+
+<p>Manually set the bot name in the calling process's context</p>
+  </section>
+</section>
+<section class="detail" id="with_bot/3">
+
+    <span id="with_bot/2"></span>
+
+  <div class="detail-header">
+    <a href="#with_bot/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">with_bot(name, function, next \\ :reset)</h1>
+
+        <span class="note">(since 0.11.0)</span>
+
+
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/bot.ex#L377" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> with_bot(<a href="#t:name/0">name</a>(), (-&gt; <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>()), :reset | :clear | :keep) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>()</pre>
+
+      </div>
+
+<p>Call a function with the context of the provided bot</p><pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Bot</span><span class="o">.</span><span class="n">with_bot</span><span class="p" data-group-id="9456847656-1">(</span><span class="nc">ReticentBot</span><span class="p">,</span><span class="w"> </span><span class="k" data-group-id="9456847656-2">fn</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+  </span><span class="nc">Nostrum.Api.Message</span><span class="o">.</span><span class="n">create</span><span class="p" data-group-id="9456847656-3">(</span><span class="n">channel_id</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Hi...&quot;</span><span class="p" data-group-id="9456847656-3">)</span><span class="w">
+</span><span class="k" data-group-id="9456847656-2">end</span><span class="p" data-group-id="9456847656-1">)</span><span class="w">
+
+</span><span class="nc">Nostrum.Bot</span><span class="o">.</span><span class="n">with_bot</span><span class="p" data-group-id="9456847656-4">(</span><span class="nc">SillyGoofyBot</span><span class="p">,</span><span class="w"> </span><span class="k" data-group-id="9456847656-5">fn</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+  </span><span class="nc">Nostrum.Api.Message</span><span class="o">.</span><span class="n">create</span><span class="p" data-group-id="9456847656-6">(</span><span class="n">channel_id</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Heyyy :)&quot;</span><span class="p" data-group-id="9456847656-6">)</span><span class="w">
+</span><span class="k" data-group-id="9456847656-5">end</span><span class="p">,</span><span class="w"> </span><span class="ss">:keep</span><span class="p" data-group-id="9456847656-4">)</span><span class="w">
+
+</span><span class="c1"># Context is still set to SillyGoofyBot</span><span class="w">
+</span><span class="nc">Nostrum.Api.Message</span><span class="o">.</span><span class="n">create</span><span class="p" data-group-id="9456847656-7">(</span><span class="n">channel_id</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Me again :)&quot;</span><span class="p" data-group-id="9456847656-7">)</span></code></pre><h2 id="with_bot/3-parameters" class="section-heading">
+  <a href="#with_bot/3-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">name</code> - Name of the bot to run the function as</li><li><code class="inline">function</code> - Zero arity function to execute</li><li><code class="inline">next</code> - What to do with the process's bot context after the function<ul><li><code class="inline">:reset</code> - Reset the values to what they were before (default)</li><li><code class="inline">:clear</code> - Set the values to <code class="inline">nil</code></li><li><code class="inline">:keep</code> - Keep the provided bot's context in this process's dictionary</li></ul></li></ul>
   </section>
 </section>
 
