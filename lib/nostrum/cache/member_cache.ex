@@ -26,6 +26,11 @@ defmodule Nostrum.Cache.MemberCache do
 
   @configured_cache Nostrum.Cache.Base.get_cache_module(:members, @default_cache_implementation)
 
+  # We shouldn't warn about the configured cache module being undefined, as
+  # users can write their own cache modules and those would always generate
+  # this warning since they'd be compiled after Nostrum.
+  @compile {:no_warn_undefined, @configured_cache}
+
   @doc """
   Retrieve a member from the cache by guild and user ID.
   """

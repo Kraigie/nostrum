@@ -32,6 +32,11 @@ defmodule Nostrum.Cache.ChannelGuildMapping do
                       @default_implementation
                     )
 
+  # We shouldn't warn about the configured cache module being undefined, as
+  # users can write their own cache modules and those would always generate
+  # this warning since they'd be compiled after Nostrum.
+  @compile {:no_warn_undefined, @configured_cache}
+
   alias Nostrum.Struct.Channel
   alias Nostrum.Struct.Guild
 

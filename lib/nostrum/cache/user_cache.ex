@@ -20,6 +20,11 @@ defmodule Nostrum.Cache.UserCache do
 
   @configured_cache Nostrum.Cache.Base.get_cache_module(:users, @default_cache_implementation)
 
+  # We shouldn't warn about the configured cache module being undefined, as
+  # users can write their own cache modules and those would always generate
+  # this warning since they'd be compiled after Nostrum.
+  @compile {:no_warn_undefined, @configured_cache}
+
   ## Behaviour specification
 
   @doc ~s"""
