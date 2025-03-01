@@ -35,6 +35,7 @@ defmodule Nostrum.Token do
       iex> Nostrum.Token.decode_token!(token)
       868071853032357978
   """
+  @doc since: "0.11.0"
   def decode_token!(nil), do: raise(@no_token_error_message)
 
   @spec decode_token!(binary()) :: pos_integer()

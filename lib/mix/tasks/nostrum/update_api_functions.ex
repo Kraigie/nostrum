@@ -12,6 +12,7 @@ defmodule Mix.Tasks.Nostrum.UpdateApiFunctions do
   user manual, p. 512, "Musings on data safety outside of distributed mnesia
   databases" for more details.
   """
+  @moduledoc since: "0.11.0"
 
   use Mix.Task
 

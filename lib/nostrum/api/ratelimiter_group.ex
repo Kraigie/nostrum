@@ -28,6 +28,7 @@ defmodule Nostrum.Api.RatelimiterGroup do
   target ratelimiter by selecting it from the list of known ratelimiters via
   `:erlang.phash2/2`.
   """
+  @moduledoc since: "0.10.1"
 
   @base_scope_name :nostrum_ratelimiter_group
   @group_name :ratelimiters
