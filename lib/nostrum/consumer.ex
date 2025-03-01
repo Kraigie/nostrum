@@ -12,7 +12,9 @@ defmodule Nostrum.Consumer do
 
   ## Listening to events
 
-  See the `Nostrum.ConsumerGroup` module if you wish to listen to events.
+  See the `Nostrum.ConsumerGroup` module if you wish to listen to events
+  outside of the regular consumer flow, for example, when you wish to wait for
+  user reactions to a message.
 
   ## Example consumer
 

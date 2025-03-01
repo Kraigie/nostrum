@@ -1,6 +1,9 @@
 defmodule Nostrum.ConsumerGroup do
   @moduledoc """
   Registers consumers and handles event dispatch.
+
+  This module can be used to implement inline event awaiting, please see
+  `join/1` for details.
   """
   @moduledoc since: "0.7.0"
 
@@ -33,12 +36,8 @@ defmodule Nostrum.ConsumerGroup do
     :pg.demonitor(scope_name(), ref)
   end
 
-  @doc """
-  Dispatch the given event(s) to all consumers.
-
-  This is called by nostrum internally, you likely won't need to call this
-  manually.
-  """
+  # Dispatch the given event(s) to all consumers.
+  @doc false
   @spec dispatch(nonempty_list(Consumer.event()), Bot.name()) :: :ok
   @spec dispatch(Consumer.event(), Bot.name()) :: :ok
   def dispatch([:noop | events], bot_name), do: dispatch(events, bot_name)
@@ -65,7 +64,7 @@ defmodule Nostrum.ConsumerGroup do
   def join, do: join(self())
 
   @doc """
-  Join the given process to the consumers.
+  Join the given process to the consumers of the current bot.
 
   If no process is given, joins the current process to the consumers. This can
   be used for subscribing to gateway events and awaiting them inline.
@@ -77,7 +76,13 @@ defmodule Nostrum.ConsumerGroup do
 
   Note that there is currently no filtering done. If the gateway sends a lot of
   messages and the event subscriber does not terminate swiftly, its message
-  queue will keep growing.
+  queue will keep growing. If you wish to stop listening to events, call
+  `leave/1`.
+
+  If joining the consumer groups of multiple bots, use the `bot_options` field
+  of the `t:Nostrum.Struct.WSState.t/0` sent with gateway events (see
+  `t:Nostrum.Consumer.event/0`) to determine which bot the current event came
+  from.
 
   ## Example
 
@@ -127,12 +132,14 @@ defmodule Nostrum.ConsumerGroup do
     :pg.leave(scope_name(), @group_name, pid_or_pids)
   end
 
+  @doc false
   def start_link(%{name: bot_name} = _opts) do
     :pg.start_link(scope_name(bot_name))
   end
 
   defp scope_name(bot_name \\ Bot.fetch_bot_name()), do: :"#{@base_scope_name}_#{bot_name}"
 
+  @doc false
   def child_spec(opts) do
     %{
       id: __MODULE__,
