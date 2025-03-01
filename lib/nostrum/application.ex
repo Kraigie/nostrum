@@ -22,7 +22,12 @@ defmodule Nostrum.Application do
   def start(_type, _args) do
     check_executables()
     check_otp_version()
-    Logger.add_translator({Nostrum.StateMachineTranslator, :translate})
+
+    # Obsolete from 1.18.2. See
+    # https://github.com/elixir-lang/elixir/commit/70391199a481c7d3ccb2756c99452ee7dc8ad12f
+    if System.version() < "1.18.2" do
+      Logger.add_translator({Nostrum.StateMachineTranslator, :translate})
+    end
 
     if Application.fetch_env(:nostrum, :token) != :error do
       raise RuntimeError, """
