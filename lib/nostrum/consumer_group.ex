@@ -110,6 +110,23 @@ defmodule Nostrum.ConsumerGroup do
     :pg.join(scope_name(), @group_name, pid)
   end
 
+  @doc "Equivalent to `ConsumerGroup.leave(self())`. See `leave/1`."
+  @doc since: "0.11.0"
+  def leave do
+    leave(self())
+  end
+
+  @doc """
+  Leave the given process or processes from the current bot's consumer group.
+
+  Useful if you wish to stop listening for events after a while.
+  """
+  @doc since: "0.11.0"
+  @spec leave(pid() | [pid()]) :: :ok | :not_joined
+  def leave(pid_or_pids) do
+    :pg.leave(scope_name(), @group_name, pid_or_pids)
+  end
+
   def start_link(%{name: bot_name} = _opts) do
     :pg.start_link(scope_name(bot_name))
   end

@@ -55,6 +55,9 @@ defmodule Nostrum.ConsumerGroupTest do
           with_bot(bot_name, fn ->
             ConsumerGroup.join()
             send(parent, :ready)
+            :ok = ConsumerGroup.leave()
+            :not_joined = ConsumerGroup.leave()
+            :not_joined = ConsumerGroup.leave(self())
           end)
         end)
 
