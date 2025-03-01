@@ -81,6 +81,10 @@ defmodule Nostrum.Bot do
 
   You are free to call API functions from newly-spawned tasks as nostrum will search the process dictionaries
   of a few generations of calling processes to find the bot context.
+
+  Note that, unless explicitly configured otherwise (see `t:bot_options/0`), nostrum uses
+  the user ID from the bot's token as the bot name. If you wish to dynamically determine
+  the user ID from the token, use `Nostrum.Token.decode_token!/1`.
   """
   # TODO: document dynamic starting and multiple shards
   # TODO(v0.12.0 and above): Remove migration guide
@@ -242,8 +246,13 @@ defmodule Nostrum.Bot do
   @bot_fetch_failure_message """
   Unable to find the bot process from the calling process's context. If you are calling
   a bot function outside of a consumer responding to a gateway event or if you have
-  more than one bot running, consider invoking `use #{__MODULE__}, name: {name}` in
-  the module where it is being called from.
+  more than one bot running, consider one of the following:
+
+  1. Use `#{__MODULE__}.with_bot(bot_name, fn -> ... end)` around your code.
+  2. Invoke `use #{__MODULE__}, name: bot_name` in the module where it is being called from.
+  3. Call `#{__MODULE__}.set_bot_name(bot_name)` before your API calls
+
+  See the `#{__MODULE__}` documentation for more details.
   """
 
   @doc """
