@@ -12,7 +12,7 @@
 
     <link rel="stylesheet" href="dist/html-elixir-6X3L5KMG.css" />
 
-    <script defer src="dist/sidebar_items-8A52A8FF.js"></script>
+    <script defer src="dist/sidebar_items-46217AB2.js"></script>
     <script defer src="docs_config.js"></script>
     <script defer src="dist/html-6XHBGSGW.js"></script>
 
@@ -189,7 +189,7 @@ handle yet, thus growing the message queue and the memory usage.</p></li></ol>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#disconnect/2" data-no-tooltip="" translate="no">disconnect(shard_session \\ nil, shard_num)</a>
+        <a href="#disconnect/3" data-no-tooltip="" translate="no">disconnect(supervisor \\ fetch_shard_sup_pid(), shard_session \\ nil, shard_num)</a>
 
       </div>
 
@@ -382,7 +382,7 @@ handle yet, thus growing the message queue and the memory usage.</p></li></ol>
       <h1 class="signature" translate="no">connect(supervisor \\ fetch_shard_sup_pid(), shard_num, total_shards, bot_options)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L191" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L194" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -406,21 +406,23 @@ handle yet, thus growing the message queue and the memory usage.</p></li></ol>
 <p>Spawns a shard with the specified number and connects it to the discord gateway.</p>
   </section>
 </section>
-<section class="detail" id="disconnect/2">
+<section class="detail" id="disconnect/3">
 
     <span id="disconnect/1"></span>
 
+    <span id="disconnect/2"></span>
+
   <div class="detail-header">
-    <a href="#disconnect/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+    <a href="#disconnect/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
     </a>
     <div class="heading-with-actions">
-      <h1 class="signature" translate="no">disconnect(shard_session \\ nil, shard_num)</h1>
+      <h1 class="signature" translate="no">disconnect(supervisor \\ fetch_shard_sup_pid(), shard_session \\ nil, shard_num)</h1>
 
         <span class="note">(since 0.10.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L181" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L182" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -431,20 +433,21 @@ handle yet, thus growing the message queue and the memory usage.</p></li></ol>
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> disconnect(<a href="https://www.erlang.org/doc/apps/stdlib/gen_statem.html#t:server_ref/0">:gen_statem.server_ref</a>() | nil, <a href="#t:shard_num/0">shard_num</a>()) :: <a href="#t:resume_information/0">resume_information</a>()</pre>
+          <pre translate="no"><span class="attribute">@spec</span> disconnect(<a href="https://hexdocs.pm/elixir/Supervisor.html#t:supervisor/0">Supervisor.supervisor</a>(), <a href="https://www.erlang.org/doc/apps/stdlib/gen_statem.html#t:server_ref/0">:gen_statem.server_ref</a>() | nil, <a href="#t:shard_num/0">shard_num</a>()) ::
+  <a href="#t:resume_information/0">resume_information</a>()</pre>
 
       </div>
 
 <p>Disconnects the shard with the given shard number from the Gateway.</p><p>This function returns <a href="#t:resume_information/0"><code class="inline">resume_information/0</code></a> which can be provided
 to <a href="#reconnect/1"><code class="inline">reconnect/1</code></a> to reconnect a shard to the gateway and (attempt) to
-catch up on any missed events.</p><h3 id="disconnect/2-examples" class="section-heading">
-  <a href="#disconnect/2-examples" class="hover-link">
+catch up on any missed events.</p><h3 id="disconnect/3-examples" class="section-heading">
+  <a href="#disconnect/3-examples" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
   <span class="text">Examples</span>
 </h3>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Shard.Supervisor</span><span class="o">.</span><span class="n">disconnect</span><span class="p" data-group-id="7453753939-1">(</span><span class="mi">4</span><span class="p" data-group-id="7453753939-1">)</span><span class="w">
-</span><span class="p" data-group-id="7453753939-2">%{</span><span class="ss">shard_num</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="7453753939-2">}</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Shard.Supervisor</span><span class="o">.</span><span class="n">disconnect</span><span class="p" data-group-id="8027602601-1">(</span><span class="mi">4</span><span class="p" data-group-id="8027602601-1">)</span><span class="w">
+</span><span class="p" data-group-id="8027602601-2">%{</span><span class="ss">shard_num</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="8027602601-2">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="reconnect/2">
@@ -461,7 +464,7 @@ catch up on any missed events.</p><h3 id="disconnect/2-examples" class="section-
         <span class="note">(since 0.10.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L220" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L223" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -488,9 +491,9 @@ received between the disconnect and re-authentication may be lost.</p><p>For mor
   </a>
   <span class="text">Examples</span>
 </h3>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">resume</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Nostrum.Shard.Supervisor</span><span class="o">.</span><span class="n">disconnect</span><span class="p" data-group-id="5161878071-1">(</span><span class="mi">4</span><span class="p" data-group-id="5161878071-1">)</span><span class="w">
-</span><span class="p" data-group-id="5161878071-2">%{</span><span class="ss">shard_num</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="5161878071-2">}</span><span class="w">
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Shard.Supervisor</span><span class="o">.</span><span class="n">reconnect</span><span class="p" data-group-id="5161878071-3">(</span><span class="n">resume</span><span class="p" data-group-id="5161878071-3">)</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">resume</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Nostrum.Shard.Supervisor</span><span class="o">.</span><span class="n">disconnect</span><span class="p" data-group-id="3341991003-1">(</span><span class="mi">4</span><span class="p" data-group-id="3341991003-1">)</span><span class="w">
+</span><span class="p" data-group-id="3341991003-2">%{</span><span class="ss">shard_num</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="3341991003-2">}</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Shard.Supervisor</span><span class="o">.</span><span class="n">reconnect</span><span class="p" data-group-id="3341991003-3">(</span><span class="n">resume</span><span class="p" data-group-id="3341991003-3">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="start_link/1">
