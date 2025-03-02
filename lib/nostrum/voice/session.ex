@@ -77,7 +77,7 @@ defmodule Nostrum.Voice.Session do
     }
 
     Logger.debug(fn -> "Voice Websocket connection up on worker #{inspect(worker)}" end)
-    Voice.update_voice(voice, session_pid: self())
+    Voice.update_voice_async(voice, session_pid: self())
     {:noreply, state}
   end
 
