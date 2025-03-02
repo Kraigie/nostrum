@@ -268,7 +268,11 @@ defmodule Nostrum.Bot do
   @spec fetch_all_bots() :: [%{name: name(), pid: pid(), bot_options: bot_options()}]
   def fetch_all_bots do
     Registry.select(Nostrum.Bot.Registry, [
-      {{:"$1", :"$2", :"$3"}, [], [%{name: :"$1", pid: :"$2", bot_options: :"$3"}]}
+      {
+        _match_pattern = {_key = :"$1", _pid = :"$2", _value = :"$3"},
+        _guards = [not: {:is_tuple, :"$1"}],
+        _body = [%{name: :"$1", pid: :"$2", bot_options: :"$3"}]
+      }
     ])
   end
 
