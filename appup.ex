@@ -1,9 +1,10 @@
 # See the appup cookbook for instructions:
 # https://www.erlang.org/doc/design_principles/appup_cookbook.html
 {
-  ~c"0.10.3",
+  ~c"0.10.4",
   [
     # Upgrade instructions
+    {~c"0.10.3", [{:update, Nostrum.Api.Ratelimiter, {:advanced, []}}]},
     {~c"0.10.2", [{:update, Nostrum.Api.Ratelimiter, {:advanced, []}}]},
     {~c"0.10.1", [{:update, Nostrum.Api.Ratelimiter, {:advanced, []}}]},
     {~c"0.10.0", [{:restart_application, :nostrum}]},
