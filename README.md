@@ -10,10 +10,12 @@ supports the following:
 
 - Clean REST API implementation and ratelimiting.
 - Documented structs and abstractions over API objects.
-- Support for multi-node distribution of caches and internal state.
-- Listening and sending voice data, with helpers for common functionality.
 - Automatic, configurable maintenance of local caches of Discord data, with
-  extensive query support and cache swapping functionality.
+  cache swapping functionality.
+- Ability to run multiple bots.
+- Support for multi-node distribution of caches and internal state, including
+  live migration of bots between nodes.
+- Listening and sending voice data, with helpers for common functionality.
 
 It is highly recommended to check out the [release
 documentation](https://hexdocs.pm/nostrum/) first. It includes all of the
