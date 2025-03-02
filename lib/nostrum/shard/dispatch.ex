@@ -14,6 +14,7 @@ defmodule Nostrum.Shard.Dispatch do
 
   alias Nostrum.Cache.Me
   alias Nostrum.Consumer
+  alias Nostrum.ConsumerGroup
   alias Nostrum.Shard.{Intents, Session}
   alias Nostrum.Store.GuildShardMapping
   alias Nostrum.Store.UnavailableGuild, as: UnavailableGuildStore
@@ -63,8 +64,8 @@ defmodule Nostrum.Shard.Dispatch do
 
   @large_threshold 250
 
-  @spec handle({map(), WSState.t() | VoiceWSState.t()}) :: [Consumer.event()]
-  def handle({payload, state}) do
+  @spec handle(map(), WSState.t() | VoiceWSState.t()) :: [Consumer.event()]
+  def handle(payload, state) do
     if Util.get_config(state.bot_options, :log_full_events, false),
       do: Logger.debug(inspect(payload.d, pretty: true))
 
@@ -72,12 +73,13 @@ defmodule Nostrum.Shard.Dispatch do
     |> handle_event(payload.d, state)
     |> filter_events()
     |> send_events()
+    |> ConsumerGroup.dispatch(state.bot_options.name)
   end
 
   defp filter_events(events) do
     events
     |> List.wrap()
-    |> Enum.filter(&(format_event(&1) != :noop))
+    |> Enum.reject(&(format_event(&1) == :noop))
   end
 
   # Handles the case of not finding users in the user cache
