@@ -3,7 +3,6 @@ defmodule Nostrum.Shard.DispatchTest do
 
   alias Nostrum.Shard.Dispatch
   alias Nostrum.Struct.Event.{MessageDelete, MessageDeleteBulk}
-  alias Nostrum.Struct.WSState
   alias NostrumTest.Stubs
 
   describe "handle_event/1" do
@@ -28,13 +27,6 @@ defmodule Nostrum.Shard.DispatchTest do
 
       assert(^key = :MESSAGE_DELETE_BULK)
       assert(^event = struct(MessageDeleteBulk, Map.put(payload, :deleted_messages, [])))
-    end
-
-    test ":noop events are handled by being dispatched into the dumpster" do
-      Logger.disable(self())
-      payload = %{t: :UNMATCHED_EVENT_NAME, d: :noop}
-      state = %WSState{bot_options: %{name: "test_bot", consumer: NostrumTest.NoopConsumer}}
-      [] = Dispatch.handle(payload, state)
     end
   end
 end

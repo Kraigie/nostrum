@@ -15,6 +15,12 @@ defmodule Nostrum.ConsumerGroupTest do
       name: bot_name
     }
 
+    start_supervised!(
+      {PartitionSupervisor,
+       child_spec: Task.Supervisor,
+       name: {:via, Registry, {Nostrum.Bot.Registry, {:nostrum_task_supervisor, bot_name}}}}
+    )
+
     spec = {ConsumerGroup, bot_options}
     [pid: start_supervised!(spec), bot_name: bot_name]
   end
@@ -39,39 +45,45 @@ defmodule Nostrum.ConsumerGroupTest do
         {:MESSAGE_CREATE, message_2, %WSState{}}
       ]
 
-      ^events = ConsumerGroup.dispatch(events, bot_name)
+      :ok = ConsumerGroup.dispatch(events, bot_name)
 
       assert_receive {:event, {:MESSAGE_CREATE, ^message, _dummy_ws_state}}
       assert_receive {:event, {:MESSAGE_CREATE, ^message_2, _dummy_ws_state}}
     end
 
     # :noop events are explicitly filtered out before being dispatched to ConsumerGroup
-    test "Raises on dispatching `malformed events` messages", %{bot_name: bot_name} do
+    test "raises on dispatching malformed events", %{bot_name: bot_name} do
       assert_raise FunctionClauseError, fn ->
         ConsumerGroup.dispatch(:noop, bot_name)
       end
     end
+  end
 
-    test "Nostrum.Shard.Dispatch.handle/2 forwards messages to subscriber", %{bot_name: bot_name} do
-      interaction = %{guild_id: guild_id = 19_411_207, channel_id: channel_id = 20_010_911}
-      state = %WSState{bot_options: %{name: bot_name, consumer: NostrumTest.NoopConsumer}}
-      payload = %{t: :INTERACTION_CREATE, d: interaction}
-
-      [
-        {:INTERACTION_CREATE,
-         %Nostrum.Struct.Interaction{guild_id: ^guild_id, channel_id: ^channel_id},
-         ^state} = event
-      ] = Dispatch.handle(payload, state)
-
-      assert_receive {:event, ^event}
+  describe "Nostrum.Shard.Dispatch.handle/2" do
+    setup %{bot_name: bot_name} do
+      set_bot_name(bot_name)
+      :ok = ConsumerGroup.join()
     end
 
-    test "Nostrum.Shard.Dispatch.handle/2 filters noops from consumers", %{bot_name: bot_name} do
-      Logger.disable(self())
-      payload = %{t: :UNMATCHED_EVENT_NAME, d: :noop}
-      state = %WSState{bot_options: %{name: bot_name, consumer: NostrumTest.NoopConsumer}}
+    test "forwards messages to subscriber", %{bot_name: bot_name} do
+      interaction = %{guild_id: guild_id = 19_411_207, channel_id: channel_id = 20_010_911}
+      state = %WSState{bot_options: %{name: bot_name, consumer: :nostrum_noop_consumer}}
+      payload = %{t: :INTERACTION_CREATE, d: interaction}
 
-      [] = Dispatch.handle(payload, state)
+      :ok = Dispatch.handle(payload, state)
+
+      assert_receive {:event,
+                      {:INTERACTION_CREATE,
+                       %Nostrum.Struct.Interaction{guild_id: ^guild_id, channel_id: ^channel_id},
+                       ^state}}
+    end
+
+    @tag :capture_log
+    test "filters noops from consumers", %{bot_name: bot_name} do
+      payload = %{t: :UNMATCHED_EVENT_NAME, d: :noop}
+      state = %WSState{bot_options: %{name: bot_name, consumer: :nostrum_noop_consumer}}
+
+      :ok = Dispatch.handle(payload, state)
 
       refute_receive _
     end

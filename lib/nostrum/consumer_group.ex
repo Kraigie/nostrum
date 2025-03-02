@@ -38,7 +38,7 @@ defmodule Nostrum.ConsumerGroup do
 
   # Dispatch the given event(s) to all consumers.
   @doc false
-  @spec dispatch(list(Consumer.event()), Bot.name()) :: list(Consumer.event())
+  @spec dispatch(list(Consumer.event()), Bot.name()) :: :ok
   def dispatch([event | events], bot_name) do
     payload = {:event, event}
 
@@ -47,10 +47,10 @@ defmodule Nostrum.ConsumerGroup do
     |> :pg.get_members(@group_name)
     |> Enum.each(&send(&1, payload))
 
-    [event | dispatch(events, bot_name)]
+    dispatch(events, bot_name)
   end
 
-  def dispatch([], _), do: []
+  def dispatch([], _), do: :ok
 
   @doc """
   Equivalent to `ConsumerGroup.join(self())`. See `join/1`.

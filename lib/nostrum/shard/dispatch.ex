@@ -64,7 +64,7 @@ defmodule Nostrum.Shard.Dispatch do
 
   @large_threshold 250
 
-  @spec handle(map(), WSState.t() | VoiceWSState.t()) :: [Consumer.event()]
+  @spec handle(map(), WSState.t() | VoiceWSState.t()) :: :ok
   def handle(payload, state) do
     if Util.get_config(state.bot_options, :log_full_events, false),
       do: Logger.debug(inspect(payload.d, pretty: true))
