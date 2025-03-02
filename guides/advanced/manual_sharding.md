@@ -4,7 +4,7 @@ Advanced users can use methods located in the `Nostrum.Shard.Supervisor` module
 to manually connect shards to the gateway as well as initiate manual disconnect
 and reconnects (attempting to `RESUME` sessions where possible).
 
-You can set the `num_shards` option in your bot options to `:manual` to prevent
+You can set the `shards` option in your bot options to `:manual` to prevent
 Nostrum from automatically starting shards. You should use the methods in the
 shard supervisor such as `Nostrum.Shard.Supervisor.connect/3` to manually start
 shards if using this configuration option.
