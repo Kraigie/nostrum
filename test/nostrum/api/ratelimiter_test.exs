@@ -253,6 +253,23 @@ defmodule Nostrum.Api.RatelimiterTest do
       assert {:ok, body} = reply
       assert %{"request" => "received"} = Jason.decode!(body)
     end
+
+    test "retry requests that are murdered in flight", %{ratelimiter: ratelimiter} do
+      request = build_request("slowpoke", duration: :timer.seconds(1))
+      req_id = :gen_statem.send_request(ratelimiter, {:queue, request})
+      {:ok, %{conn: conn, running: running}} = spin_until_connected(ratelimiter)
+
+      [{stream, _info}] = Map.to_list(running)
+
+      send(
+        ratelimiter,
+        {:gun_down, conn, :http1, :i_am_the_chaos_monkey, _killed_streams = [stream]}
+      )
+
+      {:reply, reply} = :gen_statem.wait_response(req_id, @request_timeout)
+      assert {:ok, body} = reply
+      assert %{"request" => "received"} = Jason.decode!(body)
+    end
   end
 
   describe "hitting the bot call limit" do

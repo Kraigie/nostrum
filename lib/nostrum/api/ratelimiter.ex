@@ -370,7 +370,7 @@ defmodule Nostrum.Api.Ratelimiter do
   # Inspired by Peter Morgan's "Postpone: Resource Allocation on Demand"
   #   https://shortishly.com/blog/postpone-resource-allocation-on-demand/
 
-  def disconnected({:call, _from}, _request, data) do
+  defp transitions_postpone_and_begin_connecting(data) do
     {:next_state, :connecting, data,
      [
        {:next_event, :internal, :open},
@@ -379,17 +379,20 @@ defmodule Nostrum.Api.Ratelimiter do
      ]}
   end
 
+  def disconnected({:call, _from}, _request, data) do
+    transitions_postpone_and_begin_connecting(data)
+  end
+
   # We were informed that a bucket expired, and we have outstanding requests
   # (that were previously ratelimited) for that bucket. We need to connect and
   # run it - just like when receiving a queue request above.
   def disconnected({:timeout, bucket}, :expired, %{outstanding: outstanding} = data)
       when is_map_key(outstanding, bucket) do
-    {:next_state, :connecting, data,
-     [
-       {:next_event, :internal, :open},
-       {:state_timeout, :timer.seconds(10), :connect_timeout},
-       :postpone
-     ]}
+    transitions_postpone_and_begin_connecting(data)
+  end
+
+  def disconnected(:internal, {:requeue, _request, _reason}, data) do
+    transitions_postpone_and_begin_connecting(data)
   end
 
   # We received a timeout for a bucket that does not have any pending requests.
@@ -418,6 +421,10 @@ defmodule Nostrum.Api.Ratelimiter do
   end
 
   def connecting({:timeout, _bucket}, :expired, _data) do
+    {:keep_state_and_data, :postpone}
+  end
+
+  def connecting(:internal, {:requeue, _request, _reason}, _data) do
     {:keep_state_and_data, :postpone}
   end
 
@@ -956,9 +963,7 @@ defmodule Nostrum.Api.Ratelimiter do
 
     {{_bucket, request, from}, running_without_it} = Map.pop(running, stream)
 
-    Logger.warning(
-      "Request to #{inspect(request.route)} queued by #{inspect(from)} was closed abnormally with reason #{reason}, requeueing"
-    )
+    log_abnormal_close(request, from, reason)
 
     {:keep_state, %{data | running: running_without_it},
      {:next_event, :internal, {:requeue, {request, from}, :abnormal_close}}}
@@ -990,9 +995,9 @@ defmodule Nostrum.Api.Ratelimiter do
       killed_streams
       |> Stream.map(&Map.get(running, &1))
       |> Stream.reject(&is_nil/1)
-      |> Enum.map(fn stream ->
-        {_bucket, _request, client} = Map.fetch!(running, stream)
-        {:reply, client, {:error, {:connection_died, reason}}}
+      |> Enum.map(fn {_bucket, request, client} ->
+        log_abnormal_close(request, client, reason)
+        {:next_event, :internal, {:requeue, {request, client}, :abnormal_close}}
       end)
 
     new_data = %{empty_state(config) | outstanding: outstanding}
@@ -1151,6 +1156,13 @@ defmodule Nostrum.Api.Ratelimiter do
   @spec requeue_after_for_reason(:hit_429 | :abnormal_close) :: pos_integer()
   defp requeue_after_for_reason(:hit_429), do: @retry_429s_after
   defp requeue_after_for_reason(:abnormal_close), do: @retry_abnormal_close_after
+
+  @spec log_abnormal_close(request(), :gen_statem.from(), gun_reason :: atom()) :: term()
+  defp log_abnormal_close(request, from, reason) do
+    Logger.warning(
+      "Request to #{inspect(request.route)} queued by #{inspect(from)} was closed abnormally with reason #{reason}, requeueing"
+    )
+  end
 
   @doc """
   Retrieves a proper ratelimit endpoint from a given route and url.
