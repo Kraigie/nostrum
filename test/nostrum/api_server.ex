@@ -142,6 +142,23 @@ defmodule :nostrum_test_api_server do
     :ok = :mod_esi.deliver(session, to_charlist(response))
   end
 
+  def slowpoke(session, _env, input) do
+    opts = decode_opts(input)
+    duration = String.to_integer(Map.get(opts, "duration", "1000"))
+    Process.sleep(duration)
+
+    response = """
+    status: 200 OK\r
+    Content-Type: application/json\r
+    x-ratelimit-remaining: 5\r
+    x-ratelimit-reset-after: 0.5\r
+    \r
+    {"request": "received"}
+    """
+
+    :ok = :mod_esi.deliver(session, to_charlist(response))
+  end
+
   ## GenServer API
 
   def child_spec(buckets) do

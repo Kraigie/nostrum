@@ -6,24 +6,32 @@ defmodule Nostrum.Api.RatelimiterTest do
 
   @request_timeout :timer.seconds(5)
 
-  setup do
-    host = ~c"localhost"
+  # Might not work depending on local setup.
+  @host ~c"localhost"
+  @httpd_config [
+    port: 0,
+    bind_address: @host,
+    modules: [:mod_esi],
+    server_name: ~c"kraigie cat",
+    server_root: ~c"/tmp",
+    document_root: ~c"/tmp",
+    erl_script_alias: {~c"/api/v10", [:nostrum_test_api_server]}
+  ]
 
-    {:ok, server} =
-      :inets.start(:httpd,
-        port: 0,
-        bind_address: host,
-        modules: [:mod_esi],
-        server_name: ~c"kraigie cat",
-        server_root: ~c"/tmp",
-        document_root: ~c"/tmp",
-        erl_script_alias: {~c"/api/v10", [:nostrum_test_api_server]}
-      )
+  setup do
+    {:ok, server} = :inets.start(:httpd, @httpd_config)
 
     info = :httpd.info(server)
     port = :proplists.get_value(:port, info)
     {:ok, _started} = :application.ensure_all_started(:gun)
-    options = %{name: :ratelimiter_test, host: host, port: port, wrapped_token: fn -> "token" end}
+
+    options = %{
+      name: :ratelimiter_test,
+      host: @host,
+      port: port,
+      wrapped_token: fn -> "token" end
+    }
+
     group_spec = {Nostrum.Api.RatelimiterGroup, options}
     _ratelimiter_group = start_supervised!(group_spec)
     limiter_spec = {Nostrum.Api.Ratelimiter, options}
@@ -54,6 +62,32 @@ defmodule Nostrum.Api.RatelimiterTest do
       headers: [{"X-Craigie-Cat", "Hungry"}],
       params: query_params
     }
+  end
+
+  def spin_until_connected(ratelimiter) do
+    me = self()
+
+    spawn(fn ->
+      {:ok, data} = do_spin_until_connected(ratelimiter)
+      send(me, data)
+    end)
+
+    receive do
+      data -> {:ok, data}
+    after
+      @request_timeout -> {:error, :timeout}
+    end
+  end
+
+  defp do_spin_until_connected(ratelimiter) do
+    case :sys.get_state(ratelimiter) do
+      {:connected, data} ->
+        {:ok, data}
+
+      _state ->
+        Process.sleep(10)
+        do_spin_until_connected(ratelimiter)
+    end
   end
 
   describe "basic requests" do
@@ -170,7 +204,7 @@ defmodule Nostrum.Api.RatelimiterTest do
     end
   end
 
-  describe "transient upstream errors" do
+  describe "transient upstream server errors" do
     test "won't stop future requests", %{ratelimiter: ratelimiter} do
       run_failing_request!(ratelimiter, "maybe_crash", 502, crash: "yes")
       run_request!(ratelimiter, "maybe_crash", crash: "no")
@@ -181,6 +215,23 @@ defmodule Nostrum.Api.RatelimiterTest do
       run_request!(ratelimiter, "maybe_crash", crash: "no", remaining: 2)
       run_failing_request!(ratelimiter, "maybe_crash", 502, crash: "yes")
       run_request!(ratelimiter, "maybe_crash", crash: "no")
+    end
+  end
+
+  describe "abnormally closed requests" do
+    test "are requeued", %{ratelimiter: ratelimiter} do
+      request = build_request("slowpoke", duration: :timer.seconds(1))
+      req_id = :gen_statem.send_request(ratelimiter, {:queue, request})
+
+      # Needless to say, this is pretty hacky. But sadly I didn't find a better solution,
+      # trying httpd functionality to kill the request did not work out.
+      {:ok, %{conn: conn, running: running}} = spin_until_connected(ratelimiter)
+      [{stream, _info}] = Map.to_list(running)
+      send(ratelimiter, {:gun_error, conn, stream, :i_am_the_chaos_monkey})
+
+      {:reply, reply} = :gen_statem.wait_response(req_id, @request_timeout)
+      assert {:ok, body} = reply
+      assert %{"request" => "received"} = Jason.decode!(body)
     end
   end
 

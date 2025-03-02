@@ -221,6 +221,13 @@ defmodule Nostrum.Api.Ratelimiter do
   @bot_calls_time_window :timer.seconds(1)
   @bot_calls_timeout_event :reset_bot_calls_window
 
+  # Retry requests for buckets with no known ratelimit information that were
+  # abormally closed after this much time.
+  @retry_abnormal_close_after :timer.seconds(1)
+  # Retry requests for buckets with no known ratelimit information that hit a
+  # 429 after this much time.
+  @retry_429s_after :timer.seconds(10)
+
   @typedoc """
   A bucket for endpoints unter the same ratelimit.
   """
@@ -500,8 +507,41 @@ defmodule Nostrum.Api.Ratelimiter do
     end
   end
 
-  def connected(:internal, {:requeue, {_payload, _from} = request}, _data) do
-    {:keep_state_and_data, {:next_event, :internal, {:queue, request}}}
+  def connected(:internal, {:requeue, {request, from} = statem_request, reason}, %{
+        outstanding: outstanding
+      }) do
+    bucket = get_endpoint(request.route, request.method)
+
+    expirers =
+      case outstanding do
+        %{^bucket => {:initial, _queue}} ->
+          # If we're heading here, that means that the request we wish to requeue
+          # is likely (but not certain) the initial request to an endpoint.
+          # The `:requeue` internal event is used to ask the ratelimiter to requeue
+          # requests that have failed either 1. due to a 429, or 2. due to an error
+          # with the stream, this function matches only the second case. Since
+          # this is the initial request, the `:queue` logic will not send out
+          # new requests and append them to the end of the queue, which would
+          # cause the request (and any further going to the endpoint) to hang
+          # indefinitely.
+
+          requeue_after = requeue_after_for_reason(reason)
+
+          Logger.warning(
+            "Retrying request for reason #{reason} with no known ratelimit information to #{inspect(request.route)} queued by #{inspect(from)} in #{requeue_after}ms"
+          )
+
+          [{{:timeout, bucket}, requeue_after, :expired}]
+
+        _ ->
+          []
+      end
+
+    {:keep_state_and_data, [{:next_event, :internal, {:queue, statem_request}} | expirers]}
+  end
+
+  def connected(:internal, {:requeue, {_request, _from} = statem_request, _reason}, _data) do
+    {:keep_state_and_data, {:next_event, :internal, {:queue, statem_request}}}
   end
 
   # Run the given request right now, and do any bookkeeping. We assert we are
@@ -751,7 +791,7 @@ defmodule Nostrum.Api.Ratelimiter do
            # state will need to deal with the requeue request (most likely by
            # postponing it).
            parse_limits,
-           {:next_event, :internal, {:requeue, {request, from}}}
+           {:next_event, :internal, {:requeue, {request, from}, :hit_429}}
          ]}
 
       kind == :fin ->
@@ -803,7 +843,7 @@ defmodule Nostrum.Api.Ratelimiter do
         # an earlier step.
         {:keep_state, new_data,
          [
-           {:next_event, :internal, {:requeue, {request, from}}}
+           {:next_event, :internal, {:requeue, {request, from}, :hit_429}}
          ]}
 
       _ ->
@@ -908,9 +948,10 @@ defmodule Nostrum.Api.Ratelimiter do
   end
 
   # A running request was killed - suboptimal. Log a warning and try again.
-  def connected(:info, {:gun_error, _conn, stream, reason}, %{running: running} = data)
+  def connected(:info, {:gun_error, conn, stream, reason}, %{running: running} = data)
       when is_map_key(running, stream) do
-    # Ensure that we do not get further garbage for this stream
+    # Ensure that we do not get further garbage for this stream.
+    :ok = :gun.cancel(conn, stream)
     :ok = :gun.flush(stream)
 
     {{_bucket, request, from}, running_without_it} = Map.pop(running, stream)
@@ -920,7 +961,7 @@ defmodule Nostrum.Api.Ratelimiter do
     )
 
     {:keep_state, %{data | running: running_without_it},
-     {:next_event, :internal, {:requeue, {request, from}}}}
+     {:next_event, :internal, {:requeue, {request, from}, :abnormal_close}}}
   end
 
   def connected(:info, {:gun_down, conn, _, reason, killed_streams}, %{
@@ -982,7 +1023,7 @@ defmodule Nostrum.Api.Ratelimiter do
   # always hit at least once after entering the global limit state. Instead of
   # returning an error to the client we postpone it until we can deal with it
   # again.
-  def global_limit(:internal, {:requeue, {_request, _from}}, _data) do
+  def global_limit(:internal, {:requeue, {_request, _from}, _reason}, _data) do
     {:keep_state_and_data, :postpone}
   end
 
@@ -1103,6 +1144,11 @@ defmodule Nostrum.Api.Ratelimiter do
         {:bucket_limit, {remaining, reset_after}}
     end
   end
+
+  # Use :timer.time() when / if it is exported
+  @spec requeue_after_for_reason(:hit_429 | :abnormal_close) :: pos_integer()
+  defp requeue_after_for_reason(:hit_429), do: @retry_429s_after
+  defp requeue_after_for_reason(:abnormal_close), do: @retry_abnormal_close_after
 
   @doc """
   Retrieves a proper ratelimit endpoint from a given route and url.
