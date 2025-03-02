@@ -218,10 +218,13 @@ defmodule Nostrum.Bot do
   def init(
         {%{consumer: _consumer, wrapped_token: _wrapped_token} = bot_options, supervisor_options}
       ) do
-    %{name: name} = bot_options = put_default_name(bot_options)
+    %{name: bot_name} = bot_options = put_default_name(bot_options)
 
-    Util.set_process_label({__MODULE__, name})
-    name = {:via, Registry, {Nostrum.Bot.Registry, name, bot_options}}
+    Util.set_process_label({__MODULE__, bot_name})
+    name = {:via, Registry, {Nostrum.Bot.Registry, {:nostrum_bot, bot_name}, bot_options}}
+
+    task_supervisor_name =
+      {:via, Registry, {Nostrum.Bot.Registry, {:nostrum_task_supervisor, bot_name}}}
 
     children = [
       {Nostrum.ConsumerGroup, bot_options},
@@ -230,7 +233,8 @@ defmodule Nostrum.Bot do
       {Nostrum.Store.Supervisor, bot_options},
       {Nostrum.Cache.Supervisor, bot_options},
       {Nostrum.Shard.Supervisor, bot_options},
-      {Nostrum.Voice.Supervisor, bot_options}
+      {Nostrum.Voice.Supervisor, bot_options},
+      {PartitionSupervisor, child_spec: Task.Supervisor, name: task_supervisor_name}
     ]
 
     Supervisor.start_link(children, supervisor_options ++ [name: name])
@@ -268,14 +272,18 @@ defmodule Nostrum.Bot do
   @spec fetch_all_bots() :: [%{name: name(), pid: pid(), bot_options: bot_options()}]
   def fetch_all_bots do
     Registry.select(Nostrum.Bot.Registry, [
-      {{:"$1", :"$2", :"$3"}, [], [%{name: :"$1", pid: :"$2", bot_options: :"$3"}]}
+      {
+        {{:nostrum_bot, :"$1"}, :"$2", :"$3"},
+        [],
+        [%{name: :"$1", pid: :"$2", bot_options: :"$3"}]
+      }
     ])
   end
 
   @doc false
   @spec fetch_bot_pid(name()) :: pid() | nil
   def fetch_bot_pid(name) do
-    case Registry.lookup(Nostrum.Bot.Registry, name) do
+    case Registry.lookup(Nostrum.Bot.Registry, {:nostrum_bot, name}) do
       [{pid, _bot_options}] -> pid
       _ -> nil
     end
@@ -318,7 +326,7 @@ defmodule Nostrum.Bot do
 
   defp fetch_bot_from_name do
     with name when not is_nil(name) <- get_bot_name(),
-         [{pid, bot_options}] <- Registry.lookup(Nostrum.Bot.Registry, name) do
+         [{pid, bot_options}] <- Registry.lookup(Nostrum.Bot.Registry, {:nostrum_bot, name}) do
       %{pid: pid, bot_options: bot_options, name: name}
     else
       _ -> nil
@@ -341,7 +349,7 @@ defmodule Nostrum.Bot do
            callers
            |> Enum.take(@caller_generations)
            |> Enum.find_value(&Process.info(&1)[:dictionary][:nostrum_bot_name]),
-         [{pid, bot_options}] <- Registry.lookup(Nostrum.Bot.Registry, name) do
+         [{pid, bot_options}] <- Registry.lookup(Nostrum.Bot.Registry, {:nostrum_bot, name}) do
       %{pid: pid, bot_options: bot_options, name: name}
     else
       _ -> nil
@@ -363,6 +371,22 @@ defmodule Nostrum.Bot do
 
   defp set_bot(%{pid: pid, bot_options: _bot_options, name: name}), do: set_bot(pid, name)
   defp set_bot(pid, name), do: {set_bot_pid(pid), set_bot_name(name)}
+
+  def spawn_task(
+        task_func,
+        bot_name \\ fetch_bot_name(),
+        task_key \\ :erlang.unique_integer()
+      ) do
+    # Apparently, PartitionSupervisors support a second level of
+    # nesting `:via` lookups.
+    supervisor_name =
+      {:via, Registry, {Nostrum.Bot.Registry, {:nostrum_task_supervisor, bot_name}}}
+
+    Task.Supervisor.start_child(
+      {:via, PartitionSupervisor, {supervisor_name, task_key}},
+      task_func
+    )
+  end
 
   @doc """
   Call a function with the context of the provided bot
