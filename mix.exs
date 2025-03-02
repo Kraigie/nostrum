@@ -20,7 +20,8 @@ defmodule Nostrum.Mixfile do
       deps: deps(),
       docs: docs(),
       dialyzer: dialyzer(),
-      aliases: aliases()
+      aliases: aliases(),
+      test_coverage: test_coverage()
     ]
   end
 
@@ -127,6 +128,18 @@ defmodule Nostrum.Mixfile do
         "dialyzer"
       ],
       check: ["lint", "test"]
+    ]
+  end
+
+  defp test_coverage do
+    [
+      ignore_modules: [
+        :nostrum_test_api_server,
+        DummyConsumer,
+        DummySupervisor,
+        MyApp.MyStruct,
+        NostrumTest.Stubs
+      ]
     ]
   end
 
