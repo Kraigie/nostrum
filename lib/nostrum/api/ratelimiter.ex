@@ -47,6 +47,24 @@ defmodule Nostrum.Api.Ratelimiter do
   account for using this method.
 
 
+  ## Debugging
+
+  If you are experiencing issues with the ratelimiter, please use
+  `:sys.trace/2` to obtain debug information for the developers to be able to
+  investigate. You need to feed it the pid of the ratelimiter for your bot. For example:
+
+  ```elixir
+  # If you have a single running bot, the following will implicitly fetch it:
+  bot_pid = Nostrum.Bot.fetch_bot_pid()
+  # Alternatively, specify the bot name explicitly:
+  # bot_pid = Nostrum.Bot.fetch_bot_pid(bot_name)
+  ratelimiter = Nostrum.Util.get_child_pid(bot_pid, Nostrum.Api.Ratelimiter)
+  :sys.trace(ratelimiter, true)
+  ```
+
+  See `Nostrum.Bot` for further details.
+
+
   ## Inner workings
 
   When a client process wants to perform some request on the Discord API, it
