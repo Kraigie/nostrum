@@ -219,7 +219,7 @@ defmodule Nostrum.Api.RatelimiterTest do
   end
 
   describe "abnormally closed requests" do
-    test "are requeued", %{ratelimiter: ratelimiter} do
+    test "are requeued when connection is stable", %{ratelimiter: ratelimiter} do
       request = build_request("slowpoke", duration: :timer.seconds(1))
       req_id = :gen_statem.send_request(ratelimiter, {:queue, request})
 
@@ -228,6 +228,43 @@ defmodule Nostrum.Api.RatelimiterTest do
       {:ok, %{conn: conn, running: running}} = spin_until_connected(ratelimiter)
       [{stream, _info}] = Map.to_list(running)
       send(ratelimiter, {:gun_error, conn, stream, :i_am_the_chaos_monkey})
+
+      {:reply, reply} = :gen_statem.wait_response(req_id, @request_timeout)
+      assert {:ok, body} = reply
+      assert %{"request" => "received"} = Jason.decode!(body)
+    end
+
+    test "are requeued when connection dies before requeue", %{ratelimiter: ratelimiter} do
+      request = build_request("slowpoke", duration: :timer.seconds(1))
+      req_id = :gen_statem.send_request(ratelimiter, {:queue, request})
+
+      # The setup here is the same as test case above.
+      {:ok, %{conn: conn, running: running}} = spin_until_connected(ratelimiter)
+      [{stream, _info}] = Map.to_list(running)
+      send(ratelimiter, {:gun_error, conn, stream, :i_am_the_chaos_monkey})
+      # Wait a moment before making the ratelimiter brutally kill its connection.
+      Process.sleep(100)
+      # See #675 for the trace this was taken out of.
+      # Simulate the entire gun connection dying. The ratelimiter should retry
+      # the request once it receives the internal event to retry.
+      send(ratelimiter, {:gun_down, conn, :http1, :i_am_the_chaos_monkey, _killed_streams = []})
+
+      {:reply, reply} = :gen_statem.wait_response(req_id, @request_timeout)
+      assert {:ok, body} = reply
+      assert %{"request" => "received"} = Jason.decode!(body)
+    end
+
+    test "retry requests that are murdered in flight", %{ratelimiter: ratelimiter} do
+      request = build_request("slowpoke", duration: :timer.seconds(1))
+      req_id = :gen_statem.send_request(ratelimiter, {:queue, request})
+      {:ok, %{conn: conn, running: running}} = spin_until_connected(ratelimiter)
+
+      [{stream, _info}] = Map.to_list(running)
+
+      send(
+        ratelimiter,
+        {:gun_down, conn, :http1, :i_am_the_chaos_monkey, _killed_streams = [stream]}
+      )
 
       {:reply, reply} = :gen_statem.wait_response(req_id, @request_timeout)
       assert {:ok, body} = reply
