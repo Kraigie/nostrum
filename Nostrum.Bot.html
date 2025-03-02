@@ -12,7 +12,7 @@
 
     <link rel="stylesheet" href="dist/html-elixir-6X3L5KMG.css" />
 
-    <script defer src="dist/sidebar_items-44F83C97.js"></script>
+    <script defer src="dist/sidebar_items-93AC7F64.js"></script>
     <script defer src="docs_config.js"></script>
     <script defer src="dist/html-6XHBGSGW.js"></script>
 
@@ -99,12 +99,12 @@ nostrum
   </a>
   <span class="text">Usage</span>
 </h2>
-<p>In your supervisor tree, write:</p><pre><code class="makeup elixir" translate="no"><span class="n">bot_options</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="2459945152-1">%{</span><span class="w">
+<p>In your supervisor tree, write:</p><pre><code class="makeup elixir" translate="no"><span class="n">bot_options</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="2358360900-1">%{</span><span class="w">
   </span><span class="ss">consumer</span><span class="p">:</span><span class="w"> </span><span class="nc">MyBot.Consumer</span><span class="p">,</span><span class="w">
   </span><span class="c1"># This is an example and includes privileged intents, but</span><span class="w">
   </span><span class="c1"># should provide a useful set of intents for bots. Feel</span><span class="w">
   </span><span class="c1"># free to adjust this as you see fit.</span><span class="w">
-  </span><span class="ss">intents</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="2459945152-2">[</span><span class="w">
+  </span><span class="ss">intents</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="2358360900-2">[</span><span class="w">
     </span><span class="ss">:direct_messages</span><span class="p">,</span><span class="w">
     </span><span class="ss">:guild_bans</span><span class="p">,</span><span class="w">
     </span><span class="ss">:guild_members</span><span class="p">,</span><span class="w">
@@ -112,12 +112,12 @@ nostrum
     </span><span class="ss">:guild_messages</span><span class="p">,</span><span class="w">
     </span><span class="ss">:guilds</span><span class="p">,</span><span class="w">
     </span><span class="ss">:message_content</span><span class="w">
-  </span><span class="p" data-group-id="2459945152-2">]</span><span class="p">,</span><span class="w">
-  </span><span class="ss">wrapped_token</span><span class="p">:</span><span class="w"> </span><span class="k" data-group-id="2459945152-3">fn</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nc">System</span><span class="o">.</span><span class="n">fetch_env!</span><span class="p" data-group-id="2459945152-4">(</span><span class="s">&quot;BOT_TOKEN&quot;</span><span class="p" data-group-id="2459945152-4">)</span><span class="w"> </span><span class="k" data-group-id="2459945152-3">end</span><span class="p">,</span><span class="w">
-</span><span class="p" data-group-id="2459945152-1">}</span><span class="w">
-</span><span class="n">children</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="2459945152-5">[</span><span class="w">
-  </span><span class="p" data-group-id="2459945152-6">{</span><span class="nc">Nostrum.Bot</span><span class="p">,</span><span class="w"> </span><span class="n">bot_options</span><span class="p" data-group-id="2459945152-6">}</span><span class="w">
-</span><span class="p" data-group-id="2459945152-5">]</span></code></pre><p>See <a href="#t:bot_options/0"><code class="inline">bot_options/0</code></a> for which options you can configure here.
+  </span><span class="p" data-group-id="2358360900-2">]</span><span class="p">,</span><span class="w">
+  </span><span class="ss">wrapped_token</span><span class="p">:</span><span class="w"> </span><span class="k" data-group-id="2358360900-3">fn</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nc">System</span><span class="o">.</span><span class="n">fetch_env!</span><span class="p" data-group-id="2358360900-4">(</span><span class="s">&quot;BOT_TOKEN&quot;</span><span class="p" data-group-id="2358360900-4">)</span><span class="w"> </span><span class="k" data-group-id="2358360900-3">end</span><span class="p">,</span><span class="w">
+</span><span class="p" data-group-id="2358360900-1">}</span><span class="w">
+</span><span class="n">children</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="2358360900-5">[</span><span class="w">
+  </span><span class="p" data-group-id="2358360900-6">{</span><span class="nc">Nostrum.Bot</span><span class="p">,</span><span class="w"> </span><span class="n">bot_options</span><span class="p" data-group-id="2358360900-6">}</span><span class="w">
+</span><span class="p" data-group-id="2358360900-5">]</span></code></pre><p>See <a href="#t:bot_options/0"><code class="inline">bot_options/0</code></a> for which options you can configure here.
 You may also configure <a href="#t:supervisor_options/0"><code class="inline">supervisor_options/0</code></a>, which allow you
 to customize the options we start the <a href="https://hexdocs.pm/elixir/Supervisor.html"><code class="inline">Supervisor</code></a> with by defining
 your child in the form <code class="inline">{Nostrum.Bot, {bot_options, supervisor_options}}</code>,
@@ -134,7 +134,7 @@ automatic startup via the application is disabled.</p></li><li><p>Remove your co
 setting, cut the value you previously had in your <code class="inline">config.exs</code> and use it
 here. Do the same with <code class="inline">:num_shards</code>, renaming it to <code class="inline">:shards</code> on the
 <code class="inline">bot_options</code> map. You can then remove the old config values.</p></li><li><p>In your consumer, change <code class="inline">use Nostrum.Consumer</code> to <code class="inline">@behaviour Nostrum.Consumer</code>.</p></li><li><p>In your consumer, add a default event handling clause for unmatched events
-at the end of the module, such as:</p></li></ol><pre><code class="makeup elixir" translate="no"><span class="w">  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_event</span><span class="p" data-group-id="2132620457-1">(</span><span class="bp">_</span><span class="p" data-group-id="2132620457-1">)</span><span class="p">,</span><span class="w"> </span><span class="ss">do</span><span class="p">:</span><span class="w"> </span><span class="ss">:ok</span></code></pre><h2 id="module-multiple-bots" class="section-heading">
+at the end of the module, such as:</p></li></ol><pre><code class="makeup elixir" translate="no"><span class="w">  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_event</span><span class="p" data-group-id="2877736611-1">(</span><span class="bp">_</span><span class="p" data-group-id="2877736611-1">)</span><span class="p">,</span><span class="w"> </span><span class="ss">do</span><span class="p">:</span><span class="w"> </span><span class="ss">:ok</span></code></pre><h2 id="module-multiple-bots" class="section-heading">
   <a href="#module-multiple-bots" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
@@ -607,16 +607,16 @@ nostrum.</p>
 
       </div>
 
-<p>Call a function with the context of the provided bot</p><pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Bot</span><span class="o">.</span><span class="n">with_bot</span><span class="p" data-group-id="3319385152-1">(</span><span class="nc">ReticentBot</span><span class="p">,</span><span class="w"> </span><span class="k" data-group-id="3319385152-2">fn</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
-  </span><span class="nc">Nostrum.Api.Message</span><span class="o">.</span><span class="n">create</span><span class="p" data-group-id="3319385152-3">(</span><span class="n">channel_id</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Hi...&quot;</span><span class="p" data-group-id="3319385152-3">)</span><span class="w">
-</span><span class="k" data-group-id="3319385152-2">end</span><span class="p" data-group-id="3319385152-1">)</span><span class="w">
+<p>Call a function with the context of the provided bot</p><pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Bot</span><span class="o">.</span><span class="n">with_bot</span><span class="p" data-group-id="5188175166-1">(</span><span class="nc">ReticentBot</span><span class="p">,</span><span class="w"> </span><span class="k" data-group-id="5188175166-2">fn</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+  </span><span class="nc">Nostrum.Api.Message</span><span class="o">.</span><span class="n">create</span><span class="p" data-group-id="5188175166-3">(</span><span class="n">channel_id</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Hi...&quot;</span><span class="p" data-group-id="5188175166-3">)</span><span class="w">
+</span><span class="k" data-group-id="5188175166-2">end</span><span class="p" data-group-id="5188175166-1">)</span><span class="w">
 
-</span><span class="nc">Nostrum.Bot</span><span class="o">.</span><span class="n">with_bot</span><span class="p" data-group-id="3319385152-4">(</span><span class="nc">SillyGoofyBot</span><span class="p">,</span><span class="w"> </span><span class="k" data-group-id="3319385152-5">fn</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
-  </span><span class="nc">Nostrum.Api.Message</span><span class="o">.</span><span class="n">create</span><span class="p" data-group-id="3319385152-6">(</span><span class="n">channel_id</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Heyyy :)&quot;</span><span class="p" data-group-id="3319385152-6">)</span><span class="w">
-</span><span class="k" data-group-id="3319385152-5">end</span><span class="p">,</span><span class="w"> </span><span class="ss">:keep</span><span class="p" data-group-id="3319385152-4">)</span><span class="w">
+</span><span class="nc">Nostrum.Bot</span><span class="o">.</span><span class="n">with_bot</span><span class="p" data-group-id="5188175166-4">(</span><span class="nc">SillyGoofyBot</span><span class="p">,</span><span class="w"> </span><span class="k" data-group-id="5188175166-5">fn</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+  </span><span class="nc">Nostrum.Api.Message</span><span class="o">.</span><span class="n">create</span><span class="p" data-group-id="5188175166-6">(</span><span class="n">channel_id</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Heyyy :)&quot;</span><span class="p" data-group-id="5188175166-6">)</span><span class="w">
+</span><span class="k" data-group-id="5188175166-5">end</span><span class="p">,</span><span class="w"> </span><span class="ss">:keep</span><span class="p" data-group-id="5188175166-4">)</span><span class="w">
 
 </span><span class="c1"># Context is still set to SillyGoofyBot</span><span class="w">
-</span><span class="nc">Nostrum.Api.Message</span><span class="o">.</span><span class="n">create</span><span class="p" data-group-id="3319385152-7">(</span><span class="n">channel_id</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Me again :)&quot;</span><span class="p" data-group-id="3319385152-7">)</span></code></pre><h2 id="with_bot/3-parameters" class="section-heading">
+</span><span class="nc">Nostrum.Api.Message</span><span class="o">.</span><span class="n">create</span><span class="p" data-group-id="5188175166-7">(</span><span class="n">channel_id</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Me again :)&quot;</span><span class="p" data-group-id="5188175166-7">)</span></code></pre><h2 id="with_bot/3-parameters" class="section-heading">
   <a href="#with_bot/3-parameters" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
