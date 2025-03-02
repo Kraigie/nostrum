@@ -846,7 +846,7 @@ defmodule Nostrum.Api.Ratelimiter do
   end
 
   # A running request was killed - suboptimal. Log a warning and try again.
-  def connected(:info, {:gun_error, _conn, stream, :closed}, %{running: running} = data)
+  def connected(:info, {:gun_error, _conn, stream, reason}, %{running: running} = data)
       when is_map_key(running, stream) do
     # Ensure that we do not get further garbage for this stream
     :ok = :gun.flush(stream)
@@ -854,7 +854,7 @@ defmodule Nostrum.Api.Ratelimiter do
     {{_bucket, request, from}, running_without_it} = Map.pop(running, stream)
 
     Logger.warning(
-      "Request to #{inspect(request.route)} queued by #{inspect(from)} was closed abnormally, requeueing"
+      "Request to #{inspect(request.route)} queued by #{inspect(from)} was closed abnormally with reason #{reason}, requeueing"
     )
 
     {:keep_state, %{data | running: running_without_it},
