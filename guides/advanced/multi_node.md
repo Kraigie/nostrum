@@ -1,9 +1,8 @@
 # Multi-node
 
 At the moment, you can run nostrum in highly available mode across multiple
-nodes via OTP's distributed application support, see below. Support for properly
-distributing nostrum across multiple nodes and using them as one big entity is
-not supported (yet).
+nodes via OTP's distributed application support, and you can move bots between
+nodes with no interruption in service.
 
 As a general rule: if you are running distributed Erlang over the internet, make
 sure to secure it with [a solid VPN](https://www.wireguard.com) and / or by
