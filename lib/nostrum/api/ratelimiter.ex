@@ -966,7 +966,8 @@ defmodule Nostrum.Api.Ratelimiter do
 
   def connected(:info, {:gun_down, conn, _, reason, killed_streams}, %{
         running: running,
-        config: config
+        config: config,
+        outstanding: outstanding
       }) do
     # Even with `retry: 0`, gun seems to try and reconnect, potentially because
     # of WebSocket. Force the connection to die.
@@ -994,7 +995,8 @@ defmodule Nostrum.Api.Ratelimiter do
         {:reply, client, {:error, {:connection_died, reason}}}
       end)
 
-    {:next_state, :disconnected, empty_state(config), replies}
+    new_data = %{empty_state(config) | outstanding: outstanding}
+    {:next_state, :disconnected, new_data, replies}
   end
 
   def global_limit(:state_timeout, next, data) do
