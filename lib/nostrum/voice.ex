@@ -153,6 +153,20 @@ defmodule Nostrum.Voice do
   end
 
   @doc false
+  def update_voice_async(%VoiceState{voice_pid: pid, guild_id: guild_id}, args) do
+    update_voice_async(pid, guild_id, args)
+  end
+
+  def update_voice_async(guild_id, args) do
+    update_voice_async(fetch_voice_pid(), guild_id, args)
+  end
+
+  @doc false
+  def update_voice_async(pid, guild_id, args) do
+    GenServer.cast(pid, {:update, guild_id, args})
+  end
+
+  @doc false
   def get_voice(%VoiceState{voice_pid: pid, guild_id: guild_id}) do
     get_voice(pid, guild_id)
   end
@@ -217,7 +231,7 @@ defmodule Nostrum.Voice do
         persist \\ true
       ) do
     with %VoiceState{} = voice <- get_voice(guild_id) do
-      update_voice(voice,
+      update_voice_async(voice,
         persist_source: persist,
         persist_playback: persist and VoiceState.playing?(voice)
       )
@@ -337,7 +351,7 @@ defmodule Nostrum.Voice do
           )
 
         set_speaking(voice, true)
-        update_voice(voice, player_pid: spawn(Audio, :start_player, [voice, conf]))
+        update_voice_async(voice, player_pid: spawn(Audio, :start_player, [voice, conf]))
         :ok
     end
   end
@@ -465,7 +479,7 @@ defmodule Nostrum.Voice do
 
       true ->
         set_speaking(voice, true)
-        update_voice(voice, player_pid: spawn(Audio, :resume_player, [voice, conf]))
+        update_voice_async(voice, player_pid: spawn(Audio, :resume_player, [voice, conf]))
         :ok
     end
   end
@@ -813,8 +827,7 @@ defmodule Nostrum.Voice do
   @spec pad_opus(nonempty_list(rtp_opus())) :: [opus_packet()]
   defdelegate pad_opus(packets), to: Opus
 
-  @doc false
-  def handle_call({:update, guild_id, args}, _from, state) do
+  defp on_update(state, guild_id, args) do
     voice =
       state
       |> Map.get(guild_id, VoiceState.new(guild_id: guild_id, voice_pid: self()))
@@ -826,6 +839,12 @@ defmodule Nostrum.Voice do
     if Util.get_config(bot_options, :voice_auto_connect, true),
       do: _result = start_if_ready(voice, bot_options)
 
+    state
+  end
+
+  @doc false
+  def handle_call({:update, guild_id, args}, _from, state) do
+    %{^guild_id => voice} = state = on_update(state, guild_id, args)
     {:reply, voice, state}
   end
 
@@ -837,6 +856,11 @@ defmodule Nostrum.Voice do
   @doc false
   def handle_call({:get_with_options, guild_id}, _from, state) do
     {:reply, {Map.get(state, guild_id), Map.get(state, :bot_options)}, state}
+  end
+
+  @doc false
+  def handle_cast({:update, guild_id, args}, state) do
+    {:noreply, on_update(state, guild_id, args)}
   end
 
   @doc false
@@ -863,7 +887,7 @@ defmodule Nostrum.Voice do
 
   @doc false
   def on_channel_join_new(p) do
-    update_voice(p.guild_id,
+    update_voice_async(p.guild_id,
       channel_id: p.channel_id,
       session: p.session_id,
       self_mute: p.self_mute,
@@ -880,7 +904,7 @@ defmodule Nostrum.Voice do
       remove_voice(voice)
     end
 
-    update_voice(
+    update_voice_async(
       voice,
       [
         channel_id: p.channel_id,

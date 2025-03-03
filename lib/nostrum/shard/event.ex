@@ -1,7 +1,6 @@
 defmodule Nostrum.Shard.Event do
   @moduledoc false
 
-  alias Nostrum.ConsumerGroup
   alias Nostrum.Shard.Dispatch
   alias Nostrum.Shard.Payload
   alias Nostrum.Struct.WSState
@@ -17,9 +16,7 @@ defmodule Nostrum.Shard.Event do
     if Util.get_config(state.bot_options, :log_dispatch_events, false),
       do: payload.t |> inspect() |> Logger.debug()
 
-    {payload, state}
-    |> Dispatch.handle()
-    |> ConsumerGroup.dispatch(state.bot_options.name)
+    Dispatch.handle(payload, state)
 
     if payload.t == :READY do
       Logger.info("READY")

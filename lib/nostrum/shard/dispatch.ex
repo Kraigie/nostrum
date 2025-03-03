@@ -14,6 +14,7 @@ defmodule Nostrum.Shard.Dispatch do
 
   alias Nostrum.Cache.Me
   alias Nostrum.Consumer
+  alias Nostrum.ConsumerGroup
   alias Nostrum.Shard.{Intents, Session}
   alias Nostrum.Store.GuildShardMapping
   alias Nostrum.Store.UnavailableGuild, as: UnavailableGuildStore
@@ -63,8 +64,8 @@ defmodule Nostrum.Shard.Dispatch do
 
   @large_threshold 250
 
-  @spec handle({map(), WSState.t() | VoiceWSState.t()}) :: [Consumer.event()]
-  def handle({payload, state}) do
+  @spec handle(map(), WSState.t() | VoiceWSState.t()) :: :ok
+  def handle(payload, state) do
     if Util.get_config(state.bot_options, :log_full_events, false),
       do: Logger.debug(inspect(payload.d, pretty: true))
 
@@ -72,12 +73,13 @@ defmodule Nostrum.Shard.Dispatch do
     |> handle_event(payload.d, state)
     |> filter_events()
     |> send_events()
+    |> ConsumerGroup.dispatch(state.bot_options.name)
   end
 
   defp filter_events(events) do
     events
     |> List.wrap()
-    |> Enum.filter(&(format_event(&1) != :noop))
+    |> Enum.reject(&(format_event(&1) == :noop))
   end
 
   # Handles the case of not finding users in the user cache
@@ -409,33 +411,35 @@ defmodule Nostrum.Shard.Dispatch do
     do: {event, p, state}
 
   def handle_event(:VOICE_STATE_UPDATE = event, p, state) do
-    if Me.get().id === p.user_id do
-      if p.channel_id do
-        # Joining Channel
-        voice = Voice.get_voice(p.guild_id)
+    with true <- Me.get().id === p.user_id,
+         channel_id when not is_nil(channel_id) <- p.channel_id,
+         voice <- Voice.get_voice(p.guild_id) do
+      # Joining Channel
+      cond do
+        # Not yet in a channel:
+        is_nil(voice) or is_nil(voice.session) ->
+          Voice.on_channel_join_new(p)
 
-        # credo:disable-for-next-line Credo.Check.Refactor.Nesting
-        cond do
-          # Not yet in a channel:
-          is_nil(voice) or is_nil(voice.session) ->
-            Voice.on_channel_join_new(p)
+        # Already in different channel:
+        voice.channel_id != channel_id and is_pid(voice.session_pid) ->
+          Voice.on_channel_join_change(p, voice)
 
-          # Already in different channel:
-          voice.channel_id != p.channel_id and is_pid(voice.session_pid) ->
-            Voice.on_channel_join_change(p, voice)
+        # Already in this channel but connection died:
+        is_pid(voice.session_pid) and not Process.alive?(voice.session_pid) ->
+          Voice.restart_session(p)
 
-          # Already in this channel but connection died:
-          is_pid(voice.session_pid) and not Process.alive?(voice.session_pid) ->
-            Voice.restart_session(p)
-
-          # Already in this channel:
-          true ->
-            :noop
-        end
-      else
-        # Leaving Channel:
-        Voice.remove_voice(p.guild_id)
+        # Already in this channel:
+        true ->
+          :noop
       end
+    else
+      # Leaving Channel:
+      _channel_id = nil ->
+        Voice.remove_voice(p.guild_id)
+
+      # Other User:
+      false ->
+        :noop
     end
 
     {_updated, _states} = GuildCache.voice_state_update(p.guild_id, p)
@@ -443,7 +447,7 @@ defmodule Nostrum.Shard.Dispatch do
   end
 
   def handle_event(:VOICE_SERVER_UPDATE = event, p, state) do
-    Voice.update_voice(p.guild_id,
+    Voice.update_voice_async(p.guild_id,
       token: p.token,
       gateway: p.endpoint
     )
