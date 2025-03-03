@@ -128,7 +128,7 @@ You will need the following prerequisites:
   the same data.
 
 - At least the new bot needs to be started with manual sharding enabled by
-  setting `shards: :manual` in the associated `t:Nostrum.Bot.bot_options/0?`.
+  setting `shards: :manual` in the associated `t:Nostrum.Bot.bot_options/0`.
 
 Let's walk through this with a bot you're running locally to illustrate it.
 
