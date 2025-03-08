@@ -32,7 +32,7 @@ defmodule Nostrum.Voice.Crypto.Aes do
   """
   @moduledoc since: "0.10.0"
 
-  @spec encrypt(binary(), <<_::256>>, <<_::96>>, binary()) :: iolist()
+  @spec encrypt(iodata(), <<_::256>>, <<_::96>>, binary()) :: iolist()
   def encrypt(plain_text, <<key::bytes-32>> = _key, <<nonce::bytes-12>> = _nonce, aad) do
     {cipher_text, tag} =
       :crypto.crypto_one_time_aead(:aes_256_gcm, key, nonce, plain_text, aad, _encrypt = true)
@@ -40,7 +40,7 @@ defmodule Nostrum.Voice.Crypto.Aes do
     [cipher_text, tag]
   end
 
-  @spec decrypt(binary(), <<_::256>>, <<_::96>>, binary(), <<_::128>>) :: binary() | :error
+  @spec decrypt(iodata(), <<_::256>>, <<_::96>>, binary(), <<_::128>>) :: binary() | :error
   def decrypt(cipher_text, <<key::bytes-32>> = _key, <<nonce::bytes-12>> = _nonce, aad, tag) do
     :crypto.crypto_one_time_aead(
       :aes_256_gcm,
