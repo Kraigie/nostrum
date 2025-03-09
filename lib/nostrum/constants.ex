@@ -422,6 +422,7 @@ defmodule Nostrum.Constants do
     Defines available types for Interaction Context types
     For more info please refer to https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-object-interaction-context-types
     """
+    @moduledoc since: "0.11.0"
 
     def guild, do: 0
     def bot_dm, do: 1

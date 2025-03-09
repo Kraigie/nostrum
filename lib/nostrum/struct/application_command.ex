@@ -88,6 +88,7 @@ defmodule Nostrum.Struct.ApplicationCommand do
   - `1` for `BOT_DM` - Interaction can be used within DMs with the app's bot user
   - `2` for `PRIVATE_CHANNEL` - Interaction can be used within Group DMs and DMs other than the app's bot user
   """
+  @typedoc since: "0.11.0"
   @type interaction_context_type :: 0..2
 
   @typedoc """
