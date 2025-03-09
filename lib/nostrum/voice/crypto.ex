@@ -1,5 +1,12 @@
 defmodule Nostrum.Voice.Crypto do
-  @moduledoc false
+  @moduledoc """
+  Internal module that handles voice data encryption and decryption
+
+  Based on the selected voice encryption mode, different ciphers may be used
+  - `Nostrum.Voice.Crypto.Aes`
+  - `Nostrum.Voice.Crypto.Chacha`
+  - `Nostrum.Voice.Crypto.Salsa`
+  """
 
   alias Nostrum.Struct.VoiceState
   alias Nostrum.Util
@@ -7,6 +14,8 @@ defmodule Nostrum.Voice.Crypto do
   alias Nostrum.Voice.Crypto.Aes
   alias Nostrum.Voice.Crypto.Chacha
   alias Nostrum.Voice.Crypto.Salsa
+
+  require Logger
 
   @type cipher_rtpsize ::
           :xsalsa20_poly1305_lite_rtpsize
@@ -30,7 +39,7 @@ defmodule Nostrum.Voice.Crypto do
     aes256_gcm: :aead_aes256_gcm_rtpsize
   }
 
-  @spec encryption_mode(Nostrum.Bot.options(), list(String.t())) :: cipher()
+  @spec encryption_mode(Nostrum.Bot.bot_options(), list(String.t())) :: cipher()
   def encryption_mode(bot_options, available_modes) do
     mode = Util.get_config(bot_options, :voice_encryption_mode, :aes256_gcm)
 
@@ -39,78 +48,94 @@ defmodule Nostrum.Voice.Crypto do
     if "#{mode}" in available_modes do
       mode
     else
+      Logger.debug("Configured voice encryption mode #{mode} unavailable. Using fallback.")
       @fallback_mode
     end
   end
 
+  @doc false
   def encrypt(%VoiceState{encryption_mode: mode} = voice, data) do
     header = Audio.rtp_header(voice)
     apply(__MODULE__, :"encrypt_#{mode}", [voice, data, header])
   end
 
+  @doc false
   def decrypt(%{secret_key: key, encryption_mode: mode}, data) do
     apply(__MODULE__, :"decrypt_#{mode}", [key, data])
   end
 
+  @doc false
   def encrypt_xsalsa20_poly1305(%VoiceState{secret_key: key}, data, header) do
     nonce = header <> <<0::unit(8)-size(12)>>
 
     [header, Salsa.encrypt(data, key, nonce)]
   end
 
+  @doc false
   def encrypt_xsalsa20_poly1305_suffix(%VoiceState{secret_key: key}, data, header) do
-    nonce = :crypto.strong_rand_bytes(24)
+    nonce = Salchicha.generate_nonce()
 
     [header, Salsa.encrypt(data, key, nonce), nonce]
   end
 
+  @doc false
   def encrypt_xsalsa20_poly1305_lite(%VoiceState{secret_key: key} = voice, data, header) do
     {unpadded_nonce, nonce} = lite_nonce(voice)
 
     [header, Salsa.encrypt(data, key, nonce), unpadded_nonce]
   end
 
+  @doc false
   def encrypt_xsalsa20_poly1305_lite_rtpsize(voice, data, header),
     do: encrypt_xsalsa20_poly1305_lite(voice, data, header)
 
+  @doc false
   def encrypt_xchacha20_poly1305(voice, data, header),
     do: encrypt_aead_xchacha20_poly1305_rtpsize(voice, data, header)
 
+  @doc false
   def encrypt_aead_xchacha20_poly1305_rtpsize(%VoiceState{secret_key: key} = voice, data, header) do
     {unpadded_nonce, nonce} = lite_nonce(voice)
 
     [header, Chacha.encrypt(data, key, nonce, _aad = header), unpadded_nonce]
   end
 
+  @doc false
   def encrypt_aead_aes256_gcm(voice, data, header), do: encrypt_aes256_gcm(voice, data, header)
 
+  @doc false
   def encrypt_aead_aes256_gcm_rtpsize(voice, data, header),
     do: encrypt_aes256_gcm(voice, data, header)
 
+  @doc false
   def encrypt_aes256_gcm(%VoiceState{secret_key: key} = voice, data, header) do
     {unpadded_nonce, nonce} = lite_nonce(voice, 12)
 
     [header, Aes.encrypt(data, key, nonce, _aad = header), unpadded_nonce]
   end
 
+  @doc false
   def decrypt_xsalsa20_poly1305(key, <<header::bytes-size(12), cipher_text::binary>>) do
     nonce = header <> <<0::unit(8)-size(12)>>
 
     Salsa.decrypt(cipher_text, key, nonce)
   end
 
+  @doc false
   def decrypt_xsalsa20_poly1305_lite(key, data) do
     {_header, cipher_text, _tag = <<>>, nonce} = decode_packet(data, 4, 24, 0)
 
     Salsa.decrypt(cipher_text, key, nonce)
   end
 
+  @doc false
   def decrypt_xsalsa20_poly1305_suffix(key, data) do
     {_header, cipher_text, _tag = <<>>, nonce} = decode_packet(data, 24, 24, 0)
 
     Salsa.decrypt(cipher_text, key, nonce)
   end
 
+  @doc false
   def decrypt_xsalsa20_poly1305_lite_rtpsize(key, data) do
     {_header, cipher_text, _tag, nonce, ext_len} = decode_packet_rtpsize(data, 24, 0)
 
@@ -119,9 +144,11 @@ defmodule Nostrum.Voice.Crypto do
     opus
   end
 
+  @doc false
   def decrypt_xchacha20_poly1305(key, data),
     do: decrypt_aead_xchacha20_poly1305_rtpsize(key, data)
 
+  @doc false
   def decrypt_aead_xchacha20_poly1305_rtpsize(key, data) do
     {header, cipher_text, tag, nonce, ext_len} = decode_packet_rtpsize(data, 24, 16)
 
@@ -131,8 +158,10 @@ defmodule Nostrum.Voice.Crypto do
     opus
   end
 
+  @doc false
   def decrypt_aes256_gcm(key, data), do: decrypt_aead_aes256_gcm_rtpsize(key, data)
 
+  @doc false
   def decrypt_aead_aes256_gcm_rtpsize(key, data) do
     {header, cipher_text, tag, nonce, ext_len} = decode_packet_rtpsize(data, 12, 16)
 
@@ -142,6 +171,7 @@ defmodule Nostrum.Voice.Crypto do
     opus
   end
 
+  @doc false
   def decrypt_aead_aes256_gcm(key, data) do
     {header, cipher_text, tag, nonce} = decode_packet(data, 4, 12, 16)
 
