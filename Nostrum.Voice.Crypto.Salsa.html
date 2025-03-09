@@ -12,7 +12,7 @@
 
     <link rel="stylesheet" href="dist/html-elixir-6X3L5KMG.css" />
 
-    <script defer src="dist/sidebar_items-BB4871AC.js"></script>
+    <script defer src="dist/sidebar_items-A6FC3928.js"></script>
     <script defer src="docs_config.js"></script>
     <script defer src="dist/html-6XHBGSGW.js"></script>
 
@@ -106,7 +106,7 @@ documented for completeness and curious cryptographic cats.</p></section><h3 id=
   </a>
   <span class="text">Purpose</span>
 </h3>
-<p>To support xsalsa20_poly1305 without a NIF, we have to implement the
+<p>To support xsalsa20_poly1305 without a NIF, we had to implement the
 Salsa20 cipher and HSalsa20 hash function to use 192-bit nonces in the capacity
 of XSalsa20.</p><p>Along with leveraging the :crypto module to perform the poly1305 MAC function
 and xor'ing arbitrary-length binaries, by being more thoughtful and explicit
@@ -117,10 +117,11 @@ than the <code class="inline">:kcl</code> package provides.</p><h3 id="module-im
   </a>
   <span class="text">Implementation</span>
 </h3>
-<p>The <code class="inline">:kcl</code> package is an impressive pure-elixir NaCl/libsodium compatible library
+<section role="note" class="admonition neutral"><h4 class="admonition-title neutral">The salchicha package</h4><p>The implementation of these ciphers has been moved into its own package for anyone
+else wishing to use XSalsa20 and XChaCha20 encryption without a libsodium NIF.</p><ul><li>Salchicha on <a href="https://hex.pm/packages/salchicha">hex.pm</a></li><li>Salchicha on <a href="https://github.com/BrandtHill/Salchicha">github</a></li></ul></section><p>The <code class="inline">:kcl</code> package is an impressive pure-elixir NaCl/libsodium compatible library
 that Nostrum previously used for voice encryption. For our usage with Discord voice,
 we only need the ability to encrypt and decrypt with 32-byte keys using 24-byte
-XSalsa20 nonces.</p><p>Some of the key differences in our implementation compared to Kcl</p><ul><li>Heavy use of explicit binary pattern matching instead of more traditional implicit enumeration</li><li>Intermediate block state stored in a 16-element tuple that is mutated during the 20-round hot loop instead of lists</li><li>Minimized the number binary copies, returning iolists when appropriate, instead of concatenating binaries</li><li>XOR whole keystream and message blocks instead of XOR'ing one byte at a time</li><li>Poly1305 MAC handled by crypto module instead of implemented in elixir</li><li>Only support 32-byte keys and 24-byte nonces (XSalsa20) instead of full NaCl/libsodium</li></ul><p>Additionally there appears to be a bug in how the 16-byte block count is serialized during key expansion:
+XSalsa20 nonces.</p><p>Some of the key differences in our implementation compared to Kcl</p><ul><li>Heavy use of explicit binary pattern matching instead of more traditional implicit enumeration</li><li>Intermediate block state stored in a 16-element tuple that is mutated during the 20-round hot loop instead of lists</li><li>Minimized the number binary copies, returning iolists when appropriate, instead of concatenating binaries</li><li>XOR whole keystream and message blocks instead of XOR'ing one byte at a time</li><li>Poly1305 MAC handled by crypto module instead of implemented in elixir</li><li>Only supporting Salsa/ChaCha family ciphers, not full NaCl/libsodium API</li></ul><p>Additionally there appears to be a bug in how the 16-byte block count is serialized during key expansion:
 It's supposed to be little endian, and it happens to be for blocks 0-255, but for larger block counts,
 Kcl may become incompatible with NaCl/libsodium-type libraries. For Discord's use case of encrypting short
 20 millisecond compressed audio packets, block counts were well-below this suspected problem threshold.</p><p>The cipher functions were implemented in the order they're defined in the original Salsa specification,
@@ -156,15 +157,7 @@ of the Salsa modes will likely be less performant than ChaCha or AES.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#block_binary_to_tuple/1" data-no-tooltip="" translate="no">block_binary_to_tuple(arg)</a>
-
-      </div>
-
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#decrypt/3" data-no-tooltip="" translate="no">decrypt(encrypted_message, key, nonce)</a>
+        <a href="#decrypt/3" data-no-tooltip="" translate="no">decrypt(message, key, nonce)</a>
 
       </div>
 
@@ -191,30 +184,6 @@ of the Salsa modes will likely be less performant than ChaCha or AES.</p>
       <span class="text">Functions</span>
     </h1>
     <div class="functions-list">
-<section class="detail" id="block_binary_to_tuple/1">
-
-  <div class="detail-header">
-    <a href="#block_binary_to_tuple/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-    </a>
-    <div class="heading-with-actions">
-      <h1 class="signature" translate="no">block_binary_to_tuple(arg)</h1>
-
-        <span class="note">(since 0.10.0)</span>
-
-
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice/crypto/salsa.ex#L143" class="icon-action" rel="help" aria-label="View Source">
-          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-        </a>
-
-    </div>
-  </div>
-
-  <section class="docstring">
-
-
-  </section>
-</section>
 <section class="detail" id="decrypt/3">
 
   <div class="detail-header">
@@ -222,12 +191,12 @@ of the Salsa modes will likely be less performant than ChaCha or AES.</p>
       <i class="ri-link-m" aria-hidden="true"></i>
     </a>
     <div class="heading-with-actions">
-      <h1 class="signature" translate="no">decrypt(encrypted_message, key, nonce)</h1>
+      <h1 class="signature" translate="no">decrypt(message, key, nonce)</h1>
 
         <span class="note">(since 0.10.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice/crypto/salsa.ex#L241" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice/crypto/salsa.ex#L80" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -238,7 +207,7 @@ of the Salsa modes will likely be less performant than ChaCha or AES.</p>
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> decrypt(<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>(), &lt;&lt;_::256&gt;&gt;, &lt;&lt;_::192&gt;&gt;) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>() | :error</pre>
+          <pre translate="no"><span class="attribute">@spec</span> decrypt(<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">iodata</a>(), &lt;&lt;_::256&gt;&gt;, &lt;&lt;_::192&gt;&gt;) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>() | :error</pre>
 
       </div>
 
@@ -257,7 +226,7 @@ of the Salsa modes will likely be less performant than ChaCha or AES.</p>
         <span class="note">(since 0.10.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice/crypto/salsa.ex#L224" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice/crypto/salsa.ex#L75" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -268,7 +237,7 @@ of the Salsa modes will likely be less performant than ChaCha or AES.</p>
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> encrypt(<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>(), &lt;&lt;_::256&gt;&gt;, &lt;&lt;_::192&gt;&gt;) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">iolist</a>()</pre>
+          <pre translate="no"><span class="attribute">@spec</span> encrypt(<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">iodata</a>(), &lt;&lt;_::256&gt;&gt;, &lt;&lt;_::192&gt;&gt;) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">iolist</a>()</pre>
 
       </div>
 

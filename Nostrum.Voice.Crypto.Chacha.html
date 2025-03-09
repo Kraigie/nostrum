@@ -12,7 +12,7 @@
 
     <link rel="stylesheet" href="dist/html-elixir-6X3L5KMG.css" />
 
-    <script defer src="dist/sidebar_items-BB4871AC.js"></script>
+    <script defer src="dist/sidebar_items-A6FC3928.js"></script>
     <script defer src="docs_config.js"></script>
     <script defer src="dist/html-6XHBGSGW.js"></script>
 
@@ -116,10 +116,11 @@ in elixir to then pass the resulting sub-key to the <code class="inline">crypto_
   </a>
   <span class="text">Implementation</span>
 </h3>
-<p>The HChaCha20 function takes the first 16-bytes of the extended 24-byte XChaCha20 nonce,
+<section role="note" class="admonition neutral"><h4 class="admonition-title neutral">The salchicha package</h4><p>The implementation of these ciphers has been moved into its own package for anyone
+else wishing to use XSalsa20 and XChaCha20 encryption without a libsodium NIF.</p><ul><li>Salchicha on <a href="https://hex.pm/packages/salchicha">hex.pm</a></li><li>Salchicha on <a href="https://github.com/BrandtHill/Salchicha">github</a></li></ul></section><p>The HChaCha20 function takes the first 16-bytes of the extended 24-byte XChaCha20 nonce,
 expands the key and the 16-byte nonce slice into a block in place of the block count and
 usual smaller nonce. That block has 20 rounds of mutation, and instead of summing the block
-with its starting state as is done with keystream generation, 8 of the 16 bytes are taken
+with its starting state as is done with keystream generation, 8 of the 16 words are taken
 and used as the sub-key, which is the input key for the standard chacha20 cipher.</p><p>Even though we've implemented the bulk of what's needed to generate chacha20 key streams
 for encryption and decryption, we're only using this module to generate the inputs to
 use the :crypto module's chacha20_poly1305 functionality in the capacity of xchacha20
@@ -192,7 +193,7 @@ may find that using the chacha encryption mode yields better performance.</p>
         <span class="note">(since 0.10.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice/crypto/chacha.ex#L156" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice/crypto/chacha.ex#L69" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -223,7 +224,7 @@ may find that using the chacha encryption mode yields better performance.</p>
         <span class="note">(since 0.10.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice/crypto/chacha.ex#L139" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice/crypto/chacha.ex#L64" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
