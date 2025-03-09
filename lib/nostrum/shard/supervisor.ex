@@ -2,6 +2,13 @@ defmodule Nostrum.Shard.Supervisor do
   @moduledoc """
   Supervises shard processes.
 
+  ## Purpose
+
+  nostrum allows to start both an automatic shard count as well as manually
+  starting shards. This module supervises shards and provides `connect/4`,
+  `disconnect/3` and `reconnect/2` to facilitate both manual starting of shards
+  as well as migrating shards with resume information.
+
   ## Implementation
 
   As events are sent to the shard, the following happens:
