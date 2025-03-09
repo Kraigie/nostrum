@@ -83,6 +83,14 @@ defmodule Nostrum.Struct.ApplicationCommand do
         }
 
   @typedoc """
+  The context type for interactions
+  - `0` for `GUILD` - Interaction can be used within servers
+  - `1` for `BOT_DM` - Interaction can be used within DMs with the app's bot user
+  - `2` for `PRIVATE_CHANNEL` - Interaction can be used within Group DMs and DMs other than the app's bot user
+  """
+  @type interaction_context_type :: 0..2
+
+  @typedoc """
   This defines the map for creating an application command.
 
   `:default_permission` is for if the command is enabled for all users by default
@@ -94,7 +102,8 @@ defmodule Nostrum.Struct.ApplicationCommand do
           required(:description) => command_description(),
           optional(:type) => command_type(),
           optional(:default_permission) => boolean(),
-          optional(:options) => [command_option()]
+          optional(:options) => [command_option()],
+          optional(:contexts) => [interaction_context_type()]
         }
 
   @typedoc """
