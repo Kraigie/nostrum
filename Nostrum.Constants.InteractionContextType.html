@@ -8,7 +8,7 @@
     <meta name="project" content="nostrum v0.11.0-dev">
 
 
-    <title>Nostrum.Cache.Supervisor — nostrum v0.11.0-dev</title>
+    <title>Nostrum.Constants.InteractionContextType — nostrum v0.11.0-dev</title>
 
     <link rel="stylesheet" href="dist/html-elixir-6X3L5KMG.css" />
 
@@ -79,12 +79,12 @@ nostrum
 <div id="top-content">
   <div class="heading-with-actions top-heading">
     <h1>
-      <span translate="no">Nostrum.Cache.Supervisor</span> 
+      <span translate="no">Nostrum.Constants.InteractionContextType</span> 
       <small class="app-vsn" translate="no">(nostrum v0.11.0-dev)</small>
 
     </h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/supervisor.ex#L1" title="View Source" class="icon-action" rel="help">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/constants.ex#L420" title="View Source" class="icon-action" rel="help">
         <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         <span class="sr-only">View Source</span>
       </a>
@@ -93,7 +93,8 @@ nostrum
 
 
     <section id="moduledoc">
-<p>Supervises caches for nostrum structures.</p><p>See the documentation for the relevant submodules for details:</p><ul><li><a href="Nostrum.Cache.GuildCache.html"><code class="inline">Nostrum.Cache.GuildCache</code></a></li><li><a href="Nostrum.Cache.Me.html"><code class="inline">Nostrum.Cache.Me</code></a></li><li><a href="Nostrum.Cache.MemberCache.html"><code class="inline">Nostrum.Cache.MemberCache</code></a></li><li><a href="Nostrum.Cache.PresenceCache.html"><code class="inline">Nostrum.Cache.PresenceCache</code></a></li><li><a href="Nostrum.Cache.UserCache.html"><code class="inline">Nostrum.Cache.UserCache</code></a></li></ul>
+<p>Defines available types for Interaction Context types
+For more info please refer to <a href="https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-object-interaction-context-types">https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-object-interaction-context-types</a></p>
     </section>
 
 </div>
@@ -112,27 +113,23 @@ nostrum
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#child_spec/1" data-no-tooltip="" translate="no">child_spec(init_arg)</a>
+        <a href="#bot_dm/0" data-no-tooltip="" translate="no">bot_dm()</a>
 
       </div>
-
-        <div class="summary-synopsis"><p>Returns a specification to start this module under a supervisor.</p></div>
 
     </div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#init/1" data-no-tooltip="" translate="no">init(bot_options)</a>
+        <a href="#guild/0" data-no-tooltip="" translate="no">guild()</a>
 
       </div>
-
-        <div class="summary-synopsis"><p>Callback implementation for <a href="https://hexdocs.pm/elixir/Supervisor.html#c:init/1"><code class="inline">Supervisor.init/1</code></a>.</p></div>
 
     </div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#start_link/1" data-no-tooltip="" translate="no">start_link(bot_options)</a>
+        <a href="#private_channel/0" data-no-tooltip="" translate="no">private_channel()</a>
 
       </div>
 
@@ -151,17 +148,17 @@ nostrum
       <span class="text">Functions</span>
     </h1>
     <div class="functions-list">
-<section class="detail" id="child_spec/1">
+<section class="detail" id="bot_dm/0">
 
   <div class="detail-header">
-    <a href="#child_spec/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+    <a href="#bot_dm/0" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
     </a>
     <div class="heading-with-actions">
-      <h1 class="signature" translate="no">child_spec(init_arg)</h1>
+      <h1 class="signature" translate="no">bot_dm()</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/supervisor.ex#L14" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/constants.ex#L427" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -170,20 +167,20 @@ nostrum
 
   <section class="docstring">
 
-<p>Returns a specification to start this module under a supervisor.</p><p>See <a href="https://hexdocs.pm/elixir/Supervisor.html"><code class="inline">Supervisor</code></a>.</p>
+
   </section>
 </section>
-<section class="detail" id="init/1">
+<section class="detail" id="guild/0">
 
   <div class="detail-header">
-    <a href="#init/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+    <a href="#guild/0" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
     </a>
     <div class="heading-with-actions">
-      <h1 class="signature" translate="no">init(bot_options)</h1>
+      <h1 class="signature" translate="no">guild()</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/supervisor.ex#L20" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/constants.ex#L426" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -192,20 +189,20 @@ nostrum
 
   <section class="docstring">
 
-<p>Callback implementation for <a href="https://hexdocs.pm/elixir/Supervisor.html#c:init/1"><code class="inline">Supervisor.init/1</code></a>.</p>
+
   </section>
 </section>
-<section class="detail" id="start_link/1">
+<section class="detail" id="private_channel/0">
 
   <div class="detail-header">
-    <a href="#start_link/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+    <a href="#private_channel/0" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
     </a>
     <div class="heading-with-actions">
-      <h1 class="signature" translate="no">start_link(bot_options)</h1>
+      <h1 class="signature" translate="no">private_channel()</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/supervisor.ex#L16" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/constants.ex#L428" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 

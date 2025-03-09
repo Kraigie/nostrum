@@ -12,7 +12,7 @@
 
     <link rel="stylesheet" href="dist/html-elixir-6X3L5KMG.css" />
 
-    <script defer src="dist/sidebar_items-3B329E74.js"></script>
+    <script defer src="dist/sidebar_items-0E677A87.js"></script>
     <script defer src="docs_config.js"></script>
     <script defer src="dist/html-6XHBGSGW.js"></script>
 
@@ -216,6 +216,16 @@ Only <code class="inline">USER</code> and <code class="inline">MESSAGE</code> co
 
     </div>
 
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:interaction_context_type/0" data-no-tooltip="" translate="no">interaction_context_type()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>The context type for interactions</p></div>
+
+    </div>
+
 </div>
 
   </section>
@@ -241,7 +251,7 @@ Only <code class="inline">USER</code> and <code class="inline">MESSAGE</code> co
         <span class="note">(since 0.5.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L104" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L113" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -277,7 +287,7 @@ missing fields will remain unchanged.</p>
         <span class="note">(since 0.5.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L92" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L100" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -293,7 +303,8 @@ missing fields will remain unchanged.</p>
   :description =&gt; <a href="#t:command_description/0">command_description</a>(),
   optional(:type) =&gt; <a href="#t:command_type/0">command_type</a>(),
   optional(:default_permission) =&gt; <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>(),
-  optional(:options) =&gt; [<a href="#t:command_option/0">command_option</a>()]
+  optional(:options) =&gt; [<a href="#t:command_option/0">command_option</a>()],
+  optional(:contexts) =&gt; [<a href="#t:interaction_context_type/0">interaction_context_type</a>()]
 }</pre>
 
       </div>
@@ -313,7 +324,7 @@ missing fields will remain unchanged.</p>
         <span class="note">(since 0.5.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L131" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L140" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -343,7 +354,7 @@ missing fields will remain unchanged.</p>
         <span class="note">(since 0.5.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L117" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L126" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -562,6 +573,36 @@ Only <code class="inline">USER</code> and <code class="inline">MESSAGE</code> co
       </div>
 
 <p>The type of application command you wish to create</p><ul><li><code class="inline">1</code> for <code class="inline">CHAT_INPUT</code>, regular slash commands (default)</li><li><code class="inline">2</code> for <code class="inline">USER</code>, right-click menu commands on a specific user</li><li><code class="inline">3</code> for <code class="inline">MESSAGE</code>, right-click menu commands on a specific message</li></ul><p>You may use one of the <a href="Nostrum.Constants.ApplicationCommandType.html"><code class="inline">Nostrum.Constants.ApplicationCommandType</code></a> methods.</p>
+  </section>
+</section>
+<section class="detail" id="t:interaction_context_type/0">
+
+  <div class="detail-header">
+    <a href="#t:interaction_context_type/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">interaction_context_type()</h1>
+
+        <span class="note">(since 0.5.0)</span>
+
+
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L91" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> interaction_context_type() :: 0..2</pre>
+
+      </div>
+
+<p>The context type for interactions</p><ul><li><code class="inline">0</code> for <code class="inline">GUILD</code> - Interaction can be used within servers</li><li><code class="inline">1</code> for <code class="inline">BOT_DM</code> - Interaction can be used within DMs with the app's bot user</li><li><code class="inline">2</code> for <code class="inline">PRIVATE_CHANNEL</code> - Interaction can be used within Group DMs and DMs other than the app's bot user</li></ul>
   </section>
 </section>
 
