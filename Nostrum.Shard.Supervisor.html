@@ -12,7 +12,7 @@
 
     <link rel="stylesheet" href="dist/html-elixir-6X3L5KMG.css" />
 
-    <script defer src="dist/sidebar_items-A6FC3928.js"></script>
+    <script defer src="dist/sidebar_items-3B329E74.js"></script>
     <script defer src="docs_config.js"></script>
     <script defer src="dist/html-6XHBGSGW.js"></script>
 
@@ -93,7 +93,16 @@ nostrum
 
 
     <section id="moduledoc">
-<p>Supervises shard processes.</p><h2 id="module-implementation" class="section-heading">
+<p>Supervises shard processes.</p><h2 id="module-purpose" class="section-heading">
+  <a href="#module-purpose" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Purpose</span>
+</h2>
+<p>nostrum allows to start both an automatic shard count as well as manually
+starting shards. This module supervises shards and provides <a href="#connect/4"><code class="inline">connect/4</code></a>,
+<a href="#disconnect/3"><code class="inline">disconnect/3</code></a> and <a href="#reconnect/2"><code class="inline">reconnect/2</code></a> to facilitate both manual starting of shards
+as well as migrating shards with resume information.</p><h2 id="module-implementation" class="section-heading">
   <a href="#module-implementation" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
@@ -254,7 +263,7 @@ handle yet, thus growing the message queue and the memory usage.</p></li></ol>
       <h1 class="signature" translate="no">resume_information()</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L48" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L55" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -290,7 +299,7 @@ handle yet, thus growing the message queue and the memory usage.</p></li></ol>
       <h1 class="signature" translate="no">shard_num()</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L40" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L47" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -318,7 +327,7 @@ handle yet, thus growing the message queue and the memory usage.</p></li></ol>
       <h1 class="signature" translate="no">total_shards()</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L44" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L51" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -358,7 +367,7 @@ handle yet, thus growing the message queue and the memory usage.</p></li></ol>
       <h1 class="signature" translate="no">child_spec(init_arg)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L58" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L65" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -382,7 +391,7 @@ handle yet, thus growing the message queue and the memory usage.</p></li></ol>
       <h1 class="signature" translate="no">connect(supervisor \\ fetch_shard_sup_pid(), shard_num, total_shards, bot_options)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L194" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L201" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -422,7 +431,7 @@ handle yet, thus growing the message queue and the memory usage.</p></li></ol>
         <span class="note">(since 0.10.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L182" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L189" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -446,8 +455,8 @@ catch up on any missed events.</p><h3 id="disconnect/3-examples" class="section-
   </a>
   <span class="text">Examples</span>
 </h3>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Shard.Supervisor</span><span class="o">.</span><span class="n">disconnect</span><span class="p" data-group-id="8054652117-1">(</span><span class="mi">4</span><span class="p" data-group-id="8054652117-1">)</span><span class="w">
-</span><span class="p" data-group-id="8054652117-2">%{</span><span class="ss">shard_num</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="8054652117-2">}</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Shard.Supervisor</span><span class="o">.</span><span class="n">disconnect</span><span class="p" data-group-id="7400381774-1">(</span><span class="mi">4</span><span class="p" data-group-id="7400381774-1">)</span><span class="w">
+</span><span class="p" data-group-id="7400381774-2">%{</span><span class="ss">shard_num</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="7400381774-2">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="reconnect/2">
@@ -464,7 +473,7 @@ catch up on any missed events.</p><h3 id="disconnect/3-examples" class="section-
         <span class="note">(since 0.10.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L223" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L230" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -491,9 +500,9 @@ received between the disconnect and re-authentication may be lost.</p><p>For mor
   </a>
   <span class="text">Examples</span>
 </h3>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">resume</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Nostrum.Shard.Supervisor</span><span class="o">.</span><span class="n">disconnect</span><span class="p" data-group-id="9163846669-1">(</span><span class="mi">4</span><span class="p" data-group-id="9163846669-1">)</span><span class="w">
-</span><span class="p" data-group-id="9163846669-2">%{</span><span class="ss">shard_num</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="9163846669-2">}</span><span class="w">
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Shard.Supervisor</span><span class="o">.</span><span class="n">reconnect</span><span class="p" data-group-id="9163846669-3">(</span><span class="n">resume</span><span class="p" data-group-id="9163846669-3">)</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">resume</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Nostrum.Shard.Supervisor</span><span class="o">.</span><span class="n">disconnect</span><span class="p" data-group-id="7521864488-1">(</span><span class="mi">4</span><span class="p" data-group-id="7521864488-1">)</span><span class="w">
+</span><span class="p" data-group-id="7521864488-2">%{</span><span class="ss">shard_num</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="7521864488-2">}</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Shard.Supervisor</span><span class="o">.</span><span class="n">reconnect</span><span class="p" data-group-id="7521864488-3">(</span><span class="n">resume</span><span class="p" data-group-id="7521864488-3">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="start_link/1">
@@ -506,7 +515,7 @@ received between the disconnect and re-authentication may be lost.</p><p>For mor
       <h1 class="signature" translate="no">start_link(bot_options)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L89" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L96" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -528,7 +537,7 @@ received between the disconnect and re-authentication may be lost.</p><p>For mor
       <h1 class="signature" translate="no">update_status(status, activity)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L108" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L115" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -550,7 +559,7 @@ received between the disconnect and re-authentication may be lost.</p><p>For mor
       <h1 class="signature" translate="no">update_voice_state(guild_id, channel_id, self_mute, self_deaf)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L115" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L122" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
