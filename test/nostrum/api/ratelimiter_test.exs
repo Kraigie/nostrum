@@ -270,6 +270,43 @@ defmodule Nostrum.Api.RatelimiterTest do
       assert {:ok, body} = reply
       assert %{"request" => "received"} = Jason.decode!(body)
     end
+
+    test "do not cause subsequent requests to hang", %{ratelimiter: ratelimiter} do
+      # => Get ratelimits
+      run_request!(ratelimiter, "slowpoke", duration: :timer.seconds(0))
+
+      # => Crash the second request - it should be retried
+      # Ratelimits are known now. Crash the ratelimiter mid-request for the second request.
+      request = build_request("slowpoke", duration: :timer.seconds(1))
+      req_id = :gen_statem.send_request(ratelimiter, {:queue, request})
+      {:ok, %{conn: conn, running: running}} = spin_until_connected(ratelimiter)
+      [{stream, _info}] = Map.to_list(running)
+
+      send(
+        ratelimiter,
+        {:gun_down, conn, :http1, :i_am_the_chaos_monkey, _killed_streams = [stream]}
+      )
+
+      {:reply, reply} = :gen_statem.wait_response(req_id, @request_timeout)
+      assert {:ok, body} = reply
+      assert %{"request" => "received"} = Jason.decode!(body)
+
+      # => Run another request - it should go through
+      run_request!(ratelimiter, "slowpoke", duration: :timer.seconds(0))
+    end
+  end
+
+  describe "spurious gun errors" do
+    test "do not faze the ratelimiter", %{ratelimiter: ratelimiter} do
+      request = build_request("slowpoke", duration: :timer.seconds(1))
+      req_id = :gen_statem.send_request(ratelimiter, {:queue, request})
+      {:ok, %{conn: conn}} = spin_until_connected(ratelimiter)
+      stream = make_ref()
+      send(ratelimiter, {:gun_error, conn, stream, {:error, ~c"The stream cannot be found."}})
+      {:reply, reply} = :gen_statem.wait_response(req_id, @request_timeout)
+      assert {:ok, body} = reply
+      assert %{"request" => "received"} = Jason.decode!(body)
+    end
   end
 
   describe "hitting the bot call limit" do
