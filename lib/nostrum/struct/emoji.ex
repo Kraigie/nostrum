@@ -39,6 +39,7 @@ defmodule Nostrum.Struct.Emoji do
   alias Nostrum.Struct.Guild.Role
   alias Nostrum.Struct.User
 
+  @derive Jason.Encoder
   defstruct [
     :id,
     :name,

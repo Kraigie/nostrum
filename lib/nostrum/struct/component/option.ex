@@ -3,7 +3,7 @@ defmodule Nostrum.Struct.Component.Option do
   Component Options
   """
   @moduledoc since: "0.5.0"
-  alias Nostrum.Struct.Component
+  alias Nostrum.Struct.{Component, Emoji}
   alias Nostrum.Util
 
   @derive Jason.Encoder
