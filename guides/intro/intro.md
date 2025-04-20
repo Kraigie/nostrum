@@ -244,7 +244,7 @@ From the Elixir website -
   GitHub repository](https://github.com/kshannoninnes/sample_bot)
 
 - A rather large and complex bot, bolt, can be found
-  [here](https://github.com/jchristgit/bolt).
+  [here](https://git.jchri.st/jc/bolt).
 
 
 
