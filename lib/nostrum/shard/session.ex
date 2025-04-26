@@ -92,6 +92,8 @@ defmodule Nostrum.Shard.Session do
   # receive. If this reaches zero, `:gun` will stop reading events from
   # upstream. Equivalent to setting `{active, false}` on the socket at `0`.
   @standard_flow 10
+  # Requests that can be sent from a user via `:cast` messages.
+  @user_requests [:status_update, :update_voice_state, :request_guild_members]
 
   def update_status(pid, status, activity) do
     {idle_since, afk} =
@@ -249,9 +251,9 @@ defmodule Nostrum.Shard.Session do
     {:stop, :connect_http_timeout}
   end
 
-  # def connecting_http(_kind, _request, _data) do
-  #  {:keep_state_and_data, :postpone}
-  # end
+  def connecting_http(:cast, {request, _payload}, _data) when request in @user_requests do
+    {:keep_state_and_data, :postpone}
+  end
 
   def connecting_ws(:enter, _from, %{conn: conn} = data) do
     Logger.debug("Upgrading connection to websocket with #{@gateway_compress} compression")
@@ -310,9 +312,9 @@ defmodule Nostrum.Shard.Session do
     {:stop, :connect_ws_timeout}
   end
 
-  # def connecting_ws(_kind, _request, _data) do
-  #   {:keep_state_and_data, :postpone}
-  # end
+  def connecting_ws(:cast, {request, _payload}, _data) when request in @user_requests do
+    {:keep_state_and_data, :postpone}
+  end
 
   # We don't need to specially handle resuming here, because Shard.Event will
   # adjust our initial payload accordingly.
@@ -400,7 +402,7 @@ defmodule Nostrum.Shard.Session do
   end
 
   def connected(:cast, {request, payload}, %{conn: conn, stream: stream})
-      when request in [:status_update, :update_voice_state, :request_guild_members] do
+      when request in @user_requests do
     :ok = :gun.ws_send(conn, stream, {:binary, payload})
     :keep_state_and_data
   end
