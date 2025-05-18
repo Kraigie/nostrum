@@ -221,6 +221,14 @@ defmodule Nostrum.Voice.Crypto do
     {header, cipher_text, tag, nonce, ext_len}
   end
 
+  # In some cases *_rtpsize encryption modes don't have an RTP header extension
+  defp decode_packet_rtpsize(packet, nonce_length, tag_length) do
+    {header, cipher_text, tag, nonce} =
+      decode_packet(packet, @lite_nonce_length, nonce_length, tag_length)
+
+    {header, cipher_text, tag, nonce, _ext_len = 0}
+  end
+
   # Non "rtpsize" modes where everything is encrypted beyond the 12-byte header
   defp decode_packet(
          <<header::bytes-size(12), rest::binary>>,
