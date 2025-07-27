@@ -52,7 +52,13 @@ defmodule Nostrum.Voice.Session do
 
     [host, port] = String.split(voice.gateway, ":")
 
-    gun_opts = %{protocols: [:http], retry: 1_000_000_000, tls_opts: Constants.gun_tls_opts()}
+    gun_opts = %{
+      protocols: [:http],
+      retry: 1_000_000_000,
+      transport: :tls,
+      tls_opts: Constants.gun_tls_opts()
+    }
+
     {:ok, worker} = :gun.open(:binary.bin_to_list(host), String.to_integer(port), gun_opts)
 
     {:ok, :http} = :gun.await_up(worker, @timeout_connect)
