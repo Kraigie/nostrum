@@ -564,7 +564,7 @@ defmodule Nostrum.Voice do
   nil
   ```
   """
-  @spec get_channel_id(Guild.id()) :: Channel.id()
+  @spec get_channel_id(Guild.id()) :: Channel.id() | nil
   def get_channel_id(guild_id) do
     voice = get_voice(guild_id)
     if voice, do: voice.channel_id
