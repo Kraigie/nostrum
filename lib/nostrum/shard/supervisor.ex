@@ -143,13 +143,13 @@ defmodule Nostrum.Shard.Supervisor do
   end
 
   @doc false
-  def fetch_shard_pid(shard_num) do
-    Util.get_child_pid(fetch_shard_sup_pid(), shard_num)
+  def fetch_shard_pid(sup \\ fetch_shard_sup_pid(), shard_num) do
+    Util.get_child_pid(sup, shard_num)
   end
 
   @doc false
-  def fetch_shard_session_pid(shard_num) do
-    Util.get_child_pid(fetch_shard_pid(shard_num), Session)
+  def fetch_shard_session_pid(sup \\ fetch_shard_sup_pid(), shard_num) do
+    Util.get_child_pid(fetch_shard_pid(sup, shard_num), Session)
   end
 
   @doc false
@@ -184,12 +184,12 @@ defmodule Nostrum.Shard.Supervisor do
   ```
   """
   @doc since: "0.10.0"
-  @spec disconnect(Supervisor.supervisor(), :gen_statem.server_ref() | nil, shard_num()) ::
-          resume_information()
-  def disconnect(supervisor \\ fetch_shard_sup_pid(), shard_session \\ nil, shard_num) do
-    shard_session = shard_session || fetch_shard_session_pid(shard_num)
+  @spec disconnect(Supervisor.supervisor(), shard_num()) :: resume_information()
+  def disconnect(supervisor \\ fetch_shard_sup_pid(), shard_num) do
+    shard_session = fetch_shard_session_pid(supervisor, shard_num)
     resume_info = Session.disconnect(shard_session)
-    :ok = Supervisor.delete_child(supervisor, resume_info.shard_num)
+    :ok = Supervisor.terminate_child(supervisor, shard_num)
+    :ok = Supervisor.delete_child(supervisor, shard_num)
     resume_info
   end
 
