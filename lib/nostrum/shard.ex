@@ -1,7 +1,7 @@
 defmodule Nostrum.Shard do
   @moduledoc false
 
-  use Supervisor, restart: :transient
+  use Supervisor, restart: :permanent
 
   alias Nostrum.Shard.Session
 
