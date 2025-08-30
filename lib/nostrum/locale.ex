@@ -40,15 +40,21 @@ defmodule Nostrum.Locale do
     :ko
   ]
 
-  # HACK
-  # This seems super hacky, but I don't want to maintain a duplicated list & type.
-  # We're basically just taking a list and turning it into a union instead.
-  @type t :: @locales |> Enum.reduce(&{:|, [], [&1,&2]}) |> unquote()
+  # HACK To avoid maintaining a duplicate list & type. Builds a union via AST from @locales.
+  @type t ::
+          unquote(
+            Enum.reduce(
+              @locales,
+              fn locale, acc ->
+                {:|, [], [locale, acc]}
+              end
+            )
+          )
 
   @doc """
   Returns `true` if `term` is a locale; otherwise returns `false`.
 
-  ##694
+  ## Examples
 
   ```elixir
   iex> Nostrum.Locale.is_locale(:en_us)
@@ -67,7 +73,23 @@ defmodule Nostrum.Locale do
   def all, do: @locales
 
   @doc """
-  Converts the given locale atom (or list of locale atoms) to strings formatted for API use.
-  """
+  Converts the given locale atom to strings formatted for Discord API use.
 
+  ## Examples
+
+  ```elixir
+  iex> Nostrum.Locale.to_formatted_string(:en_us)
+  "en-US"
+  ```
+  """
+  @spec to_formatted_string(t) :: String.t()
+  def to_formatted_string(locale) when is_locale(locale) do
+    [head | tail] =
+      locale
+      |> Atom.to_string()
+      |> String.split("_")
+
+    [head | Enum.map(tail, &String.upcase/1)]
+    |> Enum.join("-")
+  end
 end
