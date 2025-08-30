@@ -40,7 +40,7 @@ defmodule Nostrum.Locale do
     :ko
   ]
 
-  # HACK To avoid maintaining a duplicate list & type. Builds a union via AST from @locales.
+  # NOTE To avoid maintaining a duplicate list & type. Builds a union via AST from @locales.
   @type t ::
           unquote(
             Enum.reduce(
