@@ -216,10 +216,9 @@ defmodule Nostrum.Bot do
   @dialyzer nowarn_function: {:init, 1}
   @impl true
   def init(
-        {%{consumer: _consumer, wrapped_token: _wrapped_token} = bot_options, supervisor_options}
+        {%{consumer: _consumer, wrapped_token: _wrapped_token, name: bot_name} = bot_options,
+         supervisor_options}
       ) do
-    %{name: bot_name} = bot_options = put_default_name(bot_options)
-
     Util.set_process_label({__MODULE__, bot_name})
     name = {:via, Registry, {Nostrum.Bot.Registry, {:nostrum_bot, bot_name}, bot_options}}
 
@@ -245,8 +244,10 @@ defmodule Nostrum.Bot do
     do: child_spec({nostrum_options, [strategy: :one_for_one]})
 
   def child_spec({nostrum_options, supervisor_options}) do
+    nostrum_options = put_default_name(nostrum_options)
+
     %{
-      id: __MODULE__,
+      id: nostrum_options.name,
       start: {__MODULE__, :init, [{nostrum_options, supervisor_options}]},
       type: :supervisor,
       restart: :permanent,
