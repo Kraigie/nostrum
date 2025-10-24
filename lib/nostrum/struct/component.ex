@@ -12,6 +12,14 @@ defmodule Nostrum.Struct.Component do
   - You can have up to 5 Action Rows per message
   - An Action Row cannot contain another Action Row
   - An Action Row containing buttons cannot also contain a select menu
+  - Label is recommended for use over an Action Row in modals
+
+  ## Label
+  An label is a non-interactive container component for another single component in a modal, providing a label and an optional description. Some components like e.g. selects require to be placed in a label to be usable inside modals. Labels have `type: 18`.
+
+  - The description may display above or below the component depending on the platform
+  - When using labels the `component` field must be used instead of `components` to hold the inner component
+  - Labels can have text inputs, selects and file uploads (not implemented) as inner component
 
   ## Buttons
   Buttons are interactive components that render on messages. They have a `type: 2`, They can be clicked by users. Buttons in Nostrum are further separated into two types, detailed below. Only the [Interaction Button](#module-interaction-buttons-non-link-buttons) will fire a `Nostrum.Struct.Interaction` when pressed.
@@ -88,7 +96,7 @@ defmodule Nostrum.Struct.Component do
 
   defmacro __using__(_opts) do
     quote do
-      alias Nostrum.Struct.Component.{ActionRow, Button, Option, SelectMenu, TextInput}
+      alias Nostrum.Struct.Component.{ActionRow, Button, Label, Option, SelectMenu, TextInput}
       alias Nostrum.Struct.{Component, Emoji}
       alias Nostrum.Util
       @before_compile Component
@@ -148,7 +156,20 @@ defmodule Nostrum.Struct.Component do
   """
   @callback update(t(), opts :: [keyword()]) :: t()
 
-  alias Nostrum.Struct.Component.{ActionRow, Button, DefaultValue, Option, SelectMenu, TextInput}
+  alias Nostrum.Struct.Component.{
+    ActionRow,
+    Button,
+    ChannelSelect,
+    DefaultValue,
+    Label,
+    MentionableSelect,
+    Option,
+    RoleSelect,
+    SelectMenu,
+    TextInput,
+    UserSelect
+  }
+
   alias Nostrum.Struct.Emoji
   alias Nostrum.Util
 
@@ -159,6 +180,7 @@ defmodule Nostrum.Struct.Component do
     :disabled,
     :style,
     :label,
+    :description,
     :emoji,
     :url,
     :options,
@@ -169,15 +191,27 @@ defmodule Nostrum.Struct.Component do
     :max_length,
     :required,
     :value,
+    :component,
     :components,
     :channel_types,
     :default_values
   ]
 
   @typedoc """
+  All select menu types.
+  """
+  @typedoc since: "NEXTVERSION"
+  @type all_selects ::
+          SelectMenu.t()
+          | UserSelect.t()
+          | RoleSelect.t()
+          | MentionableSelect.t()
+          | ChannelSelect.t()
+
+  @typedoc """
   The currently valid component types.
   """
-  @type t :: ActionRow.t() | Button.t() | SelectMenu.t() | TextInput.t()
+  @type t :: ActionRow.t() | Label.t() | Button.t() | all_selects() | TextInput.t()
 
   @typedoc """
   The type of component.
@@ -224,9 +258,17 @@ defmodule Nostrum.Struct.Component do
   @typedoc """
   A string that appears on the button, max 80 characters.
 
-  Valid for [Buttons](#module-buttons)
+  Valid for [Buttons](#module-buttons) and [Label](#module-label).
   """
   @type label :: String.t() | nil
+
+  @typedoc """
+  An optional description text for the label; max 100 characters
+
+  Valid for [Label](#module-label).
+  """
+  @typedoc since: "NEXTVERSION"
+  @type description :: String.t() | nil
 
   @typedoc """
   A partial emoji to display on the object.
@@ -304,13 +346,21 @@ defmodule Nostrum.Struct.Component do
   @type value :: String.t() | nil
 
   @typedoc """
+  A component to place inside a label. This can only be a single component.
+
+  Valid for [Label](#module-label).
+  """
+  @typedoc since: "NEXTVERSION"
+  @type component :: TextInput.t() | all_selects() | nil
+
+  @typedoc """
   A list of components to place inside an action row.
 
   Due to constraints of action rows, this can either be a list of up to five buttons, a single select menu, or a single text input.
 
   Valid for [Action Row](#module-action-row).
   """
-  @type components :: [SelectMenu.t() | Button.t() | nil]
+  @type components :: [all_selects() | Button.t() | nil]
 
   @typedoc since: "0.10.1"
   @type channel_types :: [Channel.type()]
@@ -324,6 +374,7 @@ defmodule Nostrum.Struct.Component do
       map
       |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
       |> Map.update(:options, nil, &Util.cast(&1, {:list, {:struct, Option}}))
+      |> Map.update(:component, nil, &Util.cast(&1, {:struct, __MODULE__}))
       |> Map.update(:components, nil, &Util.cast(&1, {:list, {:struct, __MODULE__}}))
 
     %__MODULE__{}
