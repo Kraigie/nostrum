@@ -29,6 +29,7 @@ defmodule Nostrum.Struct.Message.Component do
     :max_length,
     :required,
     :value,
+    :values,
     :components
   ]
 
@@ -195,6 +196,14 @@ defmodule Nostrum.Struct.Message.Component do
   @type value :: String.t() | nil
 
   @typedoc """
+  The current values of the component.
+
+  Only present for selects.
+  """
+  @typedoc since: "NEXTVERSION"
+  @type values :: [String.t()] | nil
+
+  @typedoc """
   Child components for action rows.
 
   Only present for action rows.
@@ -218,6 +227,7 @@ defmodule Nostrum.Struct.Message.Component do
           max_length: max_length,
           required: required,
           value: value,
+          values: values,
           components: components
         }
 
