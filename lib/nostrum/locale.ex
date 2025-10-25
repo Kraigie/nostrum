@@ -4,6 +4,7 @@ defmodule Nostrum.Locale do
 
   Currently, these are used in description and name localization within application commands.
   """
+  @moduledoc since: "NEXTVERSION"
 
   @locales [
     :id,
