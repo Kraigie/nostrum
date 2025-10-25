@@ -210,7 +210,7 @@ defmodule Nostrum.Struct.Message.Component do
   Only present for labels.
   """
   @typedoc since: "NEXTVERSION"
-  @type component :: [t()]
+  @type component :: t()
 
   @typedoc """
   Child components for action rows.
