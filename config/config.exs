@@ -14,5 +14,7 @@ if Mix.env() == :test do
       messages:
         {Nostrum.Cache.MessageCache.Noop,
          size_limit: 10, eviction_count: 4, table_name: :nostrum_messages_test}
-    ]
+    ],
+    streamlink: false,
+    youtubedl: false
 end
