@@ -364,6 +364,38 @@ defmodule Nostrum.Constants do
 
     @doc "Select menu for channels"
     def channel_select, do: 8
+
+    @doc "Container to display text alongside an accessory component"
+    @doc since: "NEXTVERSION"
+    def section, do: 9
+
+    @doc "Markdown text"
+    @doc since: "NEXTVERSION"
+    def text_display, do: 10
+
+    @doc "Small image that can be used as an accessory"
+    @doc since: "NEXTVERSION"
+    def thumbnail, do: 11
+
+    @doc "Display images and other media"
+    @doc since: "NEXTVERSION"
+    def media_gallery, do: 12
+
+    @doc "Displays an attached file"
+    @doc since: "NEXTVERSION"
+    def file, do: 13
+
+    @doc "Component to add vertical padding between other components"
+    @doc since: "NEXTVERSION"
+    def separator, do: 14
+
+    @doc "Container that visually groups a set of components"
+    @doc since: "NEXTVERSION"
+    def container, do: 17
+
+    @doc "Container associating a label and description with a component"
+    @doc since: "NEXTVERSION"
+    def label, do: 18
   end
 
   defmodule ButtonStyle do
