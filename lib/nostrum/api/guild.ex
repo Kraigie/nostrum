@@ -332,6 +332,10 @@ defmodule Nostrum.Api.Guild do
 
   If successful, returns `{:ok, guild}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
 
+  ## Options
+
+    * `:with_counts` (boolean) - include approximate member and presence counts in response
+
   ## Examples
 
   ```elixir
@@ -339,9 +343,13 @@ defmodule Nostrum.Api.Guild do
   {:ok, %Nostrum.Struct.Guild{id: 81384788765712384}}
   ```
   """
-  @spec get(Guild.id()) :: Api.error() | {:ok, Guild.rest_guild()}
-  def get(guild_id) when is_snowflake(guild_id) do
-    Api.request(:get, Constants.guild(guild_id))
+  @spec get(Guild.id(), Api.options()) :: Api.error() | {:ok, Guild.rest_guild()}
+  def get(guild_id, options \\ [])
+
+  def get(guild_id, options) when is_list(options), do: get(guild_id, Map.new(options))
+
+  def get(guild_id, options) when is_snowflake(guild_id) and is_map(options) do
+    Api.request(:get, Constants.guild(guild_id), "", options)
     |> Helpers.handle_request_with_decode({:struct, Guild})
   end
 

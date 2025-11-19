@@ -152,7 +152,8 @@ defmodule Nostrum.Api.Self do
     guild ID
     * `:after` (`t:Nostrum.Snowflake.t/0`) - get guilds after this guild
     ID
-    * `:limit` (integer) - max number of guilds to return (1-100)
+    * `:limit` (integer) - max number of guilds to return (1-200)
+    * `:with_counts` (boolean) - include approximate member and presence counts in response
 
   ## Examples
 

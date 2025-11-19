@@ -63,6 +63,8 @@ defmodule Nostrum.Struct.Guild do
     :preferred_locale,
     :max_video_channel_users,
     :max_stage_video_channel_users,
+    :approximate_member_count,
+    :approximate_presence_count,
     :welcome_screen,
     :nsfw_level,
     :premium_progress_bar_enabled
@@ -226,6 +228,14 @@ defmodule Nostrum.Struct.Guild do
   @typedoc "The maximum amount of users in a stage video channel"
   @type max_stage_video_channel_users :: pos_integer() | nil
 
+  @typedoc since: "NEXTVERSION"
+  @typedoc "The approximate number of members in this guild, included when `:with_counts` is set to `true`"
+  @type approximate_member_count :: pos_integer() | nil
+
+  @typedoc since: "NEXTVERSION"
+  @typedoc "The approximate number of non-offline members in this guild, included when `:with_counts` is set to `true`"
+  @type approximate_presence_count :: pos_integer() | nil
+
   @typedoc "The welcome screen of a Community guild, shown to new members, returned in an Invite's guild object"
   @type welcome_screen :: map() | nil
 
@@ -283,6 +293,8 @@ defmodule Nostrum.Struct.Guild do
           preferred_locale: nil,
           max_video_channel_users: nil,
           max_stage_video_channel_users: nil,
+          approximate_member_count: approximate_member_count,
+          approximate_presence_count: approximate_presence_count,
           welcome_screen: nil,
           nsfw_level: nil,
           premium_progress_bar_enabled: nil,
@@ -335,6 +347,8 @@ defmodule Nostrum.Struct.Guild do
           preferred_locale: nil,
           max_video_channel_users: nil,
           max_stage_video_channel_users: nil,
+          approximate_member_count: approximate_member_count,
+          approximate_presence_count: approximate_presence_count,
           welcome_screen: nil,
           nsfw_level: nil,
           premium_progress_bar_enabled: nil,
@@ -388,6 +402,8 @@ defmodule Nostrum.Struct.Guild do
           max_video_channel_users: nil,
           max_stage_video_channel_users: nil,
           welcome_screen: nil,
+          approximate_member_count: nil,
+          approximate_presence_count: nil,
           nsfw_level: nil,
           premium_progress_bar_enabled: nil,
           safety_alerts_channel_id: nil
@@ -439,6 +455,8 @@ defmodule Nostrum.Struct.Guild do
           preferred_locale: preferred_locale,
           max_video_channel_users: max_video_channel_users,
           max_stage_video_channel_users: max_stage_video_channel_users,
+          approximate_member_count: approximate_member_count,
+          approximate_presence_count: approximate_presence_count,
           welcome_screen: welcome_screen,
           nsfw_level: nsfw_level,
           premium_progress_bar_enabled: premium_progress_bar_enabled,
