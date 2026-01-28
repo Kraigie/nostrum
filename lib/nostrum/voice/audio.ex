@@ -20,8 +20,11 @@ defmodule Nostrum.Voice.Audio do
   @ytdl "youtube-dl"
   @streamlink "streamlink"
 
+  @ytdl_args ["-f", "bestaudio", "-o", "-", "-q", "--no-warnings"]
+
   def ffmpeg_executable(conf \\ %{}), do: Util.get_config(conf, :ffmpeg, @ffmpeg)
   def youtubedl_executable(conf \\ %{}), do: Util.get_config(conf, :youtubedl, @ytdl)
+  def youtubedl_args(conf \\ %{}), do: Util.get_config(conf, :youtubedl_args, @ytdl_args)
   def streamlink_executable(conf \\ %{}), do: Util.get_config(conf, :streamlink, @streamlink)
 
   # How many consecutive packets to send before resting
@@ -162,18 +165,7 @@ defmodule Nostrum.Voice.Audio do
   end
 
   def spawn_youtubedl(url, conf \\ %{}) do
-    res =
-      Ports.execute(
-        youtubedl_executable(conf),
-        [
-          ["-f", "bestaudio"],
-          ["-o", "-"],
-          ["-q"],
-          ["--no-warnings"],
-          [url]
-        ]
-        |> List.flatten()
-      )
+    res = Ports.execute(youtubedl_executable(conf), youtubedl_args(conf) ++ [url])
 
     case res do
       {:error, reason} ->
