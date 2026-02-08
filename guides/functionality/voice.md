@@ -35,8 +35,14 @@ Although the name implies support for Youtube, `youtube-dl` supports downloading
 [an immense list of sites](https://github.com/ytdl-org/youtube-dl/blob/master/docs/supportedsites.md).
 By default Nostrum will look for the executable `youtube-dl` in the system path. If the
 executable is elsewhere, the path may be configured via `config :nostrum, :youtubedl, "/path/to/youtube-dl"`.
-When `Nostrum.Voice.play/4` is called with `:ytdl` for the `type` parameter, `youtube-dl` will be
-run with options `-f bestaudio -q -o -`, which will attempt to download the audio at the given url and pipe it to `ffmpeg`.
+
+When `Nostrum.Voice.play/4` is called with `:ytdl` for the `type` parameter,
+`youtube-dl` will be run with a default set of options for streaming audio. You
+may customize these options - the default value is configured as follows:
+
+```elixir
+config :nostrum, :youtubedl_args, ["-f", "bestaudio", "-o", "-", "-q", "--no-warnings"]
+```
 
 > #### Forks {: .warning}
 > The `youtube-dl` project has not been regularly maintained, and the latest release is not presently compatible with YouTube.
