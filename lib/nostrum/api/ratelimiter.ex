@@ -565,10 +565,6 @@ defmodule Nostrum.Api.Ratelimiter do
     {:keep_state_and_data, [{:next_event, :internal, {:queue, statem_request}} | expirers]}
   end
 
-  def connected(:internal, {:requeue, {_request, _from} = statem_request, _reason}, _data) do
-    {:keep_state_and_data, {:next_event, :internal, {:queue, statem_request}}}
-  end
-
   # Run the given request right now, and do any bookkeeping. We assert we are
   # good on remaining calls, so we can just run the request.
   def connected(
