@@ -151,32 +151,26 @@ defmodule Nostrum.Cache.MessageCache.MnesiaAdditionalTest do
   end
 
   describe "bulk_delete/2" do
-    setup do
-      messages = [
+    test "returns the deleted messages when they are found in the cache" do
+      expected_messages = [
         MessageCache.Mnesia.create(@test_message),
         MessageCache.Mnesia.create(%{@test_message_two | channel_id: @test_message.channel_id})
       ]
 
-      [messages: messages]
-    end
-
-    test "returns the deleted messages when they are found in the cache", %{messages: messages} do
-      assert messages ==
+      assert expected_messages ==
                MessageCache.Mnesia.bulk_delete(@test_message.channel_id, [
                  @test_message.id,
                  @test_message_two.id
                ])
     end
 
-    test "does not include messages not found in the cache in the returned list", %{
-      messages: messages
-    } do
-      [first, second] = messages
+    test "does not include messages not found in the cache in the returned list" do
+      expected_message = MessageCache.Mnesia.create(@test_message)
 
-      assert [^first] =
+      assert [expected_message] ==
                MessageCache.Mnesia.bulk_delete(@test_message.channel_id, [
-                 first.id,
-                 second.id + 1234
+                 @test_message.id,
+                 @test_message_two.id
                ])
     end
   end
