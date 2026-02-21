@@ -19,6 +19,7 @@ defmodule Nostrum.Struct.Message.Component do
     :disabled,
     :style,
     :label,
+    :description,
     :emoji,
     :url,
     :options,
@@ -30,6 +31,7 @@ defmodule Nostrum.Struct.Message.Component do
     :required,
     :value,
     :values,
+    :component,
     :components
   ]
 
@@ -91,11 +93,19 @@ defmodule Nostrum.Struct.Message.Component do
   @type style :: 1 | 2 | 3 | 4 | 5 | nil
 
   @typedoc """
-  Text that appears on the button, or above the text input.
+  Text that appears on the label, the button, or above the text input.
 
-  Maximum of 80 characters. Only present for buttons and text input.
+  Maximum of 80 characters. Only present for labels, buttons and text input.
   """
   @type label :: String.t() | nil
+
+  @typedoc """
+  Description that appears on the label.
+
+  Maximum of 100 characters. Only present for labels.
+  """
+  @typedoc since: "NEXTVERSION"
+  @type description :: String.t() | nil
 
   @typedoc """
   Partial emoji of the button.
@@ -204,6 +214,14 @@ defmodule Nostrum.Struct.Message.Component do
   @type values :: [String.t()] | nil
 
   @typedoc """
+  Child component for labels.
+
+  Only present for labels.
+  """
+  @typedoc since: "NEXTVERSION"
+  @type component :: t()
+
+  @typedoc """
   Child components for action rows.
 
   Only present for action rows.
@@ -217,6 +235,7 @@ defmodule Nostrum.Struct.Message.Component do
           disabled: disabled,
           style: style,
           label: label,
+          description: description,
           emoji: emoji,
           url: url,
           options: options,
@@ -228,6 +247,7 @@ defmodule Nostrum.Struct.Message.Component do
           required: required,
           value: value,
           values: values,
+          component: component,
           components: components
         }
 
@@ -238,6 +258,7 @@ defmodule Nostrum.Struct.Message.Component do
       map
       |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
       |> Map.update(:emoji, nil, &Util.cast(&1, {:struct, Emoji}))
+      |> Map.update(:component, nil, &Util.cast(&1, {:struct, __MODULE__}))
       |> Map.update(:components, nil, &Util.cast(&1, {:list, {:struct, __MODULE__}}))
 
     struct(__MODULE__, new)
