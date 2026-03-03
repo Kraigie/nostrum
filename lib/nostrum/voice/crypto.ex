@@ -14,6 +14,7 @@ defmodule Nostrum.Voice.Crypto do
   alias Nostrum.Voice.Crypto.Aes
   alias Nostrum.Voice.Crypto.Chacha
   alias Nostrum.Voice.Crypto.Salsa
+  alias Nostrum.Voice.Opus
 
   require Logger
 
@@ -39,6 +40,8 @@ defmodule Nostrum.Voice.Crypto do
     aes256_gcm: :aead_aes256_gcm_rtpsize
   }
 
+  @silence Opus.silence()
+
   @spec encryption_mode(Nostrum.Bot.bot_options(), list(String.t())) :: cipher()
   def encryption_mode(bot_options, available_modes) do
     mode = Util.get_config(bot_options, :voice_encryption_mode, :aes256_gcm)
@@ -54,14 +57,44 @@ defmodule Nostrum.Voice.Crypto do
   end
 
   @doc false
+  # Encrypt opus with DAVE then encrypt transport layer
   def encrypt(%VoiceState{encryption_mode: mode} = voice, data) do
     header = Audio.rtp_header(voice)
+    data = dave_encrypt(voice, data)
     apply(__MODULE__, :"encrypt_#{mode}", [voice, data, header])
   end
 
   @doc false
+  # Decrypt transport layer only since more info is needed for DAVE decryption step
   def decrypt(%{secret_key: key, encryption_mode: mode}, data) do
     apply(__MODULE__, :"decrypt_#{mode}", [key, data])
+  end
+
+  @doc false
+  def dave_encrypt(%VoiceState{dave_session: session}, data) do
+    with true <- is_reference(session),
+         true <- data != @silence,
+         true <- Dave.ready?(session),
+         :active <- Dave.status(session),
+         encrypted when is_binary(encrypted) <- Dave.encrypt(session, :audio, :opus, data) do
+      encrypted
+    else
+      _ -> data
+    end
+  end
+
+  @doc false
+  def dave_decrypt(data, session, user_id) do
+    with true <- is_reference(session),
+         true <- is_integer(user_id),
+         true <- data != @silence,
+         true <- Dave.ready?(session),
+         true <- Dave.status(session) == :active or Dave.can_passthrough?(session, user_id),
+         decrypted when is_binary(decrypted) <- Dave.decrypt(session, user_id, :audio, data) do
+      decrypted
+    else
+      _ -> data
+    end
   end
 
   @doc false
