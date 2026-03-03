@@ -201,64 +201,79 @@ defmodule Nostrum.Constants do
 
   def discord_epoch, do: 1_420_070_400_000
 
-  def opcodes do
-    %{
-      "DISPATCH" => 0,
-      "HEARTBEAT" => 1,
-      "IDENTIFY" => 2,
-      "STATUS_UPDATE" => 3,
-      "VOICE_STATUS_UPDATE" => 4,
-      "VOICE_SERVER_PING" => 5,
-      "RESUME" => 6,
-      "RECONNECT" => 7,
-      "REQUEST_GUILD_MEMBERS" => 8,
-      "INVALID_SESSION" => 9,
-      "HELLO" => 10,
-      "HEARTBEAT_ACK" => 11,
-      "SYNC_GUILD" => 12,
-      "SYNC_CALL" => 13
-    }
-  end
+  @opcodes %{
+    "DISPATCH" => 0,
+    "HEARTBEAT" => 1,
+    "IDENTIFY" => 2,
+    "STATUS_UPDATE" => 3,
+    "VOICE_STATUS_UPDATE" => 4,
+    "VOICE_SERVER_PING" => 5,
+    "RESUME" => 6,
+    "RECONNECT" => 7,
+    "REQUEST_GUILD_MEMBERS" => 8,
+    "INVALID_SESSION" => 9,
+    "HELLO" => 10,
+    "HEARTBEAT_ACK" => 11,
+    "SYNC_GUILD" => 12,
+    "SYNC_CALL" => 13
+  }
+
+  @opcodes_inverted Map.new(@opcodes, fn {name, code} ->
+                      {code, name |> String.downcase() |> String.to_atom()}
+                    end)
+
+  def opcodes, do: @opcodes
 
   def opcode_from_name(event) do
-    opcodes()[event]
+    @opcodes[event]
   end
 
-  @spec atom_from_opcode(pos_integer()) :: atom()
+  @spec atom_from_opcode(non_neg_integer()) :: atom()
   def atom_from_opcode(opcode) do
-    {k, _} = Enum.find(opcodes(), fn {_, v} -> v == opcode end)
-    k |> String.downcase() |> String.to_atom()
+    @opcodes_inverted[opcode]
   end
 
   # Voice Gateway has a separate set of opcodes
-  def voice_opcodes do
-    %{
-      "IDENTIFY" => 0,
-      "SELECT_PROTOCOL" => 1,
-      "READY" => 2,
-      "HEARTBEAT" => 3,
-      "SESSION_DESCRIPTION" => 4,
-      "SPEAKING" => 5,
-      "HEARTBEAT_ACK" => 6,
-      "RESUME" => 7,
-      "HELLO" => 8,
-      "RESUMED" => 9,
-      "UNDOCUMENTED_10" => 10,
-      "UNDOCUMENTED_11" => 11,
-      "CLIENT_CONNECT" => 12,
-      "CLIENT_DISCONNECT" => 13,
-      "CODEC_INFO" => 14,
-      "UNDOCUMENTED_18" => 18
-    }
-  end
+  @voice_opcodes %{
+    "IDENTIFY" => 0,
+    "SELECT_PROTOCOL" => 1,
+    "READY" => 2,
+    "HEARTBEAT" => 3,
+    "SESSION_DESCRIPTION" => 4,
+    "SPEAKING" => 5,
+    "HEARTBEAT_ACK" => 6,
+    "RESUME" => 7,
+    "HELLO" => 8,
+    "RESUMED" => 9,
+    "CLIENTS_CONNECT" => 11,
+    "CLIENT_CONNECT" => 12,
+    "CLIENT_DISCONNECT" => 13,
+    "DAVE_PREPARE_TRANSITION" => 21,
+    "DAVE_EXECUTE_TRANSITION" => 22,
+    "DAVE_TRANSITION_READY" => 23,
+    "DAVE_PREPARE_EPOCH" => 24,
+    "DAVE_MLS_EXTERNAL_SENDER" => 25,
+    "DAVE_MLS_KEY_PACKAGE" => 26,
+    "DAVE_MLS_PROPOSALS" => 27,
+    "DAVE_MLS_COMMIT_WELCOME" => 28,
+    "DAVE_MLS_ANNOUNCE_COMMIT_TRANSITION" => 29,
+    "DAVE_MLS_WELCOME" => 30,
+    "DAVE_MLS_INVALID_COMMIT_WELCOME" => 31
+  }
+
+  @voice_opcodes_inverted Map.new(@voice_opcodes, fn {name, code} ->
+                            {code, name |> String.downcase() |> String.to_atom()}
+                          end)
+
+  def voice_opcodes, do: @voice_opcodes
 
   def voice_opcode_from_name(event) do
-    voice_opcodes()[event]
+    @voice_opcodes[event]
   end
 
+  @spec atom_from_voice_opcode(non_neg_integer()) :: atom() | String.t()
   def atom_from_voice_opcode(opcode) do
-    {k, _} = Enum.find(voice_opcodes(), {"UNKNOWN", -1}, fn {_, v} -> v == opcode end)
-    k |> String.downcase() |> String.to_atom()
+    @voice_opcodes_inverted[opcode] || "Undocumented Opcode #{opcode}"
   end
 
   @doc """
