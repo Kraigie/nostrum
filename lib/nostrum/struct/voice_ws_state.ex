@@ -13,6 +13,9 @@ defmodule Nostrum.Struct.VoiceWSState do
     :conn,
     :conn_pid,
     :voice_pid,
+    :dave_session,
+    :pending_transitions,
+    :connected_clients,
     :stream,
     :gateway,
     :identified,
@@ -61,6 +64,15 @@ defmodule Nostrum.Struct.VoiceWSState do
   @typedoc "PID of the voice state map"
   @type voice_pid :: pid()
 
+  @typedoc "DAVE Session"
+  @type dave_session ::  Dave.session() | nil
+
+  @typedoc "DAVE pending transitions mapped to protocol versions"
+  @type pending_transitions :: map()
+
+  @typedoc "Set of user ids connected"
+  @type connected_clients :: MapSet.t(Nostrum.Struct.User.id())
+
   @typedoc "Stream reference for `:gun`"
   @type stream :: :gun.stream_ref()
 
@@ -107,6 +119,9 @@ defmodule Nostrum.Struct.VoiceWSState do
           conn: conn,
           conn_pid: conn_pid,
           voice_pid: voice_pid,
+          dave_session: dave_session,
+          pending_transitions: pending_transitions,
+          connected_clients: connected_clients,
           stream: stream,
           gateway: gateway,
           identified: identified,
