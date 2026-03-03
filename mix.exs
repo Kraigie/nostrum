@@ -179,6 +179,7 @@ defmodule Nostrum.Mixfile do
       # {:json_polyfill, "~> 0.2"},
       {:gun, "~> 2.0"},
       {:salchicha, "~> 0.5"},
+      {:dave, "~> 0.1"},
       {:certifi, "~> 2.13"},
       {:mime, "~> 1.6 or ~> 2.0"},
       {:ezstd, "~> 1.1", optional: true},
