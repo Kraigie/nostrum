@@ -358,6 +358,7 @@ defmodule Nostrum.Voice.Opus do
   end
 
   @opus_silence <<0xF8, 0xFF, 0xFE>>
+  def silence, do: @opus_silence
 
   def generate_silence(num_frames), do: List.duplicate(@opus_silence, num_frames)
 

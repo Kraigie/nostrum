@@ -140,6 +140,7 @@ defmodule Nostrum.Bot do
   - `:request_guild_members`
   - `:ffmpeg`
   - `:youtubedl`
+  - `:youtubedl_args`
   - `:streamlink`
   - `:audio_timeout`
   - `:audio_frames_per_burst`
@@ -162,6 +163,7 @@ defmodule Nostrum.Bot do
           optional(:request_guild_members) => boolean(),
           optional(:ffmpeg) => String.t(),
           optional(:youtubedl) => String.t(),
+          optional(:youtubedl_args) => [String.t()],
           optional(:streamlink) => String.t(),
           optional(:audio_timeout) => pos_integer(),
           optional(:audio_frames_per_burst) => pos_integer(),
