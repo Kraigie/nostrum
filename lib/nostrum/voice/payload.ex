@@ -2,101 +2,111 @@ defmodule Nostrum.Voice.Payload do
   @moduledoc false
 
   alias Nostrum.Cache.Me
-  alias Nostrum.Constants
   alias Nostrum.Struct.VoiceState
   alias Nostrum.Struct.VoiceWSState
 
   require Logger
 
-  # All functions in this module that end with a call to `build_payload/1`
-  # with an all-caps string return JSON payloads which are response messages
-  # to incoming voice websocket messages.
-  # Other functions which return a map with keys `:t` and `:d` are for
-  # generating voice-related events to be consumed by a Consumer process.
+  require Nostrum.Voice.Macros
 
-  def heartbeat_payload(%VoiceWSState{} = state) do
+  import Nostrum.Voice.Macros,
+    only: [def_json_payload: 2, def_binary_payload: 2, def_dispatch_payload: 2]
+
+  # Functions in this module create payloads to be sent to Voice WS gateway or to dispatch to event consumers.
+  # For all functions defined with def_(json|binary|dispatch)_payload, opcode and/or event_type is inferred from function name.
+  #
+  # def_json_payload will wrap the returned map in the gateway format with inferred opcode and encode as JSON
+  # def_binary_payload will prefix the returned binary with the inferred opcode
+  # def_dispatch_payload will wrap returned term in map with keys `:t` and `:d` with inferred event type for dispatch handling
+  #
+  # Voice Gateway Opcodes are defined here: https://docs.discord.com/developers/topics/opcodes-and-status-codes#voice
+  # Dispatch payloads are specific to Nostrum and are for consuming voice related events like other gateway events
+
+  ## Standard Voice gateway payloads
+
+  def_json_payload heartbeat(%VoiceWSState{} = state) do
     %{
       t: DateTime.utc_now() |> DateTime.to_unix(:millisecond),
       seq_ack: state.seq
     }
-    |> build_payload("HEARTBEAT")
   end
 
-  def identify_payload(%VoiceWSState{} = state) do
+  def_json_payload identify(%VoiceWSState{} = state) do
     %{
       server_id: state.guild_id,
       user_id: Me.get().id,
+      max_dave_protocol_version: Dave.max_protocol_version(),
       token: state.token,
       session_id: state.session
     }
-    |> build_payload("IDENTIFY")
   end
 
-  def resume_payload(%VoiceWSState{} = state) do
+  def_json_payload resume(%VoiceWSState{} = state) do
     %{
       server_id: state.guild_id,
       token: state.token,
       session_id: state.session,
       seq_ack: state.seq
     }
-    |> build_payload("RESUME")
   end
 
-  def select_protocol_payload(ip, port, mode) do
+  def_json_payload select_protocol(ip, port, mode) do
     %{
       protocol: "udp",
       data: %{
         address: ip,
         port: port,
-        mode: "#{mode}"
+        mode: mode
       }
     }
-    |> build_payload("SELECT_PROTOCOL")
   end
 
-  def speaking_payload(%VoiceState{} = voice) do
+  def_json_payload speaking(%VoiceState{} = voice) do
     %{
       ssrc: voice.ssrc,
       delay: 0,
       speaking: if(voice.speaking, do: 1, else: 0)
     }
-    |> build_payload("SPEAKING")
   end
 
-  def speaking_update_payload(%VoiceState{} = voice, timed_out \\ false) do
+  # Custom dispatch events for consumers
+
+  def_dispatch_payload voice_speaking_update(%VoiceState{} = voice, timed_out \\ false) do
     %{
-      t: :VOICE_SPEAKING_UPDATE,
-      d: %{
-        guild_id: voice.guild_id,
-        channel_id: voice.channel_id,
-        speaking: voice.speaking,
-        current_url: voice.current_url,
-        timed_out: timed_out
-      }
+      guild_id: voice.guild_id,
+      channel_id: voice.channel_id,
+      speaking: voice.speaking,
+      current_url: voice.current_url,
+      timed_out: timed_out
     }
   end
 
-  def voice_ready_payload(%VoiceState{} = voice) do
+  def_dispatch_payload voice_ready(%VoiceState{} = voice) do
     %{
-      t: :VOICE_READY,
-      d: %{
-        guild_id: voice.guild_id,
-        channel_id: voice.channel_id
-      }
+      guild_id: voice.guild_id,
+      channel_id: voice.channel_id
     }
   end
 
-  def voice_incoming_packet(payload) do
-    %{
-      t: :VOICE_INCOMING_PACKET,
-      d: payload
-    }
+  def_dispatch_payload voice_incoming_packet({{_seq, _time, _ssrc}, _opus} = packet) do
+    packet
   end
 
-  def build_payload(data, opcode_name) do
-    opcode = Constants.voice_opcode_from_name(opcode_name)
+  ## DAVE specific payloads, both JSON and binary
 
-    %{op: opcode, d: data}
-    |> Jason.encode_to_iodata!()
+  def_json_payload dave_transition_ready(transition_id) do
+    %{transition_id: transition_id}
+  end
+
+  def_json_payload dave_mls_invalid_commit_welcome(transition_id) do
+    %{transition_id: transition_id}
+  end
+
+  def_binary_payload dave_mls_key_package(key) do
+    key
+  end
+
+  def_binary_payload dave_mls_commit_welcome(commit, welcome) do
+    commit <> (welcome || <<>>)
   end
 end
