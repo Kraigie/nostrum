@@ -60,7 +60,7 @@ defmodule Nostrum.Voice.Audio do
 
     case payload do
       # Skip RTCP packets
-      <<2::2, 0::1, 1::5, 201::8, _rest::binary>> ->
+      <<2::2, 0::1, 1::5, pt::8, _rest::binary>> when pt in 200..204 ->
         get_rtp_packet(v)
 
       <<header::bytes-size(12), _::binary>> = data ->
@@ -157,7 +157,7 @@ defmodule Nostrum.Voice.Audio do
        # If using raw audio and it isn't stateful, update its state manually
        raw_audio:
          if not is_nil(voice.raw_audio) and not voice.raw_stateful do
-           Enum.slice(voice.raw_audio, frames_per_burst(conf)..-1)
+           Enum.slice(voice.raw_audio, frames_per_burst(conf)..-1//1)
          else
            voice.raw_audio
          end
