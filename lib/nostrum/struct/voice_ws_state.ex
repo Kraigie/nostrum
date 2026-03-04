@@ -65,7 +65,7 @@ defmodule Nostrum.Struct.VoiceWSState do
   @type voice_pid :: pid()
 
   @typedoc "DAVE Session"
-  @type dave_session ::  Dave.session() | nil
+  @type dave_session :: Dave.session() | nil
 
   @typedoc "DAVE pending transitions mapped to protocol versions"
   @type pending_transitions :: map()

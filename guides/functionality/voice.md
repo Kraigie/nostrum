@@ -184,6 +184,30 @@ likely won't be missed when consuming incoming voice packets asynchronously.
 Note that the third element in the event is of type
 `t:Nostrum.Struct.VoiceWSState.t/0` and not `t:Nostrum.Struct.WSState.t/0`.
 
+## DAVE
+
+[Discord Audio & Video End-to-End Encryption (DAVE) Protocol](https://daveprotocol.com/) 
+is required for all voice sessions at present.
+Nostrum uses the [`:dave` package](https://hex.pm/packages/dave), 
+which is backed by Rust NIF bindings to [`davey`](https://github.com/Snazzah/davey).
+`RustlerPrecompiled` will fetch the required binaries for your OS at compile time so you
+don't need a Rust toolchain to run Nostrum.
+
+If you have an exceptionally uncommon OS or you prefer to build from source with your installed Rust toolchain, 
+you can add `Rustler` to your project dependencies and set `FORCE_DAVE_BUILD=true` when compiling.
+
+```elixir
+defp deps do
+  [
+    ...
+    {:rustler, "~> 0.37", optional: true, runtime: false}
+  ]
+end
+```
+
+DAVE encryption is end-to-end and the transport-layer encryption discussed in the next section sits on
+top of the DAVE encrypted media payloads.
+
 ## Encryption Modes
 
 Nostrum supports all of Discord's available encryption modes for voice channels.
