@@ -705,6 +705,7 @@ defmodule Nostrum.Voice do
         rtp_ext = binary_part(payload, 0, byte_size(payload) - byte_size(opus))
         opus = Crypto.dave_decrypt(opus, voice.dave_session, ssrc_map[ssrc])
 
+        # credo:disable-for-next-line Credo.Check.Refactor.Nesting
         if raw_rtp,
           do: header <> rtp_ext <> opus,
           else: {{seq, time, ssrc}, opus}
