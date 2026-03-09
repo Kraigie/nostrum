@@ -12,7 +12,7 @@
 
     <link rel="stylesheet" href="dist/html-elixir-6X3L5KMG.css" />
 
-    <script defer src="dist/sidebar_items-8FF5B5D4.js"></script>
+    <script defer src="dist/sidebar_items-EC739B63.js"></script>
     <script defer src="docs_config.js"></script>
     <script defer src="dist/html-6XHBGSGW.js"></script>
 
@@ -142,6 +142,26 @@ nostrum
 
     <div class="summary-row">
       <div class="summary-signature">
+        <a href="#t:connected_clients/0" data-no-tooltip="" translate="no">connected_clients()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Set of user ids connected</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:dave_session/0" data-no-tooltip="" translate="no">dave_session()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>DAVE Session</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
         <a href="#t:encryption_mode/0" data-no-tooltip="" translate="no">encryption_mode()</a>
 
       </div>
@@ -229,6 +249,16 @@ hasn't been ACK'd yet</p></div>
 
         <div class="summary-synopsis"><p>The time the last heartbeat was sent, if a heartbeat hasn't been sent it
 will be the time the websocket process was started</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:pending_transitions/0" data-no-tooltip="" translate="no">pending_transitions()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>DAVE pending transitions mapped to protocol versions</p></div>
 
     </div>
 
@@ -335,7 +365,7 @@ will be the time the websocket process was started</p></div>
         <span class="note">(since 0.6.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L34" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L37" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -363,7 +393,7 @@ will be the time the websocket process was started</p></div>
       <h1 class="signature" translate="no">conn()</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L56" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L59" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -391,7 +421,7 @@ will be the time the websocket process was started</p></div>
       <h1 class="signature" translate="no">conn_pid()</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L59" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L62" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -409,6 +439,62 @@ will be the time the websocket process was started</p></div>
 <p>PID of the connection process</p>
   </section>
 </section>
+<section class="detail" id="t:connected_clients/0">
+
+  <div class="detail-header">
+    <a href="#t:connected_clients/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">connected_clients()</h1>
+
+
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L74" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> connected_clients() :: <a href="https://hexdocs.pm/elixir/MapSet.html#t:t/1">MapSet.t</a>(<a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>())</pre>
+
+      </div>
+
+<p>Set of user ids connected</p>
+  </section>
+</section>
+<section class="detail" id="t:dave_session/0">
+
+  <div class="detail-header">
+    <a href="#t:dave_session/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">dave_session()</h1>
+
+
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L68" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> dave_session() :: <a href="https://hexdocs.pm/dave/0.1.0/Dave.html#t:session/0">Dave.session</a>() | nil</pre>
+
+      </div>
+
+<p>DAVE Session</p>
+  </section>
+</section>
 <section class="detail" id="t:encryption_mode/0">
 
   <div class="detail-header">
@@ -419,7 +505,7 @@ will be the time the websocket process was started</p></div>
       <h1 class="signature" translate="no">encryption_mode()</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L77" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L89" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -447,7 +533,7 @@ will be the time the websocket process was started</p></div>
       <h1 class="signature" translate="no">gateway()</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L68" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L80" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -475,7 +561,7 @@ will be the time the websocket process was started</p></div>
       <h1 class="signature" translate="no">guild_id()</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L30" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L33" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -503,7 +589,7 @@ will be the time the websocket process was started</p></div>
       <h1 class="signature" translate="no">heartbeat_ack()</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L92" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L104" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -531,7 +617,7 @@ will be the time the websocket process was started</p></div>
       <h1 class="signature" translate="no">heartbeat_interval()</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L95" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L107" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -559,7 +645,7 @@ will be the time the websocket process was started</p></div>
       <h1 class="signature" translate="no">heartbeat_ref()</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L98" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L110" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -587,7 +673,7 @@ will be the time the websocket process was started</p></div>
       <h1 class="signature" translate="no">identified()</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L71" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L83" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -615,7 +701,7 @@ will be the time the websocket process was started</p></div>
       <h1 class="signature" translate="no">last_heartbeat_ack()</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L89" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L101" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -644,7 +730,7 @@ hasn't been ACK'd yet</p>
       <h1 class="signature" translate="no">last_heartbeat_send()</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L83" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L95" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -663,6 +749,34 @@ hasn't been ACK'd yet</p>
 will be the time the websocket process was started</p>
   </section>
 </section>
+<section class="detail" id="t:pending_transitions/0">
+
+  <div class="detail-header">
+    <a href="#t:pending_transitions/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">pending_transitions()</h1>
+
+
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L71" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> pending_transitions() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()</pre>
+
+      </div>
+
+<p>DAVE pending transitions mapped to protocol versions</p>
+  </section>
+</section>
 <section class="detail" id="t:secret_key/0">
 
   <div class="detail-header">
@@ -675,7 +789,7 @@ will be the time the websocket process was started</p>
         <span class="note">(since 0.6.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L53" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L56" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -703,7 +817,7 @@ will be the time the websocket process was started</p>
       <h1 class="signature" translate="no">seq()</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L74" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L86" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -731,7 +845,7 @@ will be the time the websocket process was started</p>
       <h1 class="signature" translate="no">session()</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L46" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L49" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -761,7 +875,7 @@ will be the time the websocket process was started</p>
         <span class="note">(since 0.6.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L43" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L46" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -790,7 +904,7 @@ audio data when an RTP packet is received.</p>
       <h1 class="signature" translate="no">stream()</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L65" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L77" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -818,7 +932,7 @@ audio data when an RTP packet is received.</p>
       <h1 class="signature" translate="no">t()</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L100" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L112" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -834,6 +948,8 @@ audio data when an RTP packet is received.</p>
   channel_id: <a href="#t:channel_id/0">channel_id</a>(),
   conn: <a href="#t:conn/0">conn</a>(),
   conn_pid: <a href="#t:conn_pid/0">conn_pid</a>(),
+  connected_clients: <a href="#t:connected_clients/0">connected_clients</a>(),
+  dave_session: <a href="#t:dave_session/0">dave_session</a>(),
   encryption_mode: <a href="#t:encryption_mode/0">encryption_mode</a>(),
   gateway: <a href="#t:gateway/0">gateway</a>(),
   guild_id: <a href="#t:guild_id/0">guild_id</a>(),
@@ -843,6 +959,7 @@ audio data when an RTP packet is received.</p>
   identified: <a href="#t:identified/0">identified</a>(),
   last_heartbeat_ack: <a href="#t:last_heartbeat_ack/0">last_heartbeat_ack</a>(),
   last_heartbeat_send: <a href="#t:last_heartbeat_send/0">last_heartbeat_send</a>(),
+  pending_transitions: <a href="#t:pending_transitions/0">pending_transitions</a>(),
   secret_key: <a href="#t:secret_key/0">secret_key</a>(),
   seq: <a href="#t:seq/0">seq</a>(),
   session: <a href="#t:session/0">session</a>(),
@@ -867,7 +984,7 @@ audio data when an RTP packet is received.</p>
       <h1 class="signature" translate="no">token()</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L49" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L52" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -895,7 +1012,7 @@ audio data when an RTP packet is received.</p>
       <h1 class="signature" translate="no">voice_pid()</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L62" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L65" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
