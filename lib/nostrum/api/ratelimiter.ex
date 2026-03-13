@@ -962,10 +962,10 @@ defmodule Nostrum.Api.Ratelimiter do
   def connected(:internal, {:parse_limits, :congratulations_you_killed_upstream, bucket}, _data) do
     Logger.warning(
       "No ratelimits received on bucket #{bucket}, likely due to a server error. " <>
-        "Resetting bucket for 1 second."
+        "Resetting bucket for 60 seconds."
     )
 
-    {:keep_state_and_data, [{{:timeout, bucket}, :timer.seconds(1), :expired}]}
+    {:keep_state_and_data, [{{:timeout, bucket}, :timer.seconds(60), :expired}]}
   end
 
   # A running request was killed - suboptimal. Log a warning and try again.
