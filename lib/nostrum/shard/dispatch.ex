@@ -42,6 +42,7 @@ defmodule Nostrum.Shard.Dispatch do
     ThreadListSync,
     ThreadMembersUpdate,
     TypingStart,
+    VoiceChannelStatusUpdate,
     VoiceReady,
     VoiceServerUpdate,
     VoiceState
@@ -468,6 +469,9 @@ defmodule Nostrum.Shard.Dispatch do
   def handle_event(:MESSAGE_POLL_VOTE_REMOVE = event, p, state) do
     {event, PollVoteChange.to_struct(Map.merge(p, %{type: :remove})), state}
   end
+
+  def handle_event(:VOICE_CHANNEL_STATUS_UPDATE = event, p, state),
+    do: {event, VoiceChannelStatusUpdate.to_struct(p), state}
 
   def handle_event(event, p, state) do
     Logger.warning("UNHANDLED GATEWAY DISPATCH EVENT TYPE: #{event}, #{inspect(p)}")
