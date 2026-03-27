@@ -7,7 +7,7 @@ defmodule Nostrum.Struct.Message.Poll.Answer do
 
   alias Nostrum.Struct.Message.Poll.MediaObject
 
-  @derive Jason.Encoder
+  @derive JSON.Encoder
   defstruct [
     :answer_id,
     :poll_media

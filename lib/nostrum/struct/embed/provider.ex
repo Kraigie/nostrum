@@ -4,20 +4,17 @@ defmodule Nostrum.Struct.Embed.Provider do
   """
 
   alias Nostrum.Util
-  alias Jason.{Encode, Encoder}
-
   defstruct [
     :name,
     :url
   ]
 
-  defimpl Encoder do
-    def encode(provider, options) do
+  defimpl JSON.Encoder do
+    def encode(provider, encoder) do
       provider
       |> Map.from_struct()
-      |> Enum.filter(fn {_, v} -> v != nil end)
-      |> Map.new()
-      |> Encode.map(options)
+      |> Map.reject(fn {_, v} -> v == nil end)
+      |> JSON.Encoder.Map.encode(encoder)
     end
   end
 
