@@ -91,13 +91,17 @@ defmodule Nostrum.Util do
         raise(Nostrum.Error.ApiError, status_code: code, message: message)
 
       {:ok, body} ->
-        body = Jason.decode!(body)
+        case Jason.decode(body) do
+          {:ok, decoded} ->
+            "wss://" <> url = decoded["url"]
+            shards = if decoded["shards"], do: decoded["shards"], else: 1
 
-        "wss://" <> url = body["url"]
-        shards = if body["shards"], do: body["shards"], else: 1
+            :persistent_term.put(@gateway_url_key, {url, shards})
+            {url, shards}
 
-        :persistent_term.put(@gateway_url_key, {url, shards})
-        {url, shards}
+          {:error, _} ->
+            raise("Received non-JSON response from Discord gateway, Discord may be down")
+        end
     end
   end
 
