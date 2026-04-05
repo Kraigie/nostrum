@@ -36,7 +36,7 @@ defmodule Nostrum.Struct.Webhook do
           token: token
         }
 
-  @derive [Jason.Encoder]
+  @derive [JSON.Encoder]
   defstruct [
     :id,
     :guild_id,

@@ -4,7 +4,7 @@ defmodule Nostrum.Struct.Component.DefaultValue do
   """
   @moduledoc since: "0.10.1"
 
-  @derive Jason.Encoder
+  @derive JSON.Encoder
   defstruct [
     :id,
     :type

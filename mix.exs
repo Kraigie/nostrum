@@ -6,7 +6,7 @@ defmodule Nostrum.Mixfile do
     [
       app: :nostrum,
       version: "0.11.0-dev",
-      elixir: "~> 1.15",
+      elixir: "~> 1.18",
       elixirc_paths: elixirc_paths(Mix.env()),
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
@@ -169,12 +169,7 @@ defmodule Nostrum.Mixfile do
 
   defp deps do
     [
-      # Please cease usage of this library if writing new nostrum code,
-      # we should use json_polyfill, but mix doesn't quite seem to be
-      # able to work with the `beam` file? Or is it my old rebar version?
-      {:jason, "~> 1.4"},
-      # Replacement for Jason, remove once we required OTP 27+
-      # {:json_polyfill, "~> 0.2"},
+      # JSON encoding/decoding is provided by Elixir 1.18's built-in JSON module
       {:gun, "~> 2.0"},
       {:salchicha, "~> 0.5"},
       {:dave, "~> 0.1"},

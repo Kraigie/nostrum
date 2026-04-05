@@ -6,7 +6,10 @@ defmodule Nostrum.Api.Helpers do
   defguard has_files(args) when is_map_key(args, :files) or is_map_key(args, :file)
 
   def handle_request_with_decode(response)
-  def handle_request_with_decode({:ok, body}), do: {:ok, Jason.decode!(body, keys: :atoms)}
+
+  def handle_request_with_decode({:ok, body}),
+    do: {:ok, body |> JSON.decode!() |> Util.safe_atom_map()}
+
   def handle_request_with_decode({:error, _} = error), do: error
 
   def handle_request_with_decode(response, type)
@@ -17,7 +20,8 @@ defmodule Nostrum.Api.Helpers do
   def handle_request_with_decode({:ok, body}, type) do
     convert =
       body
-      |> Jason.decode!(keys: :atoms)
+      |> JSON.decode!()
+      |> Util.safe_atom_map()
       |> Util.cast(type)
 
     {:ok, convert}

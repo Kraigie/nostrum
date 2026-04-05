@@ -37,7 +37,7 @@ defmodule Nostrum.Api.Adapter do
   def finalize_request_headers(headers, _body), do: headers
   def process_request_body(""), do: ""
   def process_request_body({:multipart, content}), do: content
-  def process_request_body(body), do: Jason.encode_to_iodata!(body)
+  def process_request_body(body), do: JSON.encode_to_iodata!(body)
 
   def process_request_headers(headers, wrapped_token) do
     [

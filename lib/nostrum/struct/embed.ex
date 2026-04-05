@@ -78,8 +78,6 @@ defmodule Nostrum.Struct.Embed do
 
   alias Nostrum.Struct.Embed.{Author, Field, Footer, Image, Provider, Thumbnail, Video}
   alias Nostrum.Util
-  alias Jason.{Encode, Encoder}
-
   defstruct [
     :title,
     :type,
@@ -96,13 +94,12 @@ defmodule Nostrum.Struct.Embed do
     :fields
   ]
 
-  defimpl Encoder do
-    def encode(embed, options) do
+  defimpl JSON.Encoder do
+    def encode(embed, encoder) do
       embed
       |> Map.from_struct()
-      |> Enum.filter(fn {_, v} -> v != nil end)
-      |> Map.new()
-      |> Encode.map(options)
+      |> Map.reject(fn {_, v} -> v == nil end)
+      |> JSON.Encoder.Map.encode(encoder)
     end
   end
 

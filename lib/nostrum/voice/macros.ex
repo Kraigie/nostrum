@@ -13,7 +13,7 @@ defmodule Nostrum.Voice.Macros do
 
     quote do
       def unquote(head) do
-        Jason.encode_to_iodata!(%{
+        JSON.encode_to_iodata!(%{
           op: unquote(opcode),
           d: unquote(body)
         })

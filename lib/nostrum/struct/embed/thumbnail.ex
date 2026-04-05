@@ -4,8 +4,6 @@ defmodule Nostrum.Struct.Embed.Thumbnail do
   """
 
   alias Nostrum.Util
-  alias Jason.{Encode, Encoder}
-
   defstruct [
     :url,
     :proxy_url,
@@ -13,13 +11,12 @@ defmodule Nostrum.Struct.Embed.Thumbnail do
     :width
   ]
 
-  defimpl Encoder do
-    def encode(thumbnail, options) do
+  defimpl JSON.Encoder do
+    def encode(thumbnail, encoder) do
       thumbnail
       |> Map.from_struct()
-      |> Enum.filter(fn {_, v} -> v != nil end)
-      |> Map.new()
-      |> Encode.map(options)
+      |> Map.reject(fn {_, v} -> v == nil end)
+      |> JSON.Encoder.Map.encode(encoder)
     end
   end
 
