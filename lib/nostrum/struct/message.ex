@@ -191,6 +191,18 @@ defmodule Nostrum.Struct.Message do
   if the message is a response to an interaction, this is the ID of the interaction's application
   """
   @type application_id :: Application.id() | nil
+
+  @typedoc """
+  Message flags combined as a bitfield.
+
+  `nil` when no flags are set.
+
+  To convert the raw integer bitfield into a struct of flag values, use
+  `Nostrum.Struct.Message.Flags.from_integer/1`.
+  """
+  @typedoc since: "NEXTVERSION"
+  @type flags :: Flags.raw_flags() | nil
+
   @typedoc """
   Partial Guild Member object received with the Message Create event if message came from a guild channel
   """
