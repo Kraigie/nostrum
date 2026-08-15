@@ -825,8 +825,16 @@ defmodule Nostrum.Api.Ratelimiter do
          ]}
 
       kind == :nofin ->
+        # For 429s we defer `parse_limits` until the body has arrived, since
+        # the authoritative ratelimit information (global flag, retry_after)
+        # is carried in the JSON body and may not be present in the headers.
         inflight_with_this = Map.put(inflight, stream, {status, headers, ""})
-        {:keep_state, %{data | inflight: inflight_with_this}, parse_limits}
+
+        if status == 429 do
+          {:keep_state, %{data | inflight: inflight_with_this}}
+        else
+          {:keep_state, %{data | inflight: inflight_with_this}, parse_limits}
+        end
     end
   end
 
@@ -848,7 +856,7 @@ defmodule Nostrum.Api.Ratelimiter do
         {:gun_data, _conn, stream, :fin, body},
         %{inflight: inflight, running: running} = data
       ) do
-    {{_bucket, request, from}, running_without_this} = Map.pop(running, stream)
+    {{bucket, request, from}, running_without_this} = Map.pop(running, stream)
     {{status, headers, buffer}, inflight_without_this} = Map.pop(inflight, stream)
     full_buffer = <<buffer::binary, body::binary>>
     unparsed = parse_response(status, headers, full_buffer)
@@ -859,11 +867,18 @@ defmodule Nostrum.Api.Ratelimiter do
       429 ->
         # Not great - this should ideally be a global or user ratelimit, both
         # things which we don't receive any anticipation about from the API.
-        # Give the request a second chance. Note that dealing with entering the
-        # global or user ratelimit was already performed by `parse_limits` in
-        # an earlier step.
+        # Parse ratelimit information from the full response (headers + body)
+        # now: this may transition us into the global limit state based on the
+        # 429 body's `global` and `retry_after` fields, which is why we
+        # deferred `parse_limits` for 429 responses with a body until this
+        # point. Event ordering guarantees `parse_limits` is handled before
+        # the `requeue`, so the requeue will be postponed by the resulting
+        # global_limit state as needed.
+        limits = parse_headers(unparsed)
+
         {:keep_state, new_data,
          [
+           {:next_event, :internal, {:parse_limits, limits, bucket}},
            {:next_event, :internal, {:requeue, {request, from}, :hit_429}}
          ]}
 
@@ -1152,7 +1167,7 @@ defmodule Nostrum.Api.Ratelimiter do
   # defp parse_headers({:error, _reason} = result), do: result
 
   # credo:disable-for-next-line
-  defp parse_headers({:ok, {_status, headers, _body}}) do
+  defp parse_headers({:ok, {status, headers, body}}) do
     limit_scope = header_value(headers, "x-ratelimit-scope")
     remaining = header_value(headers, "x-ratelimit-remaining")
     remaining = if remaining, do: String.to_integer(remaining)
@@ -1163,7 +1178,10 @@ defmodule Nostrum.Api.Ratelimiter do
 
     cond do
       is_nil(remaining) and is_nil(reset_after) ->
-        :congratulations_you_killed_upstream
+        # Perhaps a 429 with only the standard Retry-After header or a JSON
+        # body telling us about the ratelimit. Check those before declaring
+        # the bucket dead.
+        parse_429_fallback(status, headers, body)
 
       limit_scope == "user" and remaining == 0 ->
         # Per bot or user limit.
@@ -1178,6 +1196,48 @@ defmodule Nostrum.Api.Ratelimiter do
         {:bucket_limit, {remaining, reset_after}}
     end
   end
+
+  # Fallback parsing for 429 responses that didn't match the header-based
+  # ratelimit patterns. Discord's authoritative source for 429 information is
+  # the JSON body, which carries `global` and `retry_after`.  When the body is
+  # unavailable (or doesn't parse), we fall back to the standard `Retry-After`
+  # header.
+  @spec parse_429_fallback(non_neg_integer(), [{String.t(), String.t()}], String.t()) ::
+          {:global_limit | :user_limit, non_neg_integer()}
+          | :congratulations_you_killed_upstream
+  defp parse_429_fallback(429, headers, body) do
+    case decode_429_body(body) do
+      {:ok, %{"global" => true, "retry_after" => retry_after}} ->
+        {:global_limit, trunc(retry_after * 1000)}
+
+      {:ok, %{"retry_after" => retry_after}} ->
+        {:user_limit, trunc(retry_after * 1000)}
+
+      _ ->
+        case header_value(headers, "retry-after") do
+          nil -> :congratulations_you_killed_upstream
+          retry_after -> {:user_limit, retry_after_to_millis(retry_after)}
+        end
+    end
+  end
+
+  defp parse_429_fallback(_status, _headers, _body), do: :congratulations_you_killed_upstream
+
+  # Discord sends Retry-After as integer seconds ("65"); be defensive about
+  # fractional values ("1.5") in case a proxy rewrites the header.
+  @spec retry_after_to_millis(String.t()) :: non_neg_integer()
+  defp retry_after_to_millis(value) do
+    case Float.parse(value) do
+      {float_value, ""} -> trunc(float_value * 1000)
+      :error -> 0
+    end
+  end
+
+  defp decode_429_body(body) when is_binary(body) and body != "" do
+    Jason.decode(body)
+  end
+
+  defp decode_429_body(_body), do: :error
 
   # Use :timer.time() when / if it is exported
   @spec requeue_after_for_reason(:hit_429 | :abnormal_close) :: pos_integer()
