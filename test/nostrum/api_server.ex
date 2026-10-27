@@ -86,6 +86,51 @@ defmodule :nostrum_test_api_server do
       )
   end
 
+  # Simulates Discord's global 429 as observed on /gateway/bot in issue #709:
+  # none of the x-ratelimit-* headers are present, the only ratelimit
+  # information is in the JSON body. The ratelimiter must enter the global
+  # limit state from the body alone.
+  def global_429_body_only(session, _env, _input) do
+    :ok =
+      :mod_esi.deliver(
+        session,
+        ~c"""
+        status: 429 Too Many Requests\r
+        Content-Type: application/json\r
+        \r
+        {"message": "You are being rate limited.", "retry_after": 0.2, "global": true}
+        """
+      )
+  end
+
+  # Simulates a 429 where the only ratelimit information available is the
+  # standard Retry-After header - no x-ratelimit-* headers and no body.
+  def user_429_retry_after_header(session, _env, _input) do
+    :ok =
+      :mod_esi.deliver(
+        session,
+        ~c"""
+        status: 429 Too Many Requests\r
+        retry-after: 1\r
+        \r
+        """
+      )
+  end
+
+  # Simulates a non-global 429 with information in the JSON body only.
+  def user_429_body_only(session, _env, _input) do
+    :ok =
+      :mod_esi.deliver(
+        session,
+        ~c"""
+        status: 429 Too Many Requests\r
+        Content-Type: application/json\r
+        \r
+        {"message": "You are being rate limited.", "retry_after": 0.2, "global": false}
+        """
+      )
+  end
+
   def user_limit(session, _env, _input) do
     :ok =
       :mod_esi.deliver(

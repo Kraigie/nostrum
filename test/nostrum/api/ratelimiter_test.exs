@@ -90,6 +90,30 @@ defmodule Nostrum.Api.RatelimiterTest do
     end
   end
 
+  # Spin until the ratelimiter enters the given state. Used to observe
+  # transitions into `:global_limit` that happen as a side effect of a 429
+  # response. Returns {:ok, state_name} on success, {:error, :timeout}
+  # otherwise.
+  defp spin_until_state(ratelimiter, target_state, timeout \\ @request_timeout) do
+    deadline = System.monotonic_time(:millisecond) + timeout
+    do_spin_until_state(ratelimiter, target_state, deadline)
+  end
+
+  defp do_spin_until_state(ratelimiter, target_state, deadline) do
+    if System.monotonic_time(:millisecond) > deadline do
+      {:error, :timeout}
+    else
+      case :sys.get_state(ratelimiter) do
+        {state, _data} when state == target_state ->
+          {:ok, state}
+
+        _other ->
+          Process.sleep(10)
+          do_spin_until_state(ratelimiter, target_state, deadline)
+      end
+    end
+  end
+
   describe "basic requests" do
     test "work", %{ratelimiter: ratelimiter} do
       request = build_request("endpoint")
@@ -201,6 +225,46 @@ defmodule Nostrum.Api.RatelimiterTest do
 
       refute_receive _, 200
       assert_receive {:ok, _body}, 200
+    end
+  end
+
+  # Issue #709: Discord's global 429 on /gateway/bot carries the ratelimit
+  # information only in the JSON body (`global` + `retry_after`) and may lack
+  # the x-ratelimit-* headers entirely. The ratelimiter must respect this and
+  # enter the global limit state, not loop the retry with no known ratelimit
+  # information.
+  describe "429 with ratelimit information only in the response body" do
+    test "global: true enters global_limit state", %{ratelimiter: ratelimiter} do
+      request = build_request("global_429_body_only")
+      _req_id = :gen_statem.send_request(ratelimiter, {:queue, request})
+
+      # The ratelimiter must have transitioned into global_limit state from
+      # the 429 body alone. Spin until we observe it (with a timeout).
+      assert {:ok, :global_limit} = spin_until_state(ratelimiter, :global_limit)
+
+      # Note: we don't wait for the request to complete; the test endpoint
+      # always returns 429, so the ratelimiter would keep re-entering the
+      # global_limit state. Observing the entry alone proves the fix.
+    end
+
+    test "global: false enters user_limit state (treated as global_limit)", %{
+      ratelimiter: ratelimiter
+    } do
+      request = build_request("user_429_body_only")
+      _req_id = :gen_statem.send_request(ratelimiter, {:queue, request})
+
+      # Both user_limit and global_limit transition the state machine into
+      # the :global_limit state in this implementation.
+      assert {:ok, :global_limit} = spin_until_state(ratelimiter, :global_limit)
+    end
+  end
+
+  describe "429 with only a Retry-After header" do
+    test "honors the header value as a user limit", %{ratelimiter: ratelimiter} do
+      request = build_request("user_429_retry_after_header")
+      _req_id = :gen_statem.send_request(ratelimiter, {:queue, request})
+
+      assert {:ok, :global_limit} = spin_until_state(ratelimiter, :global_limit)
     end
   end
 
