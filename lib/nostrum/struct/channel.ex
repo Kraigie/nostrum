@@ -102,7 +102,8 @@ defmodule Nostrum.Struct.Channel do
   |`11` |[`GUILD_PUBLIC_THREAD`](`t:guild_public_thread_channel/0`)   |_A temporary sub-channel within a text channel_                   |
   |`12` |[`GUILD_PRIVATE_THREAD`](`t:guild_private_thread_channel/0`) |_A temporary private sub-channel within a text channel_           |
   |`13` |[`GUILD_STAGE_VOICE`](`t:guild_stage_voice_channel/0`)       |_A voice channel for hosting events with an audience_             |
-  |`15` |[`GUILD_FORUM`](`t:guild_forum_channel/0`)                   |_A channel that can only contain threads                          |
+  |`15` |[`GUILD_FORUM`](`t:guild_forum_channel/0`)                   |_A channel that can only contain threads_                         |
+  |`16` |[`GUILD_MEDIA`](`t:guild_media_channel/0`)                   |_A channel that can only contain threads, similar to forum_       |
 
   You can use one of the `Nostrum.Constants.ChannelType` methods.
 
@@ -640,6 +641,28 @@ defmodule Nostrum.Struct.Channel do
         }
 
   @typedoc """
+  Type 16 a guild media channel.
+
+  Similar to a forum channel, but optimized for media-heavy content.
+  """
+  @type guild_media_channel :: %__MODULE__{
+          id: id,
+          guild_id: guild_id,
+          name: name,
+          type: type,
+          position: position,
+          permission_overwrites: permission_overwrites,
+          nsfw: nsfw,
+          parent_id: parent_id,
+          last_message_id: last_message_id,
+          available_tags: [forum_tag],
+          rate_limit_per_user: rate_limit_per_user,
+          default_reaction_emoji: default_reaction_emoji,
+          default_thread_rate_limit_per_user: default_thread_rate_limit_per_user,
+          default_sort_order: default_sort_order
+        }
+
+  @typedoc """
   A partial channel object representing a channel mention.
 
   More information about the _Discord Channel Mention Object_ can be found at the [Discord API Channel Mention Object
@@ -692,6 +715,7 @@ defmodule Nostrum.Struct.Channel do
           | guild_private_thread_channel
           | guild_stage_voice_channel
           | guild_forum_channel
+          | guild_media_channel
 
   @doc """
   Convert a channel into a mention.

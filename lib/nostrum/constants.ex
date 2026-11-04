@@ -461,6 +461,7 @@ defmodule Nostrum.Constants do
     def private_thread, do: 12
     def guild_directory, do: 14
     def guild_forum, do: 15
+    def guild_media, do: 16
   end
 
   defmodule WebhookType do
