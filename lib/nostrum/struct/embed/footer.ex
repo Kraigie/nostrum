@@ -4,21 +4,18 @@ defmodule Nostrum.Struct.Embed.Footer do
   """
 
   alias Nostrum.Util
-  alias Jason.{Encode, Encoder}
-
   defstruct [
     :text,
     :icon_url,
     :proxy_icon_url
   ]
 
-  defimpl Encoder do
-    def encode(footer, options) do
+  defimpl JSON.Encoder do
+    def encode(footer, encoder) do
       footer
       |> Map.from_struct()
-      |> Enum.filter(fn {_, v} -> v != nil end)
-      |> Map.new()
-      |> Encode.map(options)
+      |> Map.reject(fn {_, v} -> v == nil end)
+      |> JSON.Encoder.Map.encode(encoder)
     end
   end
 

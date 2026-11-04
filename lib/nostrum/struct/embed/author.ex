@@ -4,7 +4,6 @@ defmodule Nostrum.Struct.Embed.Author do
   """
 
   alias Nostrum.Util
-  alias Jason.{Encode, Encoder}
 
   defstruct [
     :name,
@@ -13,13 +12,12 @@ defmodule Nostrum.Struct.Embed.Author do
     :proxy_icon_url
   ]
 
-  defimpl Encoder do
-    def encode(author, options) do
+  defimpl JSON.Encoder do
+    def encode(author, encoder) do
       author
       |> Map.from_struct()
-      |> Enum.filter(fn {_, v} -> v != nil end)
-      |> Map.new()
-      |> Encode.map(options)
+      |> Map.reject(fn {_, v} -> v == nil end)
+      |> JSON.Encoder.Map.encode(encoder)
     end
   end
 

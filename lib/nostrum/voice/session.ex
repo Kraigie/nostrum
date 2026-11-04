@@ -127,7 +127,7 @@ defmodule Nostrum.Voice.Session do
 
   def handle_info({:gun_ws, _worker, stream, {:text, frame}}, state) do
     frame
-    |> Jason.decode!()
+    |> JSON.decode!()
     |> handle_gateway_event(state, stream)
   end
 

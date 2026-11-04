@@ -6,7 +6,7 @@ defmodule Nostrum.Struct.Guild.ScheduledEvent.EntityMetadata do
 
   alias Nostrum.Util
 
-  @derive Jason.Encoder
+  @derive JSON.Encoder
   defstruct [
     :location
   ]

@@ -4,21 +4,18 @@ defmodule Nostrum.Struct.Embed.Video do
   """
 
   alias Nostrum.Util
-  alias Jason.{Encode, Encoder}
-
   defstruct [
     :url,
     :height,
     :width
   ]
 
-  defimpl Encoder do
-    def encode(video, options) do
+  defimpl JSON.Encoder do
+    def encode(video, encoder) do
       video
       |> Map.from_struct()
-      |> Enum.filter(fn {_, v} -> v != nil end)
-      |> Map.new()
-      |> Encode.map(options)
+      |> Map.reject(fn {_, v} -> v == nil end)
+      |> JSON.Encoder.Map.encode(encoder)
     end
   end
 

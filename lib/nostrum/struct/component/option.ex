@@ -6,7 +6,7 @@ defmodule Nostrum.Struct.Component.Option do
   alias Nostrum.Struct.{Component, Emoji}
   alias Nostrum.Util
 
-  @derive Jason.Encoder
+  @derive JSON.Encoder
   defstruct [
     :label,
     :value,

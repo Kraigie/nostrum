@@ -91,7 +91,7 @@ defmodule Nostrum.Util do
         raise(Nostrum.Error.ApiError, status_code: code, message: message)
 
       {:ok, body} ->
-        body = Jason.decode!(body)
+        body = JSON.decode!(body)
 
         "wss://" <> url = body["url"]
         shards = if body["shards"], do: body["shards"], else: 1

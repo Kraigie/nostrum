@@ -279,7 +279,7 @@ defmodule Nostrum.Api.Thread do
       Helpers.combine_files(body)
       |> Helpers.pop_files()
 
-    body = Jason.encode_to_iodata!(json)
+    body = JSON.encode_to_iodata!(json)
 
     headers =
       Helpers.maybe_add_reason(reason, [

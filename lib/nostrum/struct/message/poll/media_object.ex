@@ -5,7 +5,7 @@ defmodule Nostrum.Struct.Message.Poll.MediaObject do
 
   alias Nostrum.Util
 
-  @derive Jason.Encoder
+  @derive JSON.Encoder
   defstruct [
     :text,
     :emoji
