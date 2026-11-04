@@ -6,7 +6,17 @@ defmodule Nostrum.Api.Helpers do
   defguard has_files(args) when is_map_key(args, :files) or is_map_key(args, :file)
 
   def handle_request_with_decode(response)
-  def handle_request_with_decode({:ok, body}), do: {:ok, Jason.decode!(body, keys: :atoms)}
+
+  def handle_request_with_decode({:ok, body}) do
+    case Jason.decode(body, keys: :atoms) do
+      {:ok, parsed} ->
+        {:ok, parsed}
+
+      {:error, _} ->
+        {:error, %Nostrum.Error.ApiError{status_code: nil, response: body}}
+    end
+  end
+
   def handle_request_with_decode({:error, _} = error), do: error
 
   def handle_request_with_decode(response, type)
@@ -15,12 +25,13 @@ defmodule Nostrum.Api.Helpers do
   def handle_request_with_decode({:error, _} = error, _type), do: error
 
   def handle_request_with_decode({:ok, body}, type) do
-    convert =
-      body
-      |> Jason.decode!(keys: :atoms)
-      |> Util.cast(type)
+    case Jason.decode(body, keys: :atoms) do
+      {:ok, parsed} ->
+        {:ok, Util.cast(parsed, type)}
 
-    {:ok, convert}
+      {:error, _} ->
+        {:error, %Nostrum.Error.ApiError{status_code: nil, response: body}}
+    end
   end
 
   @spec maybe_add_reason(String.t() | nil, list()) :: list()
