@@ -62,6 +62,7 @@ defmodule Nostrum.Consumer do
     ThreadListSync,
     ThreadMembersUpdate,
     TypingStart,
+    VoiceChannelStatusUpdate,
     VoiceReady,
     VoiceServerUpdate,
     VoiceState
@@ -280,6 +281,8 @@ defmodule Nostrum.Consumer do
   @typedoc since: "0.6.0"
   @type voice_incoming_packet ::
           {:VOICE_INCOMING_PACKET, Nostrum.Voice.rtp_opus(), VoiceWSState.t()}
+  @type voice_channel_status_update ::
+          {:VOICE_CHANNEL_STATUS_UPDATE, VoiceChannelStatusUpdate.t(), WSState.t()}
   @type voice_state_update :: {:VOICE_STATE_UPDATE, VoiceState.t(), WSState.t()}
   @type voice_server_update :: {:VOICE_SERVER_UPDATE, VoiceServerUpdate.t(), WSState.t()}
   @type webhooks_update :: {:WEBHOOKS_UPDATE, map, WSState.t()}
@@ -379,6 +382,7 @@ defmodule Nostrum.Consumer do
           | voice_ready
           | voice_speaking_update
           | voice_incoming_packet
+          | voice_channel_status_update
           | voice_state_update
           | voice_server_update
           | webhooks_update
