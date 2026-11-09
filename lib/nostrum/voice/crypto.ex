@@ -172,7 +172,7 @@ defmodule Nostrum.Voice.Crypto do
   def decrypt_xsalsa20_poly1305_lite_rtpsize(key, data) do
     {_header, cipher_text, _tag, nonce, ext_len} = decode_packet_rtpsize(data, 24, 0)
 
-    <<_exts::unit(32)-size(ext_len), opus::binary>> = Salsa.decrypt(cipher_text, key, nonce)
+    <<_exts::unit(32)-size(^ext_len), opus::binary>> = Salsa.decrypt(cipher_text, key, nonce)
 
     opus
   end
@@ -185,7 +185,7 @@ defmodule Nostrum.Voice.Crypto do
   def decrypt_aead_xchacha20_poly1305_rtpsize(key, data) do
     {header, cipher_text, tag, nonce, ext_len} = decode_packet_rtpsize(data, 24, 16)
 
-    <<_exts::unit(32)-size(ext_len), opus::binary>> =
+    <<_exts::unit(32)-size(^ext_len), opus::binary>> =
       Chacha.decrypt(cipher_text, key, nonce, _aad = header, tag)
 
     opus
@@ -198,7 +198,7 @@ defmodule Nostrum.Voice.Crypto do
   def decrypt_aead_aes256_gcm_rtpsize(key, data) do
     {header, cipher_text, tag, nonce, ext_len} = decode_packet_rtpsize(data, 12, 16)
 
-    <<_exts::unit(32)-size(ext_len), opus::binary>> =
+    <<_exts::unit(32)-size(^ext_len), opus::binary>> =
       Aes.decrypt(cipher_text, key, nonce, _aad = header, tag)
 
     opus
@@ -279,8 +279,8 @@ defmodule Nostrum.Voice.Crypto do
   defp split_data(data, unpadded_nonce_length, tag_length) do
     cipher_text_length = byte_size(data) - (unpadded_nonce_length + tag_length)
 
-    <<cipher_text::bytes-size(cipher_text_length), tag::bytes-size(tag_length),
-      unpadded_nonce::bytes-size(unpadded_nonce_length)>> = data
+    <<cipher_text::bytes-size(^cipher_text_length), tag::bytes-size(^tag_length),
+      unpadded_nonce::bytes-size(^unpadded_nonce_length)>> = data
 
     {cipher_text, tag, unpadded_nonce}
   end

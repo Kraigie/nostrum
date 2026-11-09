@@ -43,8 +43,6 @@ defmodule Nostrum.Api do
 
   @crlf "\r\n"
 
-  require Logger
-
   import Nostrum.Api.Helpers, only: [has_files: 1]
 
   alias Nostrum.Api.Helpers

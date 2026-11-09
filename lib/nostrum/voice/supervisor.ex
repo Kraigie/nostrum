@@ -6,8 +6,6 @@ defmodule Nostrum.Voice.Supervisor do
   alias Nostrum.Struct.VoiceState
   alias Nostrum.Voice.Session
 
-  require Logger
-
   def start_link(bot_options) do
     Supervisor.start_link(__MODULE__, bot_options)
   end

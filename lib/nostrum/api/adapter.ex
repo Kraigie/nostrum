@@ -4,7 +4,6 @@ defmodule Nostrum.Api.Adapter do
   @version Nostrum.Mixfile.project()[:version]
 
   import Nostrum.Constants, only: [base_route: 0]
-  require Logger
 
   @type methods :: :get | :post | :put | :delete
 
