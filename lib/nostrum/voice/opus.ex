@@ -44,6 +44,14 @@ defmodule Nostrum.Voice.Opus do
 
   def strip_rtp_ext(packet), do: packet
 
+  def strip_rtp_padding(packet, <<2::2, 1::1, _::5, _rest::binary>> = _header) do
+    binary_part(packet, 0, byte_size(packet) - :binary.last(packet))
+  end
+
+  def strip_rtp_padding(packet, _header) do
+    packet
+  end
+
   def parse_ogg(<<>>), do: []
 
   def parse_ogg(binary) do

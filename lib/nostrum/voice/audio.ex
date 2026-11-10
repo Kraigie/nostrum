@@ -58,7 +58,7 @@ defmodule Nostrum.Voice.Audio do
 
     case payload do
       # Skip RTCP packets
-      <<2::2, 0::1, 1::5, pt::8, _rest::binary>> when pt in 200..204 ->
+      <<2::2, _p::1, 1::5, pt::8, _rest::binary>> when pt in 200..204 ->
         get_rtp_packet(v)
 
       <<header::bytes-size(12), _::binary>> = data ->

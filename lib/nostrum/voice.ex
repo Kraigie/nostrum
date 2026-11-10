@@ -701,13 +701,16 @@ defmodule Nostrum.Voice do
       Enum.map(packets, fn {header, payload} ->
         <<_::16, seq::integer-16, time::integer-32, ssrc::integer-32>> = header
 
-        opus = Opus.strip_rtp_ext(payload)
-        rtp_ext = binary_part(payload, 0, byte_size(payload) - byte_size(opus))
-        opus = Crypto.dave_decrypt(opus, voice.dave_session, ssrc_map[ssrc])
+        no_ext = Opus.strip_rtp_ext(payload)
+        no_pad = Opus.strip_rtp_padding(no_ext, header)
+        opus = Crypto.dave_decrypt(no_pad, voice.dave_session, ssrc_map[ssrc])
+
+        rtp_ext = binary_part(payload, 0, byte_size(payload) - byte_size(no_ext))
+        rtp_pad = binary_part(no_ext, byte_size(no_pad), byte_size(no_ext) - byte_size(no_pad))
 
         # credo:disable-for-next-line Credo.Check.Refactor.Nesting
         if raw_rtp,
-          do: header <> rtp_ext <> opus,
+          do: header <> rtp_ext <> opus <> rtp_pad,
           else: {{seq, time, ssrc}, opus}
       end)
     else
@@ -750,9 +753,10 @@ defmodule Nostrum.Voice do
   """
   @doc since: "0.6.0"
   @spec extract_opus_packet(binary) :: opus_packet()
-  def extract_opus_packet(packet) do
-    <<_header::96, payload::binary>> = packet
-    Opus.strip_rtp_ext(payload)
+  def extract_opus_packet(<<header::96, payload::binary>>) do
+    payload
+    |> Opus.strip_rtp_ext()
+    |> Opus.strip_rtp_padding(header)
   end
 
   @doc """
