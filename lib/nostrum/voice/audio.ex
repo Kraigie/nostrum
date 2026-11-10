@@ -1,8 +1,6 @@
 defmodule Nostrum.Voice.Audio do
   @moduledoc false
 
-  require Logger
-
   alias Nostrum.Error.VoiceError
   alias Nostrum.Struct.VoiceState
   alias Nostrum.Util

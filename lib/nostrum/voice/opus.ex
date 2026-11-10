@@ -269,7 +269,7 @@ defmodule Nostrum.Voice.Opus do
 
     body_len = segment_table |> Enum.sum()
 
-    <<body::binary-size(body_len), rest::binary>> = rest
+    <<body::binary-size(^body_len), rest::binary>> = rest
 
     %{
       version: version,

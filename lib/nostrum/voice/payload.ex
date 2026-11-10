@@ -5,8 +5,6 @@ defmodule Nostrum.Voice.Payload do
   alias Nostrum.Struct.VoiceState
   alias Nostrum.Struct.VoiceWSState
 
-  require Logger
-
   require Nostrum.Voice.Macros
 
   import Nostrum.Voice.Macros,
