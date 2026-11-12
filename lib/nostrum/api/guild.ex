@@ -846,13 +846,8 @@ defmodule Nostrum.Api.Guild do
   Nostrum.Api.Guild.modify_member(41771983423143937, 637162356451, nick: "Nostrum")
   {:ok, %Nostrum.Struct.Member{}}
   ```
-
-  ```elixir
-  Nostrum.Api.Guild.modify_member(41771983423143937, :me, nick: "Nostrum")
-  {:ok, %Nostrum.Struct.Member{}}
-  ```
   """
-  @spec modify_member(Guild.id(), User.id() | :me, Api.options(), AuditLogEntry.reason()) ::
+  @spec modify_member(Guild.id(), User.id(), Api.options(), AuditLogEntry.reason()) ::
           Api.error() | {:ok, Member.t()}
   def modify_member(guild_id, user_id, options \\ %{}, reason \\ nil)
 
@@ -860,16 +855,14 @@ defmodule Nostrum.Api.Guild do
     do: modify_member(guild_id, user_id, Map.new(options), reason)
 
   def modify_member(guild_id, user_id, %{} = options, reason)
-      when is_snowflake(guild_id) and (is_snowflake(user_id) or user_id == :me) do
+      when is_snowflake(guild_id) and is_snowflake(user_id) do
     options =
       options
       |> Helpers.maybe_convert_date_time(:communication_disabled_until)
 
-    user = if user_id == :me, do: "@me", else: user_id
-
     Api.request(%{
       method: :patch,
-      route: Constants.guild_member(guild_id, user),
+      route: Constants.guild_member(guild_id, user_id),
       body: options,
       params: [],
       headers: Helpers.maybe_add_reason(reason)
