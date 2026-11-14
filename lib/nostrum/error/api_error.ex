@@ -39,4 +39,9 @@ defmodule Nostrum.Error.ApiError do
   def message(%__MODULE__{response: %{code: error_code, message: message}, status_code: code}) do
     "(HTTP #{code}) received Discord status code #{error_code} (#{message})"
   end
+
+  @impl true
+  def message(%__MODULE__{response: response, status_code: code}) do
+    "(HTTP #{code}) #{inspect(response)}"
+  end
 end
