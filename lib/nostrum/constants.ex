@@ -115,6 +115,11 @@ defmodule Nostrum.Constants do
 
   def application_information, do: "/oauth2/applications/@me"
 
+  def application_emojis(application_id), do: "/applications/#{application_id}/emojis"
+
+  def application_emoji(application_id, emoji_id),
+    do: "/applications/#{application_id}/emojis/#{emoji_id}"
+
   def global_application_command(application_id, command_id),
     do: "/applications/#{application_id}/commands/#{command_id}"
 
