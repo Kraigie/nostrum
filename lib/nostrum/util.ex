@@ -73,6 +73,9 @@ defmodule Nostrum.Util do
 
   If by chance no gateway connection has been made, will fetch the url to use and store it
   for future use.
+
+  Raises `Nostrum.Error.ApiError` if Discord rejects the request, for example with
+  status code `401` when the bot token is invalid.
   """
   @spec gateway() :: {String.t(), integer}
   def gateway do
@@ -83,22 +86,28 @@ defmodule Nostrum.Util do
   end
 
   defp get_new_gateway_url do
-    case Api.request(:get, Constants.gateway_bot()) do
-      {:error, %{status_code: 401}} ->
-        raise("Authentication rejected, invalid token")
+    handle_gateway_response(Api.request(:get, Constants.gateway_bot()))
+  end
 
-      {:error, %{status_code: code, response: %{message: message}}} ->
-        raise(Nostrum.Error.ApiError, status_code: code, message: message)
+  @doc false
+  # Public only so it can be tested without network access.
+  #
+  # Failed requests are raised as the `Nostrum.Error.ApiError` that the request
+  # returned, so that callers can match on `%ApiError{status_code: 401}` to tell
+  # a rejected token apart from other failures.
+  @spec handle_gateway_response({:ok, String.t()} | Api.error()) :: {String.t(), integer}
+  def handle_gateway_response({:error, %Nostrum.Error.ApiError{} = error}) do
+    raise error
+  end
 
-      {:ok, body} ->
-        body = Jason.decode!(body)
+  def handle_gateway_response({:ok, body}) do
+    body = Jason.decode!(body)
 
-        "wss://" <> url = body["url"]
-        shards = if body["shards"], do: body["shards"], else: 1
+    "wss://" <> url = body["url"]
+    shards = if body["shards"], do: body["shards"], else: 1
 
-        :persistent_term.put(@gateway_url_key, {url, shards})
-        {url, shards}
-    end
+    :persistent_term.put(@gateway_url_key, {url, shards})
+    {url, shards}
   end
 
   @doc """
