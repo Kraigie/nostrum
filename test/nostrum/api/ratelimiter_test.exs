@@ -43,7 +43,7 @@ defmodule Nostrum.Api.RatelimiterTest do
     request = build_request(type, query_params)
     reply = Ratelimiter.queue(ratelimiter, request, @request_timeout)
     assert {:ok, body} = reply
-    assert %{"request" => "received"} = Jason.decode!(body)
+    assert %{"request" => "received"} = JSON.decode!(body)
     reply
   end
 
@@ -98,7 +98,7 @@ defmodule Nostrum.Api.RatelimiterTest do
       for _ <- 1..3 do
         reply = Ratelimiter.queue(ratelimiter, request, @request_timeout)
         assert {:ok, body} = reply
-        assert %{"request" => "received"} = Jason.decode!(body)
+        assert %{"request" => "received"} = JSON.decode!(body)
       end
     end
 
@@ -231,7 +231,7 @@ defmodule Nostrum.Api.RatelimiterTest do
 
       {:reply, reply} = :gen_statem.wait_response(req_id, @request_timeout)
       assert {:ok, body} = reply
-      assert %{"request" => "received"} = Jason.decode!(body)
+      assert %{"request" => "received"} = JSON.decode!(body)
     end
 
     test "are requeued when connection dies before requeue", %{ratelimiter: ratelimiter} do
@@ -251,7 +251,7 @@ defmodule Nostrum.Api.RatelimiterTest do
 
       {:reply, reply} = :gen_statem.wait_response(req_id, @request_timeout)
       assert {:ok, body} = reply
-      assert %{"request" => "received"} = Jason.decode!(body)
+      assert %{"request" => "received"} = JSON.decode!(body)
     end
 
     test "retry requests that are murdered in flight", %{ratelimiter: ratelimiter} do
@@ -268,7 +268,7 @@ defmodule Nostrum.Api.RatelimiterTest do
 
       {:reply, reply} = :gen_statem.wait_response(req_id, @request_timeout)
       assert {:ok, body} = reply
-      assert %{"request" => "received"} = Jason.decode!(body)
+      assert %{"request" => "received"} = JSON.decode!(body)
     end
 
     test "do not cause subsequent requests to hang", %{ratelimiter: ratelimiter} do
@@ -289,7 +289,7 @@ defmodule Nostrum.Api.RatelimiterTest do
 
       {:reply, reply} = :gen_statem.wait_response(req_id, @request_timeout)
       assert {:ok, body} = reply
-      assert %{"request" => "received"} = Jason.decode!(body)
+      assert %{"request" => "received"} = JSON.decode!(body)
 
       # => Run another request - it should go through
       run_request!(ratelimiter, "slowpoke", duration: :timer.seconds(0))
@@ -305,7 +305,7 @@ defmodule Nostrum.Api.RatelimiterTest do
       send(ratelimiter, {:gun_error, conn, stream, {:error, ~c"The stream cannot be found."}})
       {:reply, reply} = :gen_statem.wait_response(req_id, @request_timeout)
       assert {:ok, body} = reply
-      assert %{"request" => "received"} = Jason.decode!(body)
+      assert %{"request" => "received"} = JSON.decode!(body)
     end
   end
 

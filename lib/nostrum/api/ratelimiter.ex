@@ -1229,8 +1229,8 @@ defmodule Nostrum.Api.Ratelimiter do
 
       {:ok, {status, _, body}} ->
         response =
-          case Jason.decode(body, keys: :atoms) do
-            {:ok, parsed} -> parsed
+          case JSON.decode(body) do
+            {:ok, parsed} -> Nostrum.Util.safe_atom_map(parsed)
             _error -> body
           end
 

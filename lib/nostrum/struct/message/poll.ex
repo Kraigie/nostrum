@@ -11,7 +11,7 @@ defmodule Nostrum.Struct.Message.Poll do
   alias Nostrum.Snowflake
   alias Nostrum.Struct.Message.Poll.{Answer, MediaObject, Results}
 
-  @derive Jason.Encoder
+  @derive JSON.Encoder
   defstruct [
     :question,
     :answers,

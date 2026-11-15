@@ -58,7 +58,7 @@ defmodule Nostrum.Api.Sticker do
 
     boundary = Helpers.generate_boundary()
 
-    multipart = Api.create_multipart([], Jason.encode_to_iodata!(opts), boundary)
+    multipart = Api.create_multipart([], JSON.encode_to_iodata!(opts), boundary)
 
     headers =
       Helpers.maybe_add_reason(reason, [

@@ -2299,7 +2299,7 @@ defmodule Nostrum.Api do
       Helpers.combine_files(body)
       |> Helpers.pop_files()
 
-    json = Jason.encode_to_iodata!(body)
+    json = JSON.encode_to_iodata!(body)
 
     %{
       method: method,
