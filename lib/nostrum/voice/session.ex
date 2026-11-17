@@ -167,7 +167,7 @@ defmodule Nostrum.Voice.Session do
   def handle_info({:udp, _erl_port, _ip, _port, packet}, state) do
     case packet do
       # Skip RTCP packets
-      <<2::2, 0::1, 1::5, pt::8, _rest::binary>> when pt in 200..204 ->
+      <<2::2, _p::1, 1::5, pt::8, _rest::binary>> when pt in 192..223 ->
         :noop
 
       <<header::bytes-size(12), _::binary>> = data ->
@@ -177,10 +177,13 @@ defmodule Nostrum.Voice.Session do
           state
           |> Crypto.decrypt(data)
           |> Opus.strip_rtp_ext()
+          |> Opus.strip_rtp_padding(header)
           |> Crypto.dave_decrypt(state.dave_session, state.ssrc_map[ssrc])
 
-        incoming_packet = Payload.voice_incoming_packet({{seq, time, ssrc}, opus})
-        Dispatch.handle(incoming_packet, state)
+        if byte_size(opus) > 0 do
+          incoming_packet = Payload.voice_incoming_packet({{seq, time, ssrc}, opus})
+          Dispatch.handle(incoming_packet, state)
+        end
     end
 
     {:noreply, state}

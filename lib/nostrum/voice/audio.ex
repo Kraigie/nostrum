@@ -53,32 +53,42 @@ defmodule Nostrum.Voice.Audio do
     socket
   end
 
-  def get_rtp_packet(%VoiceState{udp_socket: socket} = v) do
+  def get_rtp_packet(%VoiceState{udp_socket: socket, dave_session: dave} = v, ssrc_map) do
     {:ok, {_ip, _port, payload}} = :gen_udp.recv(socket, 1024)
 
     case payload do
       # Skip RTCP packets
-      <<2::2, 0::1, 1::5, pt::8, _rest::binary>> when pt in 200..204 ->
-        get_rtp_packet(v)
+      <<2::2, _p::1, 1::5, pt::8, _rest::binary>> when pt in 192..223 ->
+        get_rtp_packet(v, ssrc_map)
 
       <<header::bytes-size(12), _::binary>> = data ->
-        {header, Crypto.decrypt(v, data)}
+        with <<_::64, ssrc::integer-32>> <- header,
+             <<_, _::binary>> = no_hed <- Crypto.decrypt(v, data),
+             <<_, _::binary>> = no_ext <- Opus.strip_rtp_ext(no_hed),
+             <<_, _::binary>> = no_pad <- Opus.strip_rtp_padding(no_ext, header),
+             <<_, _::binary>> = opus <- Crypto.dave_decrypt(no_pad, dave, ssrc_map[ssrc]) do
+          rtp_ext = binary_part(no_hed, 0, byte_size(no_hed) - byte_size(no_ext))
+          rtp_pad = binary_part(no_ext, byte_size(no_pad), byte_size(no_ext) - byte_size(no_pad))
+          {header, rtp_ext, opus, rtp_pad}
+        else
+          _empty -> get_rtp_packet(v, ssrc_map)
+        end
     end
   end
 
-  def get_unique_rtp_packets(v, num), do: unique_rtp(v, num, [], MapSet.new())
+  def get_unique_rtp_packets(v, ssrc_map, num), do: unique_rtp(v, ssrc_map, num, [], MapSet.new())
 
-  def unique_rtp(_v, 0, packets, _set), do: Enum.reverse(packets)
+  def unique_rtp(_v, _ssrc_map, 0, packets, _set), do: Enum.reverse(packets)
 
-  def unique_rtp(v, num_remaining, packets, set) do
-    packet = get_rtp_packet(v)
+  def unique_rtp(v, ssrc_map, num_remaining, packets, set) do
+    packet = get_rtp_packet(v, ssrc_map)
 
     # Check for and remove duplicate RTP packets
     if MapSet.member?(set, packet) do
       # Duplicate was found
-      unique_rtp(v, num_remaining, packets, set)
+      unique_rtp(v, ssrc_map, num_remaining, packets, set)
     else
-      unique_rtp(v, num_remaining - 1, [packet | packets], MapSet.put(set, packet))
+      unique_rtp(v, ssrc_map, num_remaining - 1, [packet | packets], MapSet.put(set, packet))
     end
   end
 
