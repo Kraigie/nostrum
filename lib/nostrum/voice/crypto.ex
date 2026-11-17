@@ -87,6 +87,7 @@ defmodule Nostrum.Voice.Crypto do
   def dave_decrypt(data, session, user_id) do
     with true <- is_reference(session),
          true <- is_integer(user_id),
+         true <- byte_size(data) > 0,
          true <- data != @silence,
          true <- Dave.ready?(session),
          true <- Dave.status(session) == :active or Dave.can_passthrough?(session, user_id),

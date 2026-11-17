@@ -51,7 +51,6 @@ defmodule Nostrum.Voice do
   alias Nostrum.Struct.VoiceWSState
   alias Nostrum.Util
   alias Nostrum.Voice.Audio
-  alias Nostrum.Voice.Crypto
   alias Nostrum.Voice.Opus
   alias Nostrum.Voice.Ports
   alias Nostrum.Voice.Session
@@ -695,18 +694,11 @@ defmodule Nostrum.Voice do
     voice = get_voice(guild_id)
 
     if VoiceState.ready_for_rtp?(voice) do
-      packets = Audio.get_unique_rtp_packets(voice, num_packets)
       ssrc_map = Session.get_ws_state(voice.session_pid).ssrc_map
+      packets = Audio.get_unique_rtp_packets(voice, ssrc_map, num_packets)
 
-      Enum.map(packets, fn {header, payload} ->
+      Enum.map(packets, fn {header, rtp_ext, opus, rtp_pad} ->
         <<_::16, seq::integer-16, time::integer-32, ssrc::integer-32>> = header
-
-        no_ext = Opus.strip_rtp_ext(payload)
-        no_pad = Opus.strip_rtp_padding(no_ext, header)
-        opus = Crypto.dave_decrypt(no_pad, voice.dave_session, ssrc_map[ssrc])
-
-        rtp_ext = binary_part(payload, 0, byte_size(payload) - byte_size(no_ext))
-        rtp_pad = binary_part(no_ext, byte_size(no_pad), byte_size(no_ext) - byte_size(no_pad))
 
         # credo:disable-for-next-line Credo.Check.Refactor.Nesting
         if raw_rtp,
